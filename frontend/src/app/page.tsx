@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const categories = [
   { name: "Banquet Halls", slug: "banquet_hall", icon: "🏛️", color: "bg-rose-50" },
   { name: "Music Bands", slug: "music_band", icon: "🎸", color: "bg-amber-50" },
@@ -61,55 +63,6 @@ const reasons = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#fffdf9] text-[#28212b]">
-      {/* Top navigation */}
-      <header className="sticky top-0 z-40 border-b border-[#eee7df] bg-[#fffdf9]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-4 lg:px-8">
-          <a href="/" className="flex shrink-0 items-center gap-2.5">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#55243f] text-lg font-black text-[#f7d88b]">
-              B
-            </span>
-            <span className="text-xl font-extrabold tracking-tight text-[#382333]">
-              Baaraath
-            </span>
-          </a>
-
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-[#5f5660] md:flex">
-            <a href="/" className="text-[#8b3b5e]">Home</a>
-            <a href="/services" className="transition hover:text-[#8b3b5e]">Services</a>
-            <a href="/about" className="transition hover:text-[#8b3b5e]">About Us</a>
-            <a href="/contact" className="transition hover:text-[#8b3b5e]">Contact</a>
-            <a href="/bookings/lookup" className="transition hover:text-[#8b3b5e]">
-              Find My Booking
-            </a>
-          </nav>
-
-          <div className="flex shrink-0 items-center gap-2.5">
-            <a
-              href="/location"
-              className="hidden items-center gap-2 rounded-full border border-[#e9dfd7] px-4 py-2.5 text-sm font-semibold text-[#514550] transition hover:border-[#c7a0ad] hover:bg-[#fbf4f5] sm:flex"
-            >
-              <span aria-hidden="true">⌖</span>
-              Set Location
-            </a>
-            <a
-              href="/login"
-              className="rounded-full bg-[#55243f] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#6b2d50]"
-            >
-              Sign In
-            </a>
-          </div>
-        </div>
-
-        {/* Small-screen navigation */}
-        <div className="flex gap-5 overflow-x-auto border-t border-[#f1ebe5] px-5 py-2.5 text-sm font-semibold text-[#655b64] md:hidden">
-          <a href="/" className="text-[#8b3b5e]">Home</a>
-          <a href="/services">Services</a>
-          <a href="/about">About Us</a>
-          <a href="/contact">Contact</a>
-          <a href="/bookings/lookup" className="whitespace-nowrap">My Booking</a>
-        </div>
-      </header>
-
       {/* Hero */}
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#fff8ed] via-[#fffdf9] to-[#f8edf2]" />
@@ -233,12 +186,12 @@ export default function Home() {
               Find the services you need to bring your event together.
             </p>
           </div>
-          <a
+          <Link
             href="/services"
             className="rounded-full border border-[#e8d9df] px-4 py-2 text-sm font-bold text-[#80435e] transition hover:bg-[#fbf1f5]"
           >
             View all services →
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
@@ -356,43 +309,14 @@ export default function Home() {
             Browse available event services and discover options for your
             special occasion.
           </p>
-          <a
+          <Link
             href="/services"
             className="mt-7 inline-flex items-center justify-center rounded-full bg-[#f3d69a] px-7 py-3 text-sm font-extrabold text-[#452137] transition hover:bg-[#ffe4ae]"
           >
             Explore Services <span className="ml-2" aria-hidden="true">→</span>
-          </a>
+          </Link>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-[#2f202d] text-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-5 py-10 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <div>
-            <a href="/" className="inline-flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-base font-black text-[#f3d69a]">
-                B
-              </span>
-              <span className="text-lg font-extrabold">Baaraath</span>
-            </a>
-            <p className="mt-3 max-w-md text-sm leading-6 text-white/65">
-              Discover venues and event services for the moments that matter.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-white/75">
-            <a href="/services" className="hover:text-white">Services</a>
-            <a href="/about" className="hover:text-white">About Us</a>
-            <a href="/contact" className="hover:text-white">Contact</a>
-            <a href="/terms" className="hover:text-white">Terms</a>
-            <a href="/privacy" className="hover:text-white">Privacy</a>
-          </div>
-        </div>
-
-        <div className="border-t border-white/10 px-5 py-4 text-center text-xs text-white/50">
-          © {new Date().getFullYear()} Baaraath. All rights reserved.
-        </div>
-      </footer>
     </main>
   );
 }
