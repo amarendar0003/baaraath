@@ -8,7 +8,7 @@ This document explains how to install, configure, and run the Baaraath applicati
 
 Ensure the following tools are installed on your machine before proceeding:
 
-- **Node.js** >= 18.17 (LTS recommended)
+- **Node.js** >= 20.9 (LTS recommended)
 - **npm** or **yarn** or **pnpm**
 - **PostgreSQL** >= 14 (local or remote)
 - **Git**
@@ -53,7 +53,27 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 ---
 
-## 4. Database Setup
+## 3.1 Generate Prisma Client
+
+This project uses **Prisma 7**. After installing dependencies, generate the Prisma Client before running the app:
+
+```bash
+cd frontend
+npx prisma generate
+```
+
+> **Note for new developers:** If you see `Module not found: Can't resolve '@/generated/prisma/client'`, it means the Prisma Client has not been generated yet. Run `npx prisma generate` and then retry.
+
+---
+
+## 5. Database Setup
+
+Before running migrations or seeds, generate the Prisma Client:
+
+```bash
+cd frontend
+npx prisma generate
+```
 
 ### Option A: Local PostgreSQL
 
@@ -71,6 +91,9 @@ npx prisma migrate deploy
 ```bash
 cd frontend
 
+# Generate Prisma Client if needed
+npx prisma generate
+
 # Reset database, apply migrations, and run seed
 npx prisma migrate reset --force
 npx tsx prisma/seed.ts
@@ -80,7 +103,7 @@ npx tsx prisma/seed.ts
 
 ---
 
-## 5. Dummy Data
+## 6. Dummy Data
 
 The seed script (`frontend/prisma/seed.ts`) creates demo accounts and sample listings.
 
@@ -122,10 +145,14 @@ npx tsx prisma/seed.ts
 
 ---
 
-## 6. Run the Application
+## 7. Run the Application
 
 ```bash
 cd frontend
+
+# If you haven't already generated the Prisma Client:
+npx prisma generate
+
 npm run dev
 ```
 
@@ -133,7 +160,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 7. Available Scripts
+## 8. Available Scripts
 
 | Command | Purpose |
 |---------|---------|
@@ -146,7 +173,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 8. Project Structure
+## 9. Project Structure
 
 ```
 frontend/
@@ -164,7 +191,25 @@ frontend/
 
 ---
 
-## 9. Next Steps
+## 11. Troubleshooting
+
+### `Module not found: Can't resolve '@/generated/prisma/client'`
+
+Run `npx prisma generate` inside `frontend/`.
+
+### `Error: Prisma schema validation - error: Argument "url" is missing in data source block "db"`
+
+This happens when using an older clone or branch. Ensure `prisma/schema.prisma` does **not** contain `url = env("DATABASE_URL")` under `datasource db`. In this project, the datasource URL is configured in `prisma7.config.ts`, not in `schema.prisma`.
+
+### Database connection errors
+
+Verify `DATABASE_URL` in `frontend/.env` and ensure the database server is reachable.
+
+### Port already in use
+
+Change the dev port with `npm run dev -- -p 3001`, or stop the existing process using port 3000.
+
+## 12. Next Steps
 
 - Configure email, SMS, and payment providers in `.env`
 - Replace placeholder content with real service data
