@@ -3,6 +3,7 @@
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ServiceCard from "@/components/ServiceCard";
+import Skeleton from "@/components/Skeleton";
 
 const categories = [
   { name: "Banquet Halls", slug: "banquet_hall", icon: "🏛️", color: "bg-rose-50" },
@@ -111,6 +112,7 @@ function ServicesContent() {
   const [priceRange, setPriceRange] = useState<string>("");
   const [minRating, setMinRating] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading] = useState(false);
 
   const filteredServices = initialServices.filter((service) => {
     if (selectedCategory && service.category.toLowerCase() !== selectedCategory.replace(/_/g, " ")) {
@@ -141,6 +143,8 @@ function ServicesContent() {
     setSearchQuery("");
   };
 
+  const activeFilterCount = [selectedCategory, selectedCity, priceRange, minRating].filter(Boolean).length;
+
   return (
     <div className="min-h-screen bg-[#fffdf9]">
       <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
@@ -153,9 +157,9 @@ function ServicesContent() {
           </p>
         </div>
 
-        <div className="mb-8 rounded-2xl border border-[#eee7e0] bg-white p-4 shadow-[0_4px_18px_rgba(60,38,51,0.04)]">
+        <div className="mb-8 rounded-2xl border border-[#eee7e0] bg-white p-4 shadow-[0_2px_12px_rgba(60,38,51,0.03)] transition-all duration-300 hover:shadow-[0_8px_24px_rgba(60,38,51,0.06)]">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <label className="flex min-w-0 flex-1 items-center gap-3 rounded-xl border border-[#eee7e0] px-4 py-3">
+            <label className="flex min-w-0 flex-1 items-center gap-3 rounded-xl border border-[#eee7e0] px-4 py-3 transition focus-within:border-[#8b3b5e]">
               <span className="text-xl text-[#9a4968]" aria-hidden="true">⌕</span>
               <input
                 type="search"
@@ -169,7 +173,7 @@ function ServicesContent() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-xl border border-[#eee7e0] px-4 py-3 text-sm font-semibold text-[#3d303c] outline-none focus:border-[#8b3b5e]"
+              className="rounded-xl border border-[#eee7e0] px-4 py-3 text-sm font-semibold text-[#3d303c] outline-none transition focus:border-[#8b3b5e]"
               aria-label="Filter by category"
             >
               <option value="">All Categories</option>
@@ -190,7 +194,7 @@ function ServicesContent() {
                 <select
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="mt-2 w-full rounded-xl border border-[#eee7e0] px-4 py-2.5 text-sm text-[#3d303c] outline-none focus:border-[#8b3b5e]"
+                  className="mt-2 w-full rounded-xl border border-[#eee7e0] px-4 py-2.5 text-sm text-[#3d303c] outline-none transition focus:border-[#8b3b5e]"
                   aria-label="Filter by city"
                 >
                   <option value="">All Cities</option>
@@ -207,7 +211,7 @@ function ServicesContent() {
                 <select
                   value={priceRange}
                   onChange={(e) => setPriceRange(e.target.value)}
-                  className="mt-2 w-full rounded-xl border border-[#eee7e0] px-4 py-2.5 text-sm text-[#3d303c] outline-none focus:border-[#8b3b5e]"
+                  className="mt-2 w-full rounded-xl border border-[#eee7e0] px-4 py-2.5 text-sm text-[#3d303c] outline-none transition focus:border-[#8b3b5e]"
                   aria-label="Filter by price range"
                 >
                   <option value="">All Prices</option>
@@ -224,7 +228,7 @@ function ServicesContent() {
                 <select
                   value={minRating}
                   onChange={(e) => setMinRating(e.target.value)}
-                  className="mt-2 w-full rounded-xl border border-[#eee7e0] px-4 py-2.5 text-sm text-[#3d303c] outline-none focus:border-[#8b3b5e]"
+                  className="mt-2 w-full rounded-xl border border-[#eee7e0] px-4 py-2.5 text-sm text-[#3d303c] outline-none transition focus:border-[#8b3b5e]"
                   aria-label="Filter by minimum rating"
                 >
                   <option value="">Any Rating</option>
@@ -238,21 +242,40 @@ function ServicesContent() {
                 onClick={clearFilters}
                 className="w-full rounded-full border border-[#e8d9df] px-4 py-2.5 text-sm font-bold text-[#80435e] transition hover:bg-[#fbf1f5]"
               >
-                Clear Filters
+                {activeFilterCount > 0 ? `Clear Filters (${activeFilterCount})` : "Clear Filters"}
               </button>
             </div>
           </aside>
 
           <div>
-            <div className="mb-6">
+            <div className="mb-6 flex items-center justify-between">
               <h2 className="text-lg font-extrabold text-[#3d303c]">
                 {filteredServices.length}{" "}
                 {filteredServices.length === 1 ? "service" : "services"} found
               </h2>
+              {activeFilterCount > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="text-sm font-semibold text-[#8b3b5e] transition hover:underline"
+                >
+                  Clear all filters
+                </button>
+              )}
             </div>
 
-            {filteredServices.length === 0 ? (
+            {isLoading ? (
+              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="h-80 rounded-3xl">
+                    <Skeleton className="h-full w-full" />
+                  </div>
+                ))}
+              </div>
+            ) : filteredServices.length === 0 ? (
               <div className="rounded-2xl border border-[#eee7e0] bg-white p-12 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#fbf7f2] text-3xl">
+                  🔍
+                </div>
                 <p className="text-lg font-semibold text-[#3d303c]">
                   No services found
                 </p>

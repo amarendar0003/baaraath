@@ -33,36 +33,41 @@ export default function ServiceCard({
   }).format(price);
 
   return (
-    <article className="group overflow-hidden rounded-2xl border border-[#eee7e0] bg-white shadow-[0_4px_18px_rgba(60,38,51,0.04)] transition hover:-translate-y-1 hover:border-[#d8b9c6] hover:shadow-[0_12px_28px_rgba(60,38,51,0.09)]">
+    <article className="group overflow-hidden rounded-3xl border border-[#eee7e0] bg-white shadow-[0_2px_12px_rgba(60,38,51,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d8b9c6] hover:shadow-[0_18px_40px_rgba(60,38,51,0.10)]">
       <Link href={`/services/${slug}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#f9e5d8] via-[#f8eaf0] to-[#efe4f2]">
           {imageUrl ? (
             <img
               src={imageUrl}
               alt={title}
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
               loading="lazy"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-6xl">
+            <div className="flex h-full w-full items-center justify-center text-6xl transition duration-500 group-hover:scale-110">
               🎪
             </div>
           )}
-          <span className="absolute left-3 top-3 rounded-full border border-white/70 bg-white/75 px-3 py-1.5 text-[10px] font-extrabold tracking-[0.15em] text-[#75455d]">
+          <span className="absolute left-3 top-3 rounded-full border border-white/70 bg-white/85 px-3 py-1.5 text-[10px] font-extrabold tracking-[0.18em] text-[#75455d] backdrop-blur">
             {category.toUpperCase()}
           </span>
+          {rating >= 4.5 && (
+            <span className="absolute right-3 top-3 rounded-full bg-[#f3d69a] px-2.5 py-1 text-[10px] font-extrabold tracking-wide text-[#452137]">
+              ★ TOP RATED
+            </span>
+          )}
         </div>
-        <div className="p-4">
+        <div className="p-5">
           <h3 className="text-base font-extrabold text-[#3d303c] line-clamp-1">
             {title}
           </h3>
-          <p className="mt-1 flex items-center gap-1.5 text-xs text-[#786d76]">
-            <span aria-hidden="true">⌖</span>
+          <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#786d76]">
+            <span aria-hidden="true" className="text-sm">⌖</span>
             {city}
             {vendorName && <span className="text-[#e9dfd7]">|</span>}
             {vendorName && <span>{vendorName}</span>}
           </p>
-          <div className="mt-3 flex items-center justify-between gap-2">
+          <div className="mt-4 flex items-center justify-between gap-2">
             <div>
               <span className="text-lg font-black text-[#8b3b5e]">
                 {formattedPrice}
