@@ -10,94 +10,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const popularCities = [
-  "Hyderabad",
-  "Mumbai",
-  "Delhi",
-  "Bangalore",
-  "Chennai",
-  "Kolkata",
-  "Pune",
-  "Ahmedabad",
-];
+const popularCities = ["Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", "Pune", "Ahmedabad"];
 
-const testimonials = [
-  {
-    name: "Ananya & Rohan",
-    role: "Wedding in Hyderabad",
-    body: "We found our banquet hall and caterer within a week. Baaraath made the entire process so simple.",
-    rating: 5,
-  },
-  {
-    name: "Priya Sharma",
-    role: "Birthday celebration, Mumbai",
-    body: "Comparing vendors and reading reviews helped us choose the perfect band for our evening.",
-    rating: 5,
-  },
-  {
-    name: "Vikram Patel",
-    role: "Corporate event, Bangalore",
-    body: "The booking flow was smooth and transparent. No hidden surprises, just great service.",
-    rating: 5,
-  },
-];
-
-const steps = [
-  {
-    title: "Search services",
-    description: "Find venues, caterers, planners and more by category or city.",
-    icon: "⌕",
-  },
-  {
-    title: "Compare providers",
-    description: "View profiles, pricing and reviews to choose what fits your event.",
-    icon: "▣",
-  },
-  {
-    title: "Book with confidence",
-    description: "Enquire and book directly. Keep everything organised in one place.",
-    icon: "✓",
-  },
-];
-
-export default async function Home() {
-  const [categories, services, vendors, bookings] = await Promise.all([
-    prisma.category.findMany({
-      include: { _count: { select: { services: true } } },
-      orderBy: { name: "asc" },
-    }),
-    prisma.service.findMany({
-      where: { active: true },
-      include: {
-        category: { select: { name: true, slug: true } },
-        vendor: { select: { name: true, city: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 6,
-    }),
-    prisma.vendor.findMany({
-      select: { city: true },
-      distinct: ["city"],
-    }),
-    prisma.booking.count(),
-  ]);
-
-  const categoryMap = Object.fromEntries(
-    categories.map((c) => [c.slug, { name: c.name, count: c._count.services }])
-  );
-
-  const categoryVisual: Record<string, { icon: string; color: string }> = {
-    banquet_hall: { icon: "🏛️", color: "bg-rose-50" },
-    music_band: { icon: "🎸", color: "bg-amber-50" },
-    catering: { icon: "🍽️", color: "bg-orange-50" },
-    hotels: { icon: "🏨", color: "bg-sky-50" },
-    dancing: { icon: "💃", color: "bg-fuchsia-50" },
-    priests: { icon: "🪔", color: "bg-yellow-50" },
-    event_management: { icon: "🎪", color: "bg-emerald-50" },
-  };
-
-  const fallbackCategoryVisual = { icon: "🎪", color: "bg-rose-50" };
-const categories = [
+const categoryTiles = [
   { name: "Banquet Halls", slug: "banquet_hall", icon: "🏛️", tag: "Grand & intimate venues", bg: "from-rose-100 to-orange-50" },
   { name: "Music Bands", slug: "music_band", icon: "🎸", tag: "Live energy for your night", bg: "from-amber-100 to-yellow-50" },
   { name: "Catering", slug: "catering", icon: "🍽️", tag: "Menus guests remember", bg: "from-orange-100 to-amber-50" },
@@ -107,56 +22,19 @@ const categories = [
   { name: "Event Planning", slug: "event_management", icon: "🎪", tag: "Stress-free coordination", bg: "from-emerald-100 to-teal-50" },
 ];
 
-  const featured = [
-    {
-      title: "Beautiful venues",
-      description: "Find a space that feels just right for your celebration.",
-      slug: "banquet_hall",
-      icon: "🏰",
-      style: "from-rose-100 via-orange-50 to-amber-100",
-      tag: "VENUES",
-    },
-    {
-      title: "Food worth celebrating",
-      description: "Discover catering teams for intimate and grand occasions.",
-      slug: "catering",
-      icon: "🍲",
-      style: "from-amber-100 via-yellow-50 to-orange-100",
-      tag: "CATERING",
-    },
-    {
-      title: "Make it unforgettable",
-      description: "Bring your event together with experienced planners.",
-      slug: "event_management",
-      icon: "✨",
-      style: "from-violet-100 via-fuchsia-50 to-rose-100",
-      tag: "EVENT PLANNING",
-    },
-  ];
-const occasions = ["Weddings", "Engagements", "Birthdays", "Anniversaries", "Baby Showers", "Corporate Events", "Housewarmings", "Reunions"];
-
-// TODO: replace with real numbers from your DB (e.g. prisma.service.count()).
-const stats = [
-  { value: "500+", label: "Event providers" },
-  { value: "7", label: "Service categories" },
-  { value: "25+", label: "Cities covered" },
-  { value: "24h", label: "Typical response time" },
+const featured = [
+  { title: "Beautiful venues", description: "Find a space that feels just right for your celebration.", slug: "banquet_hall", icon: "🏰", style: "from-rose-100 via-orange-50 to-amber-100", tag: "VENUES" },
+  { title: "Food worth celebrating", description: "Discover catering teams for intimate and grand occasions.", slug: "catering", icon: "🍲", style: "from-amber-100 via-yellow-50 to-orange-100", tag: "CATERING" },
+  { title: "Make it unforgettable", description: "Bring your event together with experienced planners.", slug: "event_management", icon: "✨", style: "from-violet-100 via-fuchsia-50 to-rose-100", tag: "EVENT PLANNING" },
 ];
+
+const occasions = ["Weddings", "Engagements", "Birthdays", "Anniversaries", "Baby Showers", "Corporate Events", "Housewarmings", "Reunions"];
 
 const steps = [
   { icon: "🔎", title: "Search", text: "Tell us what you need and where. Filter by category, city and budget." },
   { icon: "⚖️", title: "Compare", text: "Review vendor profiles, prices and details side by side." },
   { icon: "✅", title: "Book", text: "Send your booking request and track it with a confirmation number." },
 ];
-
-  const stats = [
-    { label: "Services listed", value: services.length + "+", icon: "🎪" },
-    { label: "Verified vendors", value: vendors.length + "+", icon: "✓" },
-    { label: "Cities covered", value: vendors.length + "", icon: "⌖" },
-    { label: "Events planned", value: bookings + "+", icon: "♡" },
-  ];
-
-  const featuredServices = services.slice(0, 6);
 
 const reasons = [
   { icon: "🛡️", title: "Vetted providers", text: "Browse detailed vendor profiles before you enquire." },
@@ -194,14 +72,30 @@ const jsonLd = {
 const eyebrow = "text-xs font-extrabold tracking-[0.2em] text-[#a16a43]";
 const h2 = "mt-2 text-3xl font-black tracking-tight text-[#342433] sm:text-4xl";
 
-export default function Home() {
+export default async function Home() {
+  const [categories, services, vendors, bookings] = await Promise.all([
+    prisma.category.findMany({ orderBy: { name: "asc" } }),
+    prisma.service.findMany({
+      where: { active: true },
+      include: {
+        category: { select: { name: true, slug: true } },
+        vendor: { select: { name: true, city: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 6,
+    }),
+    prisma.vendor.findMany({ select: { city: true }, distinct: ["city"] }),
+    prisma.booking.count(),
+  ]);
+
+  const stats = [
+    { label: "Services listed", value: services.length + "+", icon: "🎪" },
+    { label: "Verified vendors", value: vendors.length + "+", icon: "✓" },
+    { label: "Cities covered", value: vendors.length + "", icon: "⌖" },
+    { label: "Events planned", value: bookings + "+", icon: "♡" },
+  ];
+
   return (
-    <main className="min-h-screen bg-[#fffdf9] text-[#342433]">
-      {/* Hero */}
-      <section className="relative isolate overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#fff8ed] via-[#fffdf9] to-[#f8edf2]" />
-        <div className="pointer-events-none absolute -right-24 -top-24 -z-10 h-96 w-96 rounded-full bg-[#f3d9c5]/50 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-28 -left-24 -z-10 h-96 w-96 rounded-full bg-[#e8c9d7]/45 blur-3xl" />
     // Layout already renders <main>, so use a div here to avoid nested <main>.
     <div className="overflow-x-clip bg-[#fffdf9] text-[#28212b]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -258,11 +152,7 @@ export default function Home() {
                 </label>
                 <label className="border-t border-[#f1e9e2] px-4 py-2 sm:border-l sm:border-t-0">
                   <span className="sr-only">Category</span>
-                  <select
-                    name="category"
-                    defaultValue=""
-                    className="w-full cursor-pointer bg-transparent text-sm text-[#4b3f49] outline-none"
-                  >
+                  <select name="category" defaultValue="" className="w-full cursor-pointer bg-transparent text-sm text-[#4b3f49] outline-none">
                     <option value="">All categories</option>
                     {categories.map((c) => (
                       <option key={c.slug} value={c.slug}>{c.name}</option>
@@ -281,7 +171,7 @@ export default function Home() {
             <AnimatedSection delay={400}>
               <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-xs lg:justify-start">
                 <span className="font-semibold text-[#8b7e88]">Popular:</span>
-                {categories.slice(0, 4).map((c) => (
+                {categoryTiles.slice(0, 4).map((c) => (
                   <Link
                     key={c.slug}
                     href={`/services?category=${c.slug}`}
@@ -300,7 +190,6 @@ export default function Home() {
               <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-br from-[#55243f] via-[#7a3557] to-[#b8873b] shadow-[0_30px_80px_rgba(85,36,63,0.35)]" />
               <div className="absolute inset-6 rounded-[2.4rem] border border-white/25" />
               <div className="absolute inset-0 flex items-center justify-center text-[8rem] drop-shadow-2xl">💐</div>
-
               <div className="animate-float absolute -left-6 top-10 rounded-2xl bg-white px-4 py-3 text-sm font-extrabold text-[#3d303c] shadow-xl">🏛️ Banquet Halls</div>
               <div className="animate-float absolute -right-4 top-1/3 rounded-2xl bg-white px-4 py-3 text-sm font-extrabold text-[#3d303c] shadow-xl [animation-delay:-2s]">🎸 Live Bands</div>
               <div className="animate-float absolute -left-2 bottom-24 rounded-2xl bg-white px-4 py-3 text-sm font-extrabold text-[#3d303c] shadow-xl [animation-delay:-4s]">🍽️ Catering</div>
@@ -313,33 +202,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats */}
-      <AnimatedSection>
-        <section className="border-y border-[#f0e8e1] bg-white">
-          <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-              {stats.map((stat, index) => (
-                <AnimatedSection key={stat.label} delay={index * 80}>
-                  <div className="text-center">
-                    <div className="text-3xl sm:text-4xl">{stat.icon}</div>
-                    <p className="mt-2 text-2xl font-black text-[#55243f] sm:text-3xl">
-                      {stat.value}
-                    </p>
-                    <p className="mt-1 text-xs font-semibold text-[#786d76] sm:text-sm">
-                      {stat.label}
-                    </p>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-        </section>
-      </AnimatedSection>
-
-      {/* Categories */}
-      <AnimatedSection>
-        <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       {/* ============ OCCASION MARQUEE ============ */}
       <section aria-label="Occasions we cover" className="border-y border-[#f0e8e1] bg-[#55243f] py-4 text-[#f3d69a]">
         <div className="flex w-max animate-marquee gap-10 whitespace-nowrap text-sm font-bold tracking-wide">
@@ -357,17 +219,17 @@ export default function Home() {
 
       {/* ============ STATS ============ */}
       <section className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
-        <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
           {stats.map((s, i) => (
             <AnimatedSection key={s.label} delay={i * 80}>
               <div className="rounded-3xl border border-[#eee7e0] bg-white p-6 text-center shadow-[0_4px_18px_rgba(60,38,51,0.04)]">
-                <dt className="sr-only">{s.label}</dt>
-                <dd className="text-4xl font-black text-[#8b3b5e]">{s.value}</dd>
-                <p className="mt-1 text-sm font-semibold text-[#786d76]" aria-hidden="true">{s.label}</p>
+                <div className="text-3xl" aria-hidden="true">{s.icon}</div>
+                <p className="mt-2 text-3xl font-black text-[#8b3b5e]">{s.value}</p>
+                <p className="mt-1 text-sm font-semibold text-[#786d76]">{s.label}</p>
               </div>
             </AnimatedSection>
           ))}
-        </dl>
+        </div>
       </section>
 
       {/* ============ CATEGORIES ============ */}
@@ -385,13 +247,13 @@ export default function Home() {
         </AnimatedSection>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {categories.map((c, i) => (
+          {categoryTiles.map((c, i) => (
             <AnimatedSection key={c.slug} delay={i * 70}>
               <Link
                 href={`/services?category=${c.slug}`}
                 className={`group relative flex h-full min-h-48 flex-col justify-between overflow-hidden rounded-3xl border border-white bg-gradient-to-br ${c.bg} p-5 shadow-[0_4px_18px_rgba(60,38,51,0.05)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(60,38,51,0.13)]`}
               >
-                <span className="text-5xl transition duration-300 group-hover:scale-110 group-hover:-rotate-6" aria-hidden="true">{c.icon}</span>
+                <span className="text-5xl transition duration-300 group-hover:-rotate-6 group-hover:scale-110" aria-hidden="true">{c.icon}</span>
                 <div>
                   <h3 className="text-base font-extrabold text-[#3d303c]">{c.name}</h3>
                   <p className="mt-1 text-xs leading-5 text-[#6e626b]">{c.tag}</p>
@@ -409,34 +271,6 @@ export default function Home() {
               <span className="mt-3 text-base font-extrabold">Browse everything</span>
               <span className="mt-1 text-xs text-white/70">See all services →</span>
             </Link>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
-            {categories.map((category, index) => {
-              const info = categoryMap[category.slug] || { name: category.name, count: 0 };
-              const visual = categoryVisual[category.slug] || fallbackCategoryVisual;
-              return (
-                <AnimatedSection key={category.slug} delay={index * 80}>
-                  <Link
-                    href={`/services?category=${category.slug}`}
-                    className="group rounded-2xl border border-[#eee7e0] bg-white p-4 text-center shadow-[0_4px_18px_rgba(60,38,51,0.04)] transition hover:-translate-y-1 hover:border-[#d8b9c6] hover:shadow-[0_12px_28px_rgba(60,38,51,0.09)]"
-                  >
-                    <div className={`mx-auto flex h-16 w-16 items-center justify-center rounded-2xl ${visual.color} text-3xl transition group-hover:scale-105`}>
-                      <span aria-hidden="true">{visual.icon}</span>
-                    </div>
-                    <h3 className="mt-3 text-sm font-extrabold text-[#3d303c]">
-                      {info.name}
-                    </h3>
-                    <p className="mt-1 text-xs text-[#9a8e98]">
-                      {info.count > 0 ? `${info.count} services` : "Explore →"}
-                    </p>
-                  </Link>
-                </AnimatedSection>
-              );
-            })}
-          </div>
-        </section>
-      </AnimatedSection>
           </AnimatedSection>
         </div>
       </section>
@@ -500,167 +334,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How it works */}
-      <AnimatedSection>
-        <section className="border-y border-[#f0e8e1] bg-[#fbf7f2] py-16">
-          <div className="mx-auto max-w-7xl px-5 lg:px-8">
-            <div className="mx-auto mb-10 max-w-2xl text-center">
-              <p className="text-xs font-extrabold tracking-[0.2em] text-[#a16a43]">
-                HOW IT WORKS
-              </p>
-              <h2 className="mt-2 text-2xl font-black tracking-tight text-[#342433] sm:text-3xl">
-                Planning your event in 3 simple steps
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-[#786d76]">
-                From search to booking, we keep it simple and transparent.
-              </p>
-            </div>
-
-            <div className="grid gap-8 sm:grid-cols-3">
-              {steps.map((step, index) => (
-                <AnimatedSection key={step.title} delay={index * 120}>
-                  <div className="relative rounded-3xl border border-[#eee7e0] bg-white p-6 text-center shadow-[0_4px_18px_rgba(60,38,51,0.04)]">
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#55243f] text-sm font-black text-white">
-                        {index + 1}
-                      </span>
-                    </div>
-                    <div className="mt-4 text-4xl">{step.icon}</div>
-                    <h3 className="mt-4 font-extrabold text-[#3d303c]">{step.title}</h3>
-                    <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-[#786d76]">
-                      {step.description}
-                    </p>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-        </section>
-      </AnimatedSection>
-
-      {/* Featured inspiration */}
-      <AnimatedSection>
-        <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+      {/* ============ FEATURED INSPIRATION ============ */}
+      <section className="mx-auto max-w-7xl px-5 pb-20 lg:px-8">
+        <AnimatedSection>
           <div className="mb-8">
-            <p className="text-xs font-extrabold tracking-[0.2em] text-[#a16a43]">
-              A LITTLE INSPIRATION
-            </p>
-            <h2 className="mt-2 text-2xl font-black tracking-tight text-[#342433] sm:text-3xl">
-              Make your occasion yours
-            </h2>
+            <p className={eyebrow}>A LITTLE INSPIRATION</p>
+            <h2 className={h2}>Make your occasion yours</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-[#786d76]">
-              Explore popular event needs and start building a plan that suits
-              your style, guest list and budget.
+              Explore popular event needs and start building a plan that suits your style, guest list and budget.
             </p>
           </div>
+        </AnimatedSection>
+        <div className="grid gap-5 md:grid-cols-3">
+          {featured.map((item, i) => (
+            <AnimatedSection key={item.slug} delay={i * 120}>
+              <Link
+                href={`/services?category=${item.slug}`}
+                className="group block overflow-hidden rounded-3xl border border-[#eee4dd] bg-white shadow-[0_5px_22px_rgba(60,38,51,0.05)] transition hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(60,38,51,0.10)]"
+              >
+                <div className={`relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br ${item.style}`}>
+                  <div className="absolute -right-10 -top-12 h-44 w-44 rounded-full border border-white/70" />
+                  <div className="absolute -bottom-20 -left-8 h-48 w-48 rounded-full border border-white/70" />
+                  <span className="relative text-7xl transition duration-300 group-hover:scale-110" aria-hidden="true">{item.icon}</span>
+                  <span className="absolute left-5 top-5 rounded-full border border-white/70 bg-white/75 px-3 py-1.5 text-[10px] font-extrabold tracking-[0.15em] text-[#75455d]">{item.tag}</span>
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-extrabold text-[#3d303c]">{item.title}</h3>
+                  <p className="mt-2 min-h-12 text-sm leading-6 text-[#786d76]">{item.description}</p>
+                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#8b3b5e]">
+                    Explore options <span aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </Link>
+            </AnimatedSection>
+          ))}
+        </div>
+      </section>
 
-          <div className="grid gap-5 md:grid-cols-3">
-            {featured.map((item, index) => (
-              <AnimatedSection key={item.slug} delay={index * 120}>
-                <Link
-                  href={`/services?category=${item.slug}`}
-                  className="group overflow-hidden rounded-3xl border border-[#eee4dd] bg-white shadow-[0_5px_22px_rgba(60,38,51,0.05)] transition hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(60,38,51,0.10)]"
-                >
-                  <div className={`relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br ${item.style}`}>
-                    <div className="absolute -right-10 -top-12 h-44 w-44 rounded-full border border-white/70" />
-                    <div className="absolute -bottom-20 -left-8 h-48 w-48 rounded-full border border-white/70" />
-                    <span className="relative text-7xl transition duration-300 group-hover:scale-110" aria-hidden="true">
-                      {item.icon}
-                    </span>
-                    <span className="absolute left-5 top-5 rounded-full border border-white/70 bg-white/75 px-3 py-1.5 text-[10px] font-extrabold tracking-[0.15em] text-[#75455d]">
-                      {item.tag}
-                    </span>
-                  </div>
-
-                  <div className="p-5">
-                    <h3 className="text-lg font-extrabold text-[#3d303c]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 min-h-12 text-sm leading-6 text-[#786d76]">
-                      {item.description}
-                    </p>
-                    <span className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#8b3b5e]">
-                      Explore options <span aria-hidden="true">→</span>
-                    </span>
-                  </div>
-                </Link>
-              </AnimatedSection>
-            ))}
-          </div>
-        </section>
-      </AnimatedSection>
-
-      {/* Featured Services */}
-      <AnimatedSection>
+      {/* ============ FEATURED SERVICES ============ */}
+      {services.length > 0 && (
         <section className="border-y border-[#f0e8e1] bg-[#fbf7f2] py-16">
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-extrabold tracking-[0.2em] text-[#a16a43]">
-                  TOP PICKS
-                </p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-[#342433] sm:text-3xl">
-                  Services our customers love
-                </h2>
-                <p className="mt-2 text-sm text-[#786d76]">
-                  Handpicked services across top categories and cities.
-                </p>
+                <p className={eyebrow}>TOP PICKS</p>
+                <h2 className={h2}>Services our customers love</h2>
+                <p className="mt-2 text-sm text-[#786d76]">Handpicked services across top categories and cities.</p>
               </div>
-              <Link
-                href="/services"
-                className="rounded-full border border-[#e8d9df] px-4 py-2 text-sm font-bold text-[#80435e] transition hover:bg-[#fbf1f5]"
-              >
+              <Link href="/services" className="rounded-full border border-[#e8d9df] px-4 py-2 text-sm font-bold text-[#80435e] transition hover:bg-[#fbf1f5]">
                 View all services →
               </Link>
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredServices.map((service, index) => {
-                const formattedPrice = new Intl.NumberFormat("en-IN", {
+              {services.map((service, i) => {
+                const price = new Intl.NumberFormat("en-IN", {
                   style: "currency",
                   currency: "INR",
                   maximumFractionDigits: 0,
                 }).format(Number(service.price));
 
                 return (
-                  <AnimatedSection key={service.id} delay={index * 80}>
+                  <AnimatedSection key={service.id} delay={i * 80}>
                     <Link
                       href={`/services/${service.id}`}
-                      className="group overflow-hidden rounded-3xl border border-[#eee7e0] bg-white shadow-[0_2px_12px_rgba(60,38,51,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d8b9c6] hover:shadow-[0_18px_40px_rgba(60,38,51,0.10)]"
+                      className="group block overflow-hidden rounded-3xl border border-[#eee7e0] bg-white shadow-[0_2px_12px_rgba(60,38,51,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d8b9c6] hover:shadow-[0_18px_40px_rgba(60,38,51,0.10)]"
                     >
                       <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#f9e5d8] via-[#f8eaf0] to-[#efe4f2]">
-                        <div className="flex h-full w-full items-center justify-center text-6xl transition duration-500 group-hover:scale-110">
-                          🎪
-                        </div>
+                        <div className="flex h-full w-full items-center justify-center text-6xl transition duration-500 group-hover:scale-110">🎪</div>
                         <span className="absolute left-3 top-3 rounded-full border border-white/70 bg-white/85 px-3 py-1.5 text-[10px] font-extrabold tracking-[0.18em] text-[#75455d] backdrop-blur">
                           {service.category.name.toUpperCase()}
                         </span>
                       </div>
                       <div className="p-5">
-                        <h3 className="text-base font-extrabold text-[#3d303c] line-clamp-1">
-                          {service.title}
-                        </h3>
+                        <h3 className="line-clamp-1 text-base font-extrabold text-[#3d303c]">{service.title}</h3>
                         <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#786d76]">
                           <span aria-hidden="true" className="text-sm">⌖</span>
                           {service.vendor.city}
                           {service.vendor.name && <span className="text-[#e9dfd7]">|</span>}
                           {service.vendor.name && <span>{service.vendor.name}</span>}
                         </p>
-                        <div className="mt-4 flex items-center justify-between gap-2">
-                          <div>
-                            <span className="text-lg font-black text-[#8b3b5e]">
-                              {formattedPrice}
-                            </span>
-                            <span className="text-xs text-[#786d76]"> / service</span>
-                          </div>
-                          <div className="flex items-center gap-1 rounded-full bg-[#fbf7f2] px-2.5 py-1">
-                            <span aria-hidden="true" className="text-sm text-[#b8873b]">
-                              ★
-                            </span>
-                            <span className="text-sm font-extrabold text-[#3d303c]">
-                              {Number(service.price) > 0 ? "New" : "-"}
-                            </span>
-                          </div>
+                        <div className="mt-4">
+                          <span className="text-lg font-black text-[#8b3b5e]">{price}</span>
+                          <span className="text-xs text-[#786d76]"> / service</span>
                         </div>
                       </div>
                     </Link>
@@ -670,7 +426,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </AnimatedSection>
+      )}
+
       {/* ============ TESTIMONIALS ============ */}
       <section className="bg-[#2f202d] py-20 text-white">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -688,7 +445,10 @@ export default function Home() {
                   <blockquote className="mt-4 text-sm leading-7 text-white/85">“{t.quote}”</blockquote>
                   <figcaption className="mt-5 flex items-center gap-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f3d69a] text-sm font-black text-[#55243f]">{t.name[0]}</span>
-                    <span className="text-sm"><span className="block font-extrabold">{t.name}</span><span className="text-white/55">{t.event}</span></span>
+                    <span className="text-sm">
+                      <span className="block font-extrabold">{t.name}</span>
+                      <span className="text-white/55">{t.event}</span>
+                    </span>
                   </figcaption>
                 </figure>
               </AnimatedSection>
@@ -697,16 +457,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <AnimatedSection>
-        <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
-          <div className="mx-auto mb-10 max-w-2xl text-center">
-            <p className="text-xs font-extrabold tracking-[0.2em] text-[#a16a43]">
-              CUSTOMER STORIES
-            </p>
-            <h2 className="mt-2 text-2xl font-black tracking-tight text-[#342433] sm:text-3xl">
-              Loved by event planners across India
-            </h2>
+      {/* ============ POPULAR CITIES ============ */}
+      <section className="border-b border-[#f0e8e1] bg-[#fbf7f2] py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="mb-8">
+            <p className={eyebrow}>EXPLORE BY CITY</p>
+            <h2 className={h2}>Services in popular cities</h2>
+            <p className="mt-2 text-sm text-[#786d76]">Discover trusted providers in cities across India.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+            {popularCities.map((city, i) => (
+              <AnimatedSection key={city} delay={i * 60}>
+                <Link
+                  href={`/services?city=${encodeURIComponent(city)}`}
+                  className="group block rounded-2xl border border-[#eee7e0] bg-white p-4 text-center shadow-[0_4px_18px_rgba(60,38,51,0.04)] transition hover:-translate-y-1 hover:border-[#d8b9c6] hover:shadow-[0_12px_28px_rgba(60,38,51,0.09)]"
+                >
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#f7edf1] text-xl text-[#8b3b5e]">
+                    <span aria-hidden="true">⌖</span>
+                  </div>
+                  <h3 className="mt-3 text-sm font-extrabold text-[#3d303c]">{city}</h3>
+                  <p className="mt-1 text-xs text-[#9a8e98]">Explore services →</p>
+                </Link>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ============ FAQ ============ */}
       <section className="mx-auto max-w-3xl px-5 py-20 lg:px-8">
         <AnimatedSection>
@@ -714,68 +491,6 @@ export default function Home() {
             <p className={eyebrow}>GOOD TO KNOW</p>
             <h2 className={h2}>Frequently asked questions</h2>
           </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((item, index) => (
-              <AnimatedSection key={item.name} delay={index * 120}>
-                <div className="rounded-3xl border border-[#eee7e0] bg-white p-6 shadow-[0_4px_18px_rgba(60,38,51,0.04)]">
-                  <div className="flex items-center gap-1 text-[#b8873b]">
-                    {Array.from({ length: item.rating }).map((_, i) => (
-                      <span key={i} aria-hidden="true">★</span>
-                    ))}
-                  </div>
-                  <p className='mt-4 text-sm leading-6 text-[#5f5660]'>{item.body}</p>
-                  <div className="mt-6 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#fbf7f2] text-sm font-black text-[#8b3b5e]">
-                      {item.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
-                    </div>
-                    <div>
-                      <p className="text-sm font-extrabold text-[#3d303c]">{item.name}</p>
-                      <p className="text-xs text-[#786d76]">{item.role}</p>
-                    </div>
-                  </div>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-        </section>
-      </AnimatedSection>
-
-      {/* Popular Cities */}
-      <AnimatedSection>
-        <section className="border-y border-[#f0e8e1] bg-[#fbf7f2] py-16">
-          <div className="mx-auto max-w-7xl px-5 lg:px-8">
-            <div className="mb-8">
-              <p className="text-xs font-extrabold tracking-[0.2em] text-[#a16a43]">
-                EXPLORE BY CITY
-              </p>
-              <h2 className="mt-2 text-2xl font-black tracking-tight text-[#342433] sm:text-3xl">
-                Services in popular cities
-              </h2>
-              <p className="mt-2 text-sm text-[#786d76]">
-                Discover trusted providers in cities across India.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-              {popularCities.map((city, index) => (
-                <AnimatedSection key={city} delay={index * 60}>
-                  <Link
-                    href={`/services?city=${encodeURIComponent(city)}`}
-                    className="group rounded-2xl border border-[#eee7e0] bg-white p-4 text-center shadow-[0_4px_18px_rgba(60,38,51,0.04)] transition hover:-translate-y-1 hover:border-[#d8b9c6] hover:shadow-[0_12px_28px_rgba(60,38,51,0.09)]"
-                  >
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#f7edf1] text-xl text-[#8b3b5e]">
-                      <span aria-hidden="true">⌖</span>
-                    </div>
-                    <h3 className="mt-3 text-sm font-extrabold text-[#3d303c]">{city}</h3>
-                    <p className="mt-1 text-xs text-[#9a8e98]">Explore services →</p>
-                  </Link>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-        </section>
-      </AnimatedSection>
         </AnimatedSection>
         <div className="mt-10 space-y-3">
           {faqs.map((f, i) => (
