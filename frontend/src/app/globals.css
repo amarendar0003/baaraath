@@ -50,3 +50,35 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+/* ---------- Homepage motion & helpers ---------- */
+@keyframes float   { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
+@keyframes blob    { 0%,100% { transform: translate3d(0,0,0) scale(1) } 50% { transform: translate3d(36px,-24px,0) scale(1.1) } }
+@keyframes marquee { to { transform: translateX(-50%) } }
+@keyframes shine   { from { transform: translateX(-150%) skewX(-20deg) } to { transform: translateX(450%) skewX(-20deg) } }
+
+.animate-float   { animation: float 6s ease-in-out infinite }
+.animate-blob    { animation: blob 14s ease-in-out infinite }
+.animate-marquee { animation: marquee 35s linear infinite }
+
+.btn-shine { position: relative; overflow: hidden }
+.btn-shine::after {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+  transform: translateX(-150%) skewX(-20deg);
+}
+.btn-shine:hover::after { animation: shine .9s }
+
+.text-gradient {
+  background: linear-gradient(90deg, #8b3b5e, #c9822f);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+details > summary { list-style: none }
+details > summary::-webkit-details-marker { display: none }
+details[open] .faq-plus { transform: rotate(45deg) }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float, .animate-blob, .animate-marquee, .btn-shine:hover::after { animation: none }
+  html { scroll-behavior: auto }
+}
