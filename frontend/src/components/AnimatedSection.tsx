@@ -15,7 +15,7 @@ export default function AnimatedSection({
 
   return (
     <div
-      ref={ref as any}
+      ref={ref}
       className={`transition-all duration-700 ease-out ${
         isInView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
       } ${className}`}
