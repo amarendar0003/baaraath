@@ -2,87 +2,229 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
 import {
   ArrowRight,
   BarChart3,
+  CalendarCheck2,
   CalendarDays,
   CheckCircle2,
+  ChevronRight,
   Clock3,
+  ExternalLink,
   Layers3,
   Loader2,
+  MapPin,
+  Package,
+  Settings2,
   ShieldCheck,
   Store,
   Users,
   UserRound,
+  UserRoundCog,
   XCircle,
 } from "lucide-react";
 
-type UserRole = "CUSTOMER" | "PROVIDER" | "ADMIN";
+type DashboardStats = {
+  totalUsers: number;
+  customers: number;
+  providers: number;
+  services: number;
+  totalBookings: number;
+  pendingBookings: number;
+  completedBookings: number;
+  categories: number;
+};
+
+type RecentBooking = {
+  id: string;
+  status: string;
+  bookingDate: string;
+  customerName?: string;
+  customer?: {
+    fullName?: string;
+    email?: string;
+  };
+  serviceName?: string;
+  service?: {
+    title?: string;
+  };
+  providerName?: string;
+  vendor?: {
+    name?: string;
+    city?: string;
+  };
+};
 
 type RecentUser = {
   id: string;
   fullName: string;
   email: string;
-  role: UserRole;
-  createdAt: string;
+  role: string;
 };
 
-type RecentBooking = {
-  id: string;
-  bookingDate: string;
-  status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
-  notes: string | null;
-  createdAt: string;
-  customer: {
-    fullName: string;
-    email: string;
-    phone: string | null;
-  };
-  service: {
-    id: string;
-    title: string;
-    price: string;
-    vendor: string;
-    category: string;
-  };
+type BookingOverview = {
+  pending: number;
+  confirmed: number;
+  completed: number;
+  cancelled: number;
 };
 
 type DashboardData = {
-  stats: {
-    totalUsers: number;
-    totalCustomers: number;
-    totalProviders: number;
-    totalServices: number;
-    activeServices: number;
-    totalBookings: number;
-    pendingBookings: number;
-    confirmedBookings: number;
-    completedBookings: number;
-    cancelledBookings: number;
-    totalCategories: number;
-  };
-  recentUsers: RecentUser[];
-  recentBookings: RecentBooking[];
+  stats?: DashboardStats;
+  recentBookings?: RecentBooking[];
+  recentUsers?: RecentUser[];
+  bookingOverview?: BookingOverview;
 };
 
+const defaultStats: DashboardStats = {
+  totalUsers: 0,
+  customers: 0,
+  providers: 0,
+  services: 0,
+  totalBookings: 0,
+  pendingBookings: 0,
+  completedBookings: 0,
+  categories: 0,
+};
+
+const defaultOverview: BookingOverview = {
+  pending: 0,
+  confirmed: 0,
+  completed: 0,
+  cancelled: 0,
+};
+
+function formatDate(value: string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function statusStyle(status: string) {
+  switch (status.toUpperCase()) {
+    case "CONFIRMED":
+      return {
+        badge: "bg-blue-50 text-blue-700 border-blue-200",
+        icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+      };
+
+    case "COMPLETED":
+      return {
+        badge: "bg-green-50 text-green-700 border-green-200",
+        icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+      };
+
+    case "CANCELLED":
+      return {
+        badge: "bg-red-50 text-red-700 border-red-200",
+        icon: <XCircle className="h-3.5 w-3.5" />,
+      };
+
+    default:
+      return {
+        badge: "bg-amber-50 text-amber-700 border-amber-200",
+        icon: <Clock3 className="h-3.5 w-3.5" />,
+      };
+  }
+}
+
+function roleStyle(role: string) {
+  switch (role.toUpperCase()) {
+    case "ADMIN":
+      return "bg-violet-50 text-violet-700 border-violet-200";
+
+    case "PROVIDER":
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
+
+    default:
+      return "bg-blue-50 text-blue-700 border-blue-200";
+  }
+}
+
+function StatCard({
+  title,
+  value,
+  subtitle,
+  icon,
+  href,
+  iconBox,
+}: {
+  title: string;
+  value: number;
+  subtitle: string;
+  icon: React.ReactNode;
+  href: string;
+  iconBox: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg"
+    >
+      <div className="flex items-start justify-between">
+        <div
+          className={`flex h-11 w-11 items-center justify-center rounded-xl ${iconBox}`}
+        >
+          {icon}
+        </div>
+
+        <div className="rounded-lg p-2 text-slate-300 transition group-hover:bg-slate-50 group-hover:text-slate-600">
+          <ArrowRight className="h-4 w-4" />
+        </div>
+      </div>
+
+      <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        {title}
+      </p>
+
+      <p className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+        {value.toLocaleString("en-IN")}
+      </p>
+
+      <p className="mt-1 text-xs text-slate-500">
+        {subtitle}
+      </p>
+
+      <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-slate-50 opacity-60 transition group-hover:scale-125" />
+    </Link>
+  );
+}
+
 export default function AdminDashboardPage() {
-  const [data, setData] = useState<DashboardData | null>(null);
+  const [stats, setStats] =
+    useState<DashboardStats>(defaultStats);
+
+  const [overview, setOverview] =
+    useState<BookingOverview>(defaultOverview);
+
+  const [recentBookings, setRecentBookings] =
+    useState<RecentBooking[]>([]);
+
+  const [recentUsers, setRecentUsers] =
+    useState<RecentUser[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    loadDashboard();
-  }, []);
 
   async function loadDashboard() {
     try {
       setLoading(true);
       setError("");
 
-      const response = await fetch("/api/admin/dashboard", {
-        cache: "no-store",
-      });
+      const response = await fetch(
+        "/api/admin/dashboard",
+        {
+          cache: "no-store",
+        }
+      );
 
       if (response.status === 401) {
         window.location.href = "/login";
@@ -94,151 +236,337 @@ export default function AdminDashboardPage() {
         return;
       }
 
-      const result = await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          result.message || "Unable to load admin dashboard.",
+          data.message ||
+            data.error ||
+            "Unable to load admin dashboard."
         );
       }
 
-      setData(result);
+      const source =
+        data.dashboard ||
+        data.data ||
+        data;
+
+      setStats({
+        ...defaultStats,
+        ...(source.stats || {}),
+      });
+
+      setOverview({
+        ...defaultOverview,
+        ...(source.bookingOverview || {}),
+      });
+
+      setRecentBookings(
+        Array.isArray(source.recentBookings)
+          ? source.recentBookings
+          : []
+      );
+
+      setRecentUsers(
+        Array.isArray(source.recentUsers)
+          ? source.recentUsers
+          : []
+      );
     } catch (err) {
+      console.error(err);
+
       setError(
         err instanceof Error
           ? err.message
-          : "Unable to load admin dashboard.",
+          : "Unable to load admin dashboard."
       );
     } finally {
       setLoading(false);
     }
   }
 
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const totalOverview =
+    overview.pending +
+    overview.confirmed +
+    overview.completed +
+    overview.cancelled;
+
+  const pendingPercent =
+    totalOverview > 0
+      ? Math.round(
+          (overview.pending / totalOverview) * 100
+        )
+      : 0;
+
+  const confirmedPercent =
+    totalOverview > 0
+      ? Math.round(
+          (overview.confirmed / totalOverview) * 100
+        )
+      : 0;
+
+  const completedPercent =
+    totalOverview > 0
+      ? Math.round(
+          (overview.completed / totalOverview) * 100
+        )
+      : 0;
+
+  const cancelledPercent =
+    totalOverview > 0
+      ? Math.round(
+          (overview.cancelled / totalOverview) * 100
+        )
+      : 0;
+
   if (loading) {
-    return <AdminDashboardSkeleton />;
-  }
-
-  if (error) {
     return (
-      <main className="min-h-screen bg-slate-50 px-5 py-12">
-        <div className="mx-auto max-w-5xl rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
-          <p className="font-semibold">Unable to load admin dashboard</p>
-          <p className="mt-1">{error}</p>
+      <main className="min-h-screen bg-slate-50">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="animate-pulse space-y-6">
+            <div className="h-28 rounded-3xl bg-white" />
 
-          <button
-            type="button"
-            onClick={loadDashboard}
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
-          >
-            <Loader2 className="h-4 w-4" />
-            Retry
-          </button>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 8 }).map(
+                (_, index) => (
+                  <div
+                    key={index}
+                    className="h-36 rounded-2xl bg-white"
+                  />
+                )
+              )}
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-3">
+              <div className="h-96 rounded-2xl bg-white lg:col-span-2" />
+              <div className="h-96 rounded-2xl bg-white" />
+            </div>
+          </div>
         </div>
       </main>
     );
   }
 
-  if (!data) {
-    return null;
-  }
-
   return (
-    <main className="min-h-screen bg-slate-50">
-      <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
-        <section>
-          <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
-            <div>
-              <p className="text-sm font-medium text-slate-500">
-                Administration
-              </p>
+    <main className="min-h-screen bg-[#f6f8fb]">
 
-              <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+      {/* TOP NAV */}
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex min-h-[74px] items-center justify-between gap-4">
+
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-3"
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950 text-lg font-black text-white shadow-sm">
+                B
+              </div>
+
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-indigo-600">
+                  BAARAATH
+                </p>
+
+                <p className="text-lg font-bold leading-tight text-slate-950">
+                  Administration
+                </p>
+              </div>
+            </Link>
+
+            <nav className="hidden items-center gap-1 lg:flex">
+              {[
+                ["Dashboard", "/admin/dashboard"],
+                ["Users", "/admin/users"],
+                ["Providers", "/admin/providers"],
+                ["Services", "/admin/services"],
+                ["Bookings", "/admin/bookings"],
+                ["Categories", "/admin/categories"],
+              ].map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+                    href === "/admin/dashboard"
+                      ? "bg-slate-950 text-white shadow-sm"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+
+            <Link
+              href="/services"
+              target="_blank"
+              className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 sm:flex"
+            >
+              Marketplace
+              <ExternalLink className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+
+        {/* HERO */}
+        <section className="relative overflow-hidden rounded-3xl bg-slate-950 px-6 py-8 shadow-xl sm:px-8">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl" />
+          <div className="absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
+
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/80">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Secure Administration
+              </div>
+
+              <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Admin Dashboard
               </h1>
 
-              <p className="mt-2 text-sm text-slate-500">
-                Monitor users, providers, services and booking activity.
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                Monitor users, providers, services and
+                booking activity across Baaraath.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
               <Link
-                href="/services"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                href="/admin/bookings"
+                className="inline-flex h-11 items-center gap-2 rounded-xl bg-white px-5 text-sm font-bold text-slate-950 shadow-sm hover:bg-slate-100"
               >
-                <Store className="h-4 w-4" />
+                <CalendarCheck2 className="h-4 w-4" />
+                Manage Bookings
+              </Link>
+
+              <Link
+                href="/services"
+                target="_blank"
+                className="inline-flex h-11 items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 text-sm font-semibold text-white hover:bg-white/15"
+              >
                 View Marketplace
+                <ExternalLink className="h-4 w-4" />
               </Link>
             </div>
           </div>
         </section>
 
-        <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            icon={<Users className="h-5 w-5" />}
-            label="Total users"
-            value={data.stats.totalUsers}
-            href="/admin/users"
-          />
+        {error && (
+          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
+            {error}
+          </div>
+        )}
 
-          <StatCard
-            icon={<UserRound className="h-5 w-5" />}
-            label="Customers"
-            value={data.stats.totalCustomers}
-            href="/admin/users?role=CUSTOMER"
-          />
+        {/* STAT CARDS */}
+        <section className="mt-7">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-slate-950">
+                Platform Overview
+              </h2>
 
-          <StatCard
-            icon={<Store className="h-5 w-5" />}
-            label="Providers"
-            value={data.stats.totalProviders}
-            href="/admin/providers"
-          />
+              <p className="mt-1 text-sm text-slate-500">
+                Current marketplace statistics
+              </p>
+            </div>
 
-          <StatCard
-            icon={<Layers3 className="h-5 w-5" />}
-            label="Services"
-            value={data.stats.totalServices}
-            href="/admin/services"
-          />
+            <BarChart3 className="h-5 w-5 text-slate-400" />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+            <StatCard
+              title="Total Users"
+              value={stats.totalUsers}
+              subtitle={`${stats.customers} customers`}
+              href="/admin/users"
+              icon={<Users className="h-5 w-5" />}
+              iconBox="bg-blue-50 text-blue-600"
+            />
+
+            <StatCard
+              title="Providers"
+              value={stats.providers}
+              subtitle="Registered businesses"
+              href="/admin/providers"
+              icon={<Store className="h-5 w-5" />}
+              iconBox="bg-emerald-50 text-emerald-600"
+            />
+
+            <StatCard
+              title="Services"
+              value={stats.services}
+              subtitle="Marketplace services"
+              href="/admin/services"
+              icon={<Package className="h-5 w-5" />}
+              iconBox="bg-violet-50 text-violet-600"
+            />
+
+            <StatCard
+              title="Categories"
+              value={stats.categories}
+              subtitle="Service categories"
+              href="/admin/categories"
+              icon={<Layers3 className="h-5 w-5" />}
+              iconBox="bg-amber-50 text-amber-600"
+            />
+
+            <StatCard
+              title="Total Bookings"
+              value={stats.totalBookings}
+              subtitle="All customer bookings"
+              href="/admin/bookings"
+              icon={<CalendarDays className="h-5 w-5" />}
+              iconBox="bg-indigo-50 text-indigo-600"
+            />
+
+            <StatCard
+              title="Pending"
+              value={stats.pendingBookings}
+              subtitle="Awaiting provider action"
+              href="/admin/bookings"
+              icon={<Clock3 className="h-5 w-5" />}
+              iconBox="bg-orange-50 text-orange-600"
+            />
+
+            <StatCard
+              title="Completed"
+              value={stats.completedBookings}
+              subtitle="Successfully completed"
+              href="/admin/bookings"
+              icon={<CheckCircle2 className="h-5 w-5" />}
+              iconBox="bg-green-50 text-green-600"
+            />
+
+            <StatCard
+              title="Customers"
+              value={stats.customers}
+              subtitle="Registered customers"
+              href="/admin/users"
+              icon={<UserRound className="h-5 w-5" />}
+              iconBox="bg-cyan-50 text-cyan-600"
+            />
+          </div>
         </section>
 
-        <section className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            icon={<CalendarDays className="h-5 w-5" />}
-            label="Total bookings"
-            value={data.stats.totalBookings}
-            href="/admin/bookings"
-          />
+        {/* MAIN CONTENT */}
+        <section className="mt-7 grid gap-6 xl:grid-cols-3">
 
-          <StatCard
-            icon={<Clock3 className="h-5 w-5" />}
-            label="Pending bookings"
-            value={data.stats.pendingBookings}
-            href="/admin/bookings?status=PENDING"
-          />
+          {/* RECENT BOOKINGS */}
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm xl:col-span-2">
 
-          <StatCard
-            icon={<CheckCircle2 className="h-5 w-5" />}
-            label="Completed bookings"
-            value={data.stats.completedBookings}
-            href="/admin/bookings?status=COMPLETED"
-          />
-
-          <StatCard
-            icon={<BarChart3 className="h-5 w-5" />}
-            label="Categories"
-            value={data.stats.totalCategories}
-            href="/admin/categories"
-          />
-        </section>
-
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_360px]">
-          <section className="rounded-2xl border border-slate-200 bg-white">
-            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-5 sm:px-6">
               <div>
-                <h2 className="font-semibold text-slate-950">
-                  Recent bookings
+                <h2 className="font-bold text-slate-950">
+                  Recent Bookings
                 </h2>
 
                 <p className="mt-1 text-xs text-slate-500">
@@ -248,332 +576,471 @@ export default function AdminDashboardPage() {
 
               <Link
                 href="/admin/bookings"
-                className="inline-flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-950"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800"
               >
                 View all
-                <ArrowRight className="h-4 w-4" />
+                <ChevronRight className="h-4 w-4" />
               </Link>
             </div>
 
-            {data.recentBookings.length === 0 ? (
-              <div className="px-5 py-14 text-center">
-                <CalendarDays className="mx-auto h-8 w-8 text-slate-300" />
+            {recentBookings.length === 0 ? (
+              <div className="px-6 py-16 text-center">
+                <CalendarDays className="mx-auto h-10 w-10 text-slate-300" />
 
-                <p className="mt-3 text-sm font-medium text-slate-700">
+                <p className="mt-3 font-semibold text-slate-900">
                   No bookings yet
+                </p>
+
+                <p className="mt-1 text-sm text-slate-500">
+                  Booking activity will appear here.
                 </p>
               </div>
             ) : (
               <div className="divide-y divide-slate-100">
-                {data.recentBookings.map((booking) => (
-                  <BookingRow
-                    key={booking.id}
-                    booking={booking}
-                  />
-                ))}
-              </div>
-            )}
-          </section>
+                {recentBookings.slice(0, 8).map(
+                  (booking) => {
+                    const style = statusStyle(
+                      booking.status
+                    );
 
-          <aside className="space-y-6">
-            <section className="rounded-2xl border border-slate-200 bg-white p-5">
-              <h2 className="font-semibold text-slate-950">
-                Booking overview
-              </h2>
+                    const customerName =
+                      booking.customerName ||
+                      booking.customer?.fullName ||
+                      "Customer";
 
-              <div className="mt-5 space-y-4">
-                <OverviewRow
-                  icon={<Clock3 className="h-4 w-4" />}
-                  label="Pending"
-                  value={data.stats.pendingBookings}
-                />
+                    const serviceName =
+                      booking.serviceName ||
+                      booking.service?.title ||
+                      "Service";
 
-                <OverviewRow
-                  icon={<CheckCircle2 className="h-4 w-4" />}
-                  label="Confirmed"
-                  value={data.stats.confirmedBookings}
-                />
+                    const providerName =
+                      booking.providerName ||
+                      booking.vendor?.name ||
+                      "Provider";
 
-                <OverviewRow
-                  icon={<CheckCircle2 className="h-4 w-4" />}
-                  label="Completed"
-                  value={data.stats.completedBookings}
-                />
+                    const city =
+                      booking.vendor?.city || "";
 
-                <OverviewRow
-                  icon={<XCircle className="h-4 w-4" />}
-                  label="Cancelled"
-                  value={data.stats.cancelledBookings}
-                />
-              </div>
-            </section>
+                    return (
+                      <Link
+                        key={booking.id}
+                        href={`/admin/bookings/${booking.id}`}
+                        className="group block px-5 py-4 transition hover:bg-slate-50 sm:px-6"
+                      >
+                        <div className="flex items-center gap-4">
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-5">
-              <h2 className="font-semibold text-slate-950">
-                Recent users
-              </h2>
+                          <div className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 sm:flex">
+                            <CalendarDays className="h-5 w-5" />
+                          </div>
 
-              <div className="mt-4 space-y-3">
-                {data.recentUsers.length === 0 ? (
-                  <p className="text-sm text-slate-500">
-                    No users found.
-                  </p>
-                ) : (
-                  data.recentUsers.map((user) => (
-                    <div
-                      key={user.id}
-                      className="flex items-center gap-3 rounded-xl bg-slate-50 p-3"
-                    >
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white">
-                        <UserRound className="h-4 w-4 text-slate-500" />
-                      </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="truncate text-sm font-bold text-slate-950">
+                                {customerName}
+                              </p>
 
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-semibold text-slate-900">
-                          {user.fullName}
-                        </p>
+                              <span
+                                className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold ${style.badge}`}
+                              >
+                                {style.icon}
+                                {booking.status}
+                              </span>
+                            </div>
 
-                        <p className="truncate text-xs text-slate-500">
-                          {user.email}
-                        </p>
-                      </div>
+                            <p className="mt-1 truncate text-sm text-slate-600">
+                              {serviceName}
+                            </p>
 
-                      <RoleBadge role={user.role} />
-                    </div>
-                  ))
+                            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
+                              <span>
+                                {providerName}
+                              </span>
+
+                              <span className="hidden sm:inline">
+                                •
+                              </span>
+
+                              <span>
+                                {formatDate(
+                                  booking.bookingDate
+                                )}
+                              </span>
+
+                              {city && (
+                                <>
+                                  <span className="hidden sm:inline">
+                                    •
+                                  </span>
+
+                                  <span className="inline-flex items-center gap-1">
+                                    <MapPin className="h-3 w-3" />
+                                    {city}
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+
+                          <ChevronRight className="h-5 w-5 shrink-0 text-slate-300 transition group-hover:translate-x-1 group-hover:text-slate-700" />
+                        </div>
+                      </Link>
+                    );
+                  }
                 )}
               </div>
-            </section>
+            )}
 
-            <section className="rounded-2xl bg-slate-950 p-5 text-white">
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="h-6 w-6" />
+            <div className="border-t border-slate-100 bg-slate-50/60 px-5 py-4 sm:px-6">
+              <Link
+                href="/admin/bookings"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-slate-950"
+              >
+                Open booking management
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
 
-                <div>
-                  <h2 className="font-semibold">Administration</h2>
-                  <p className="mt-1 text-xs text-white/60">
-                    Manage platform data securely.
-                  </p>
-                </div>
+          {/* BOOKING OVERVIEW */}
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+
+            <div className="flex items-start justify-between">
+              <div>
+                <h2 className="font-bold text-slate-950">
+                  Booking Overview
+                </h2>
+
+                <p className="mt-1 text-xs text-slate-500">
+                  Current booking status
+                </p>
               </div>
 
-              <div className="mt-5 grid gap-2">
-                <QuickLink
-                  href="/admin/users"
-                  text="Manage users"
-                />
-
-                <QuickLink
-                  href="/admin/providers"
-                  text="Manage providers"
-                />
-
-                <QuickLink
-                  href="/admin/services"
-                  text="Manage services"
-                />
-
-                <QuickLink
-                  href="/admin/bookings"
-                  text="Manage bookings"
-                />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                <BarChart3 className="h-5 w-5" />
               </div>
-            </section>
-          </aside>
-        </div>
+            </div>
+
+            <div className="mt-6 rounded-2xl bg-slate-950 p-5 text-white">
+              <p className="text-xs font-medium text-slate-400">
+                Total tracked bookings
+              </p>
+
+              <p className="mt-1 text-3xl font-bold">
+                {totalOverview}
+              </p>
+
+              <div className="mt-5 h-3 overflow-hidden rounded-full bg-white/10">
+                {totalOverview > 0 && (
+                  <div className="flex h-full">
+                    <div
+                      className="bg-amber-400"
+                      style={{
+                        width: `${pendingPercent}%`,
+                      }}
+                    />
+
+                    <div
+                      className="bg-blue-400"
+                      style={{
+                        width: `${confirmedPercent}%`,
+                      }}
+                    />
+
+                    <div
+                      className="bg-green-400"
+                      style={{
+                        width: `${completedPercent}%`,
+                      }}
+                    />
+
+                    <div
+                      className="bg-red-400"
+                      style={{
+                        width: `${cancelledPercent}%`,
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-5 space-y-4">
+
+              {[
+                [
+                  "Pending",
+                  overview.pending,
+                  "bg-amber-400",
+                  Clock3,
+                ],
+                [
+                  "Confirmed",
+                  overview.confirmed,
+                  "bg-blue-500",
+                  CheckCircle2,
+                ],
+                [
+                  "Completed",
+                  overview.completed,
+                  "bg-green-500",
+                  CheckCircle2,
+                ],
+                [
+                  "Cancelled",
+                  overview.cancelled,
+                  "bg-red-500",
+                  XCircle,
+                ],
+              ].map(
+                ([label, value, dot]) => (
+                  <div
+                    key={String(label)}
+                    className="flex items-center gap-3"
+                  >
+                    <div
+                      className={`h-2.5 w-2.5 rounded-full ${String(
+                        dot
+                      )}`}
+                    />
+
+                    {label === "Pending" && (
+                      <Clock3 className="h-4 w-4 text-slate-400" />
+                    )}
+
+                    {label === "Confirmed" && (
+                      <CheckCircle2 className="h-4 w-4 text-slate-400" />
+                    )}
+
+                    {label === "Completed" && (
+                      <CheckCircle2 className="h-4 w-4 text-slate-400" />
+                    )}
+
+                    {label === "Cancelled" && (
+                      <XCircle className="h-4 w-4 text-slate-400" />
+                    )}
+
+                    <span className="flex-1 text-sm text-slate-600">
+                      {String(label)}
+                    </span>
+
+                    <span className="text-sm font-bold text-slate-950">
+                      {Number(value)}
+                    </span>
+                  </div>
+                )
+              )}
+            </div>
+
+            <Link
+              href="/admin/bookings"
+              className="mt-6 flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              Manage bookings
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </section>
+
+        {/* LOWER SECTION */}
+        <section className="mt-6 grid gap-6 lg:grid-cols-3">
+
+          {/* RECENT USERS */}
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
+
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-5 sm:px-6">
+              <div>
+                <h2 className="font-bold text-slate-950">
+                  Recent Users
+                </h2>
+
+                <p className="mt-1 text-xs text-slate-500">
+                  Latest accounts registered on Baaraath
+                </p>
+              </div>
+
+              <Link
+                href="/admin/users"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+              >
+                Manage users
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            {recentUsers.length === 0 ? (
+              <div className="px-6 py-12 text-center">
+                <Users className="mx-auto h-9 w-9 text-slate-300" />
+
+                <p className="mt-3 text-sm font-semibold text-slate-900">
+                  No users found
+                </p>
+              </div>
+            ) : (
+              <div className="grid gap-3 p-4 sm:grid-cols-2">
+                {recentUsers.slice(0, 6).map(
+                  (user) => (
+                    <Link
+                      key={user.id}
+                      href={`/admin/users/${user.id}`}
+                      className="group rounded-2xl border border-slate-100 bg-slate-50/70 p-4 transition hover:border-slate-200 hover:bg-white hover:shadow-sm"
+                    >
+                      <div className="flex items-center gap-3">
+
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white font-bold text-slate-700 shadow-sm">
+                          {user.fullName
+                            ?.charAt(0)
+                            ?.toUpperCase() || "U"}
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="truncate text-sm font-bold text-slate-950">
+                              {user.fullName}
+                            </p>
+                          </div>
+
+                          <p className="mt-0.5 truncate text-xs text-slate-500">
+                            {user.email}
+                          </p>
+
+                          <span
+                            className={`mt-2 inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold ${roleStyle(
+                              user.role
+                            )}`}
+                          >
+                            {user.role}
+                          </span>
+                        </div>
+
+                        <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-1 group-hover:text-slate-700" />
+                      </div>
+                    </Link>
+                  )
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* QUICK ADMIN */}
+          <div className="overflow-hidden rounded-2xl bg-slate-950 p-5 text-white shadow-lg sm:p-6">
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10">
+              <Settings2 className="h-5 w-5 text-white" />
+            </div>
+
+            <h2 className="mt-5 text-xl font-bold">
+              Administration
+            </h2>
+
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Manage platform data, providers, services,
+              users and bookings securely.
+            </p>
+
+            <div className="mt-6 space-y-2">
+
+              <Link
+                href="/admin/users"
+                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
+              >
+                <UserRoundCog className="h-4 w-4 text-slate-300" />
+
+                <span className="flex-1 text-sm font-medium">
+                  Manage Users
+                </span>
+
+                <ArrowRight className="h-4 w-4 text-slate-500 transition group-hover:translate-x-1 group-hover:text-white" />
+              </Link>
+
+              <Link
+                href="/admin/providers"
+                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
+              >
+                <Store className="h-4 w-4 text-slate-300" />
+
+                <span className="flex-1 text-sm font-medium">
+                  Manage Providers
+                </span>
+
+                <ArrowRight className="h-4 w-4 text-slate-500 transition group-hover:translate-x-1 group-hover:text-white" />
+              </Link>
+
+              <Link
+                href="/admin/services"
+                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
+              >
+                <Package className="h-4 w-4 text-slate-300" />
+
+                <span className="flex-1 text-sm font-medium">
+                  Manage Services
+                </span>
+
+                <ArrowRight className="h-4 w-4 text-slate-500 transition group-hover:translate-x-1 group-hover:text-white" />
+              </Link>
+
+              <Link
+                href="/admin/categories"
+                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
+              >
+                <Layers3 className="h-4 w-4 text-slate-300" />
+
+                <span className="flex-1 text-sm font-medium">
+                  Manage Categories
+                </span>
+
+                <ArrowRight className="h-4 w-4 text-slate-500 transition group-hover:translate-x-1 group-hover:text-white" />
+              </Link>
+
+            </div>
+
+            <div className="mt-6 rounded-xl border border-emerald-400/10 bg-emerald-400/5 p-4">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-emerald-400" />
+
+                <span className="text-xs font-semibold text-emerald-300">
+                  Admin access protected
+                </span>
+              </div>
+
+              <p className="mt-1 text-[11px] leading-5 text-slate-500">
+                Administrative operations require an
+                authenticated admin session.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FOOTER */}
+        <footer className="mt-8 flex flex-col gap-2 border-t border-slate-200 py-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} Baaraath Administration
+          </p>
+
+          <div className="flex items-center gap-4">
+            <Link
+              href="/services"
+              className="hover:text-slate-700"
+            >
+              Marketplace
+            </Link>
+
+            <Link
+              href="/admin/bookings"
+              className="hover:text-slate-700"
+            >
+              Bookings
+            </Link>
+
+            <Link
+              href="/admin/users"
+              className="hover:text-slate-700"
+            >
+              Users
+            </Link>
+          </div>
+        </footer>
       </div>
     </main>
   );
 }
 
-function StatCard({
-  icon,
-  label,
-  value,
-  href,
-}: {
-  icon: ReactNode;
-  label: string;
-  value: number;
-  href: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-slate-300 hover:shadow-sm"
-    >
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
-        {icon}
-      </div>
-
-      <p className="mt-4 text-2xl font-bold text-slate-950">
-        {value}
-      </p>
-
-      <p className="mt-1 text-xs text-slate-500">
-        {label}
-      </p>
-    </Link>
-  );
-}
-
-function BookingRow({
-  booking,
-}: {
-  booking: RecentBooking;
-}) {
-  return (
-    <div className="px-5 py-5">
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div className="flex min-w-0 gap-4">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100">
-            <CalendarDays className="h-5 w-5 text-slate-600" />
-          </div>
-
-          <div className="min-w-0">
-            <h3 className="truncate font-semibold text-slate-950">
-              {booking.customer.fullName}
-            </h3>
-
-            <p className="mt-1 truncate text-sm text-slate-500">
-              {booking.service.title}
-            </p>
-
-            <p className="mt-2 text-xs text-slate-400">
-              {booking.service.vendor} ·{" "}
-              {formatDate(booking.bookingDate)}
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <StatusBadge status={booking.status} />
-
-          <Link
-            href="/admin/bookings"
-            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-          >
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatusBadge({
-  status,
-}: {
-  status: RecentBooking["status"];
-}) {
-  const styles: Record<RecentBooking["status"], string> = {
-    PENDING: "bg-amber-50 text-amber-700 border-amber-200",
-    CONFIRMED: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    COMPLETED: "bg-blue-50 text-blue-700 border-blue-200",
-    CANCELLED: "bg-red-50 text-red-700 border-red-200",
-  };
-
-  return (
-    <span
-      className={`rounded-full border px-3 py-1 text-xs font-semibold ${styles[status]}`}
-    >
-      {status.charAt(0) + status.slice(1).toLowerCase()}
-    </span>
-  );
-}
-
-function RoleBadge({ role }: { role: UserRole }) {
-  const styles: Record<UserRole, string> = {
-    CUSTOMER: "bg-blue-50 text-blue-700",
-    PROVIDER: "bg-emerald-50 text-emerald-700",
-    ADMIN: "bg-purple-50 text-purple-700",
-  };
-
-  return (
-    <span
-      className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${styles[role]}`}
-    >
-      {role}
-    </span>
-  );
-}
-
-function OverviewRow({
-  icon,
-  label,
-  value,
-}: {
-  icon: ReactNode;
-  label: string;
-  value: number;
-}) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="flex items-center gap-2 text-sm text-slate-500">
-        {icon}
-        {label}
-      </span>
-
-      <span className="text-sm font-semibold text-slate-950">
-        {value}
-      </span>
-    </div>
-  );
-}
-
-function QuickLink({
-  href,
-  text,
-}: {
-  href: string;
-  text: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="flex items-center justify-between rounded-xl bg-white/10 px-4 py-3 text-sm font-medium text-white hover:bg-white/15"
-    >
-      {text}
-      <ArrowRight className="h-4 w-4 text-white/50" />
-    </Link>
-  );
-}
-
-function AdminDashboardSkeleton() {
-  return (
-    <main className="min-h-screen bg-slate-50 px-5 py-10">
-      <div className="mx-auto max-w-7xl">
-        <div className="h-8 w-64 animate-pulse rounded-lg bg-slate-200" />
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div
-              key={index}
-              className="h-32 animate-pulse rounded-2xl bg-white"
-            />
-          ))}
-        </div>
-
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_360px]">
-          <div className="h-[500px] animate-pulse rounded-2xl bg-white" />
-
-          <div className="h-[500px] animate-pulse rounded-2xl bg-white" />
-        </div>
-      </div>
-    </main>
-  );
-}
-
-function formatDate(value: string) {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return "Date unavailable";
-  }
-
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(date);
-}
