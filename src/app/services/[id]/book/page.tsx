@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,6 +13,14 @@ import {
   User,
   Users,
 } from "lucide-react";
+
+type CustomerData = {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string | null;
+  role: string;
+};
 
 type ServiceData = {
   id: string;
@@ -37,6 +45,8 @@ export default function BookingPage({
 }) {
   const [serviceId, setServiceId] = useState("");
 
+  const [customer, setCustomer] = useState<CustomerData | null>(null);
+
   const [service, setService] = useState<ServiceData | null>(null);
 
   const [loading, setLoading] = useState(true);
@@ -56,6 +66,41 @@ export default function BookingPage({
     notes: "",
     terms: false,
   });
+
+  useEffect(() => {
+    async function loadCustomer() {
+      try {
+        const response = await fetch("/api/auth/me", {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = await response.json();
+        const loggedInCustomer = data.user || data.customer || data;
+
+        if (
+          loggedInCustomer?.id &&
+          loggedInCustomer?.email
+        ) {
+          setCustomer(loggedInCustomer);
+
+          setForm((current) => ({
+            ...current,
+            name: current.name || loggedInCustomer.fullName || "",
+            email: current.email || loggedInCustomer.email || "",
+            phone: current.phone || loggedInCustomer.phone || "",
+          }));
+        }
+      } catch (err) {
+        console.error("Unable to load logged-in customer:", err);
+      }
+    }
+
+    loadCustomer();
+  }, []);
 
   useEffect(() => {
     async function loadService() {
@@ -237,6 +282,8 @@ export default function BookingPage({
       <BookingSuccess
         service={service}
         bookingId={bookingId}
+        customer={customer}
+        form={form}
       />
     );
   }
@@ -564,7 +611,7 @@ export default function BookingPage({
             <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
               {/* SERVICE */}
               <div className="bg-gradient-to-br from-amber-100 via-orange-50 to-slate-100 p-8 text-center">
-                <div className="text-6xl">🎉</div>
+                <div className="text-6xl">ðŸŽ‰</div>
 
                 <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-amber-700">
                   {service.category.name}
@@ -630,7 +677,7 @@ export default function BookingPage({
                     </p>
 
                     <p className="mt-1 text-2xl font-bold">
-                      ₹
+                      â‚¹
                       {Number(service.price).toLocaleString(
                         "en-IN",
                       )}
@@ -709,13 +756,36 @@ function formatDate(date: string) {
 function BookingSuccess({
   service,
   bookingId,
+  customer,
+  form,
 }: {
   service: ServiceData;
   bookingId: string;
+  customer: CustomerData | null;
+  form: {
+    name: string;
+    email: string;
+    phone: string;
+    eventDate: string;
+    guests: string;
+    notes: string;
+    terms: boolean;
+  };
 }) {
+  const customerName =
+    form.name || customer?.fullName || "Customer";
+
+  const customerEmail =
+    form.email || customer?.email || "Not available";
+
+  const customerPhone =
+    form.phone || customer?.phone || "Not available";
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#f8fafc] px-4 py-16">
-      <div className="w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
+      <div className="w-full max-w-3xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
+
+        {/* SUCCESS HEADER */}
         <div className="bg-green-600 px-6 py-12 text-center text-white">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/15">
             <CheckCircle2 className="h-12 w-12" />
@@ -733,6 +803,8 @@ function BookingSuccess({
         </div>
 
         <div className="p-6 sm:p-8">
+
+          {/* BOOKING REFERENCE */}
           {bookingId && (
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-center">
               <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -745,6 +817,60 @@ function BookingSuccess({
             </div>
           )}
 
+          {/* CUSTOMER DETAILS */}
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600">
+                <User className="h-5 w-5" />
+              </div>
+
+              <div>
+                <h2 className="font-bold text-slate-900">
+                  Customer Details
+                </h2>
+
+                <p className="mt-1 text-xs text-slate-500">
+                  Booking submitted using these customer details.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-4 sm:grid-cols-3">
+
+              <div className="rounded-xl bg-slate-50 p-4">
+                <p className="text-xs font-medium text-slate-400">
+                  Full Name
+                </p>
+
+                <p className="mt-1 break-words text-sm font-semibold text-slate-900">
+                  {customerName}
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-slate-50 p-4">
+                <p className="text-xs font-medium text-slate-400">
+                  Email
+                </p>
+
+                <p className="mt-1 break-words text-sm font-semibold text-slate-900">
+                  {customerEmail}
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-slate-50 p-4">
+                <p className="text-xs font-medium text-slate-400">
+                  Mobile
+                </p>
+
+                <p className="mt-1 break-words text-sm font-semibold text-slate-900">
+                  {customerPhone}
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          {/* SERVICE DETAILS */}
           <div className="mt-6 rounded-2xl border border-slate-200 p-5">
             <h2 className="font-bold">
               {service.title}
@@ -754,6 +880,20 @@ function BookingSuccess({
               <MapPin className="h-4 w-4 text-amber-500" />
               {service.vendor.city}
             </div>
+
+            {form.eventDate && (
+              <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
+                <CalendarDays className="h-4 w-4 text-amber-500" />
+                Event Date: {formatDate(form.eventDate)}
+              </div>
+            )}
+
+            {form.guests && (
+              <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
+                <Users className="h-4 w-4 text-amber-500" />
+                Guests: {form.guests}
+              </div>
+            )}
           </div>
 
           <p className="mt-6 text-center text-sm leading-6 text-slate-500">
@@ -762,7 +902,9 @@ function BookingSuccess({
             their availability.
           </p>
 
+          {/* ACTIONS */}
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
+
             <Link
               href="/services"
               className="flex items-center justify-center rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold hover:bg-slate-50"
@@ -771,12 +913,14 @@ function BookingSuccess({
             </Link>
 
             <Link
-              href="/bookings/find"
+              href="/dashboard/bookings"
               className="flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
             >
-              Find My Booking
+              View My Bookings
             </Link>
+
           </div>
+
         </div>
       </div>
     </main>

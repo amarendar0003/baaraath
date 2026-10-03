@@ -1,25 +1,52 @@
 "use client";
 
-import { useInView } from "@/hooks/useInView";
+import { useEffect, useRef, useState } from "react";
+
+type Props = {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+};
 
 export default function AnimatedSection({
   children,
-  className = "",
   delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  const { ref, isInView } = useInView({ threshold: 0.1, rootMargin: "0px 0px -60px 0px" });
+  className = "",
+}: Props) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.08 }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        isInView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+      className={`transition-all duration-700 ${
+        isInView
+          ? "translate-y-0 opacity-100"
+          : "translate-y-4 opacity-0"
       } ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={{
+        transitionDelay: `${delay}ms`,
+      }}
     >
       {children}
     </div>

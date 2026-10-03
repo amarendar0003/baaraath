@@ -5,29 +5,26 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const search = searchParams.get("q")?.trim() || "";
+    const q = searchParams.get("q")?.trim() || "";
     const categoryId = searchParams.get("categoryId") || "";
     const city = searchParams.get("city")?.trim() || "";
-    const activeParam = searchParams.get("active");
 
     const services = await prisma.service.findMany({
       where: {
-        ...(activeParam === "false"
-          ? { active: false }
-          : { active: true }),
+        active: true,
 
-        ...(search
+        ...(q
           ? {
               OR: [
                 {
                   title: {
-                    contains: search,
+                    contains: q,
                     mode: "insensitive",
                   },
                 },
                 {
                   description: {
-                    contains: search,
+                    contains: q,
                     mode: "insensitive",
                   },
                 },
@@ -35,11 +32,7 @@ export async function GET(request: Request) {
             }
           : {}),
 
-        ...(categoryId
-          ? {
-              categoryId,
-            }
-          : {}),
+        ...(categoryId ? { categoryId } : {}),
 
         ...(city
           ? {
@@ -58,28 +51,8 @@ export async function GET(request: Request) {
       },
 
       include: {
-        Vendor: {
-          select: {
-            id: true,
-            name: true,
-            city: true,
-            address: true,
-          },
-        },
-
-        Category: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-          },
-        },
-
-        _count: {
-          select: {
-            Booking: true,
-          },
-        },
+        Vendor: true,
+        Category: true,
       },
     });
 
@@ -93,15 +66,12 @@ export async function GET(request: Request) {
         active: service.active,
         createdAt: service.createdAt,
         updatedAt: service.updatedAt,
-
         vendor: service.Vendor,
         category: service.Category,
-
-        bookingCount: service._count.Booking,
       })),
     });
   } catch (error) {
-    console.error("Services GET error:", error);
+    console.error("Services API error:", error);
 
     return NextResponse.json(
       {
