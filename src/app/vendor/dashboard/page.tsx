@@ -1,0 +1,531 @@
+﻿"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import {
+  ArrowRight,
+  CalendarDays,
+  CheckCircle2,
+  Clock3,
+  MapPin,
+  Plus,
+  Settings,
+  Store,
+  Users,
+  XCircle,
+} from "lucide-react";
+
+type Vendor = {
+  id: string;
+  name: string;
+  description: string | null;
+  city: string;
+  address: string | null;
+  createdAt: string;
+  owner: {
+    id: string;
+    fullName: string;
+    email: string;
+    phone: string | null;
+  };
+};
+
+type Booking = {
+  id: string;
+  bookingDate: string;
+  status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
+  notes: string | null;
+  createdAt: string;
+  customer: {
+    fullName: string;
+    email: string;
+    phone: string | null;
+  };
+  service: {
+    id: string;
+    title: string;
+    category: string;
+    price: string;
+  };
+};
+
+type DashboardData = {
+  vendor: Vendor;
+  stats: {
+    totalServices: number;
+    activeServices: number;
+    totalBookings: number;
+    pendingBookings: number;
+    confirmedBookings: number;
+    completedBookings: number;
+    cancelledBookings: number;
+  };
+  recentBookings: Booking[];
+};
+
+export default function VendorDashboardPage() {
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadDashboard() {
+      try {
+        const response = await fetch("/api/vendor/dashboard", {
+          cache: "no-store",
+        });
+
+        if (response.status === 401) {
+          window.location.href = "/login";
+          return;
+        }
+
+        if (response.status === 403) {
+          window.location.href = "/dashboard";
+          return;
+        }
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            result.message || "Unable to load dashboard."
+          );
+        }
+
+        setData(result);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Unable to load dashboard."
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDashboard();
+  }, []);
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen bg-slate-50 px-5 py-12">
+        <div className="mx-auto max-w-4xl rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
+          {error}
+        </div>
+      </main>
+    );
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <main className="min-h-screen bg-slate-50">
+      {/* Header */}
+      
+
+      <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
+        {/* Welcome */}
+        <section>
+          <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+            <div>
+              <p className="text-sm font-medium text-slate-500">
+                Provider Dashboard
+              </p>
+
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+                Welcome, {getFirstName(data.vendor.owner.fullName)}
+              </h1>
+
+              <p className="mt-2 text-sm text-slate-500">
+                Manage {data.vendor.name} and keep track of customer
+                bookings.
+              </p>
+            </div>
+
+            <Link
+              href="/vendor/services/new"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white hover:bg-slate-800"
+            >
+              <Plus className="h-4 w-4" />
+              Add Service
+            </Link>
+          </div>
+        </section>
+
+        {/* Business card */}
+        <section className="mt-8 overflow-hidden rounded-2xl bg-slate-950 text-white">
+          <div className="flex flex-col justify-between gap-6 p-6 sm:p-8 md:flex-row md:items-center">
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10">
+                <Store className="h-7 w-7 text-white" />
+              </div>
+
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
+                  Your business
+                </p>
+
+                <h2 className="mt-1 text-2xl font-bold">
+                  {data.vendor.name}
+                </h2>
+
+                <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/60">
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-4 w-4" />
+                    {data.vendor.city}
+                  </span>
+
+                  <span>
+                    {data.vendor.owner.email}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/vendor/profile"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+            >
+              Manage Profile
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </section>
+
+        {/* Stats */}
+        <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            icon={<Store className="h-5 w-5" />}
+            label="Total services"
+            value={data.stats.totalServices}
+            href="/vendor/services"
+          />
+
+          <StatCard
+            icon={<CalendarDays className="h-5 w-5" />}
+            label="Total bookings"
+            value={data.stats.totalBookings}
+            href="/vendor/bookings"
+          />
+
+          <StatCard
+            icon={<Clock3 className="h-5 w-5" />}
+            label="Pending bookings"
+            value={data.stats.pendingBookings}
+            href="/vendor/bookings?status=PENDING"
+          />
+
+          <StatCard
+            icon={<CheckCircle2 className="h-5 w-5" />}
+            label="Confirmed bookings"
+            value={data.stats.confirmedBookings}
+            href="/vendor/bookings?status=CONFIRMED"
+          />
+        </section>
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
+          {/* Recent bookings */}
+          <section className="rounded-2xl border border-slate-200 bg-white">
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+              <div>
+                <h2 className="font-semibold text-slate-950">
+                  Recent bookings
+                </h2>
+
+                <p className="mt-1 text-xs text-slate-500">
+                  Latest customer booking activity
+                </p>
+              </div>
+
+              <Link
+                href="/vendor/bookings"
+                className="inline-flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-950"
+              >
+                View all
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            {data.recentBookings.length === 0 ? (
+              <EmptyBookings />
+            ) : (
+              <div className="divide-y divide-slate-100">
+                {data.recentBookings.map((booking) => (
+                  <BookingRow
+                    key={booking.id}
+                    booking={booking}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* Quick actions */}
+          <aside className="space-y-6">
+            <section className="rounded-2xl border border-slate-200 bg-white p-5">
+              <h2 className="font-semibold text-slate-950">
+                Quick actions
+              </h2>
+
+              <div className="mt-4 space-y-2">
+                <QuickAction
+                  href="/vendor/services"
+                  icon={<Store className="h-4 w-4" />}
+                  text="Manage services"
+                />
+
+                <QuickAction
+                  href="/vendor/services/new"
+                  icon={<Plus className="h-4 w-4" />}
+                  text="Add a service"
+                />
+
+                <QuickAction
+                  href="/vendor/bookings"
+                  icon={<CalendarDays className="h-4 w-4" />}
+                  text="Manage bookings"
+                />
+
+                <QuickAction
+                  href="/vendor/profile"
+                  icon={<Settings className="h-4 w-4" />}
+                  text="Business profile"
+                />
+              </div>
+            </section>
+
+            <section className="rounded-2xl border border-slate-200 bg-white p-5">
+              <h2 className="font-semibold text-slate-950">
+                Booking overview
+              </h2>
+
+              <div className="mt-5 space-y-4">
+                <OverviewRow
+                  icon={<Clock3 className="h-4 w-4" />}
+                  label="Pending"
+                  value={data.stats.pendingBookings}
+                />
+
+                <OverviewRow
+                  icon={<CheckCircle2 className="h-4 w-4" />}
+                  label="Confirmed"
+                  value={data.stats.confirmedBookings}
+                />
+
+                <OverviewRow
+                  icon={<CheckCircle2 className="h-4 w-4" />}
+                  label="Completed"
+                  value={data.stats.completedBookings}
+                />
+
+                <OverviewRow
+                  icon={<XCircle className="h-4 w-4" />}
+                  label="Cancelled"
+                  value={data.stats.cancelledBookings}
+                />
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function StatCard({
+  icon,
+  label,
+  value,
+  href,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  href: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-slate-300 hover:shadow-sm"
+    >
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+        {icon}
+      </div>
+
+      <p className="mt-4 text-2xl font-bold text-slate-950">
+        {value}
+      </p>
+
+      <p className="mt-1 text-xs text-slate-500">{label}</p>
+    </Link>
+  );
+}
+
+function BookingRow({ booking }: { booking: Booking }) {
+  return (
+    <div className="px-5 py-5">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+        <div className="flex min-w-0 gap-4">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100">
+            <Users className="h-5 w-5 text-slate-600" />
+          </div>
+
+          <div className="min-w-0">
+            <h3 className="truncate font-semibold text-slate-950">
+              {booking.customer.fullName}
+            </h3>
+
+            <p className="mt-1 truncate text-sm text-slate-500">
+              {booking.service.title}
+            </p>
+
+            <p className="mt-2 text-xs text-slate-400">
+              {formatDate(booking.bookingDate)}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <StatusBadge status={booking.status} />
+
+          <Link
+            href="/vendor/bookings"
+            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+          >
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatusBadge({
+  status,
+}: {
+  status: Booking["status"];
+}) {
+  const styles = {
+    PENDING: "bg-amber-50 text-amber-700 border-amber-200",
+    CONFIRMED: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    COMPLETED: "bg-blue-50 text-blue-700 border-blue-200",
+    CANCELLED: "bg-red-50 text-red-700 border-red-200",
+  };
+
+  return (
+    <span
+      className={`rounded-full border px-3 py-1 text-xs font-semibold ${styles[status]}`}
+    >
+      {status.charAt(0) + status.slice(1).toLowerCase()}
+    </span>
+  );
+}
+
+function QuickAction({
+  href,
+  icon,
+  text,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  text: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-100"
+    >
+      <span className="flex items-center gap-3">
+        {icon}
+        {text}
+      </span>
+
+      <ArrowRight className="h-4 w-4 text-slate-400" />
+    </Link>
+  );
+}
+
+function OverviewRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+}) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="flex items-center gap-2 text-sm text-slate-500">
+        {icon}
+        {label}
+      </span>
+
+      <span className="text-sm font-semibold text-slate-950">
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function EmptyBookings() {
+  return (
+    <div className="px-5 py-14 text-center">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100">
+        <CalendarDays className="h-6 w-6 text-slate-500" />
+      </div>
+
+      <h3 className="mt-4 font-semibold text-slate-950">
+        No bookings yet
+      </h3>
+
+      <p className="mt-2 text-sm text-slate-500">
+        Customer bookings will appear here.
+      </p>
+    </div>
+  );
+}
+
+function DashboardSkeleton() {
+  return (
+    <main className="min-h-screen bg-slate-50 px-5 py-10">
+      <div className="mx-auto max-w-7xl">
+        <div className="h-8 w-72 animate-pulse rounded-lg bg-slate-200" />
+
+        <div className="mt-6 h-36 animate-pulse rounded-2xl bg-slate-200" />
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div
+              key={index}
+              className="h-32 animate-pulse rounded-2xl bg-white"
+            />
+          ))}
+        </div>
+
+        <div className="mt-8 h-96 animate-pulse rounded-2xl bg-white" />
+      </div>
+    </main>
+  );
+}
+
+function getFirstName(name: string) {
+  return name.trim().split(/\s+/)[0] || "there";
+}
+
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(value));
+}
+

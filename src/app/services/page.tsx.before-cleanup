@@ -1,0 +1,866 @@
+﻿import ServicesFilters from "./ServicesFilters";
+import ServicesSort from "./ServicesSort";import Link from "next/link";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  Heart,
+  MapPin,
+  Search,
+  SlidersHorizontal,
+  Star,
+  X,
+} from "lucide-react";
+
+import { prisma } from "@/lib/prisma";
+
+type SearchParams = {
+  q?: string;
+  category?: string;
+  city?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  rating?: string;
+  sort?: string;
+};
+
+type ServiceWithRelations = {
+  id: string;
+  title: string;
+  description: string | null;
+  price: unknown;
+  durationMinutes: number;
+  active: boolean;
+  vendorId: string;
+  categoryId: string;
+  Vendor: {
+    id: string;
+    name: string;
+    city: string;
+    address: string | null;
+  };
+  Category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+};
+
+function formatPrice(price: unknown) {
+  const value = Number(price);
+
+  if (Number.isNaN(value)) {
+    return "â‚¹0";
+  }
+
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+function buildQuery(
+  current: SearchParams,
+  changes: Record<string, string | undefined>,
+) {
+  const params = new URLSearchParams();
+
+  const merged = {
+    ...current,
+    ...changes,
+  };
+
+  Object.entries(merged).forEach(([key, value]) => {
+    if (value && value.trim() !== "") {
+      params.set(key, value);
+    }
+  });
+
+  return `/services${params.toString() ? `?${params.toString()}` : ""}`;
+}
+
+function getRatingValue(value?: string) {
+  const rating = Number(value);
+
+  if (!Number.isFinite(rating)) {
+    return undefined;
+  }
+
+  return rating;
+}
+
+export default async function ServicesPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const params = await searchParams;
+
+  const q = params.q?.trim() || "";
+  const category = params.category?.trim() || "";
+  const city = params.city?.trim() || "";
+  const minPrice = Number(params.minPrice || "");
+  const maxPrice = Number(params.maxPrice || "");
+  const rating = getRatingValue(params.rating);
+  const sort = params.sort || "latest";
+
+  const where: any = {
+    active: true,
+  };
+
+  if (q) {
+    where.OR = [
+      {
+        title: {
+          contains: q,
+          mode: "insensitive",
+        },
+      },
+      {
+        description: {
+          contains: q,
+          mode: "insensitive",
+        },
+      },
+      {
+        Vendor: {
+          name: {
+            contains: q,
+            mode: "insensitive",
+          },
+        },
+      },
+    ];
+  }
+
+  if (category) {
+    where.Category = {
+      slug: category,
+    };
+  }
+
+  if (city) {
+    where.Vendor = {
+      city: {
+        contains: city,
+        mode: "insensitive",
+      },
+    };
+  }
+
+  if (Number.isFinite(minPrice) && minPrice > 0) {
+    where.price = {
+      ...(where.price || {}),
+      gte: minPrice,
+    };
+  }
+
+  if (Number.isFinite(maxPrice) && maxPrice > 0) {
+    where.price = {
+      ...(where.price || {}),
+      lte: maxPrice,
+    };
+  }
+
+  const orderBy =
+    sort === "price_low"
+      ? { price: "asc" as const }
+      : sort === "price_high"
+        ? { price: "desc" as const }
+        : sort === "name"
+          ? { title: "asc" as const }
+          : { createdAt: "desc" as const };
+
+  let services: ServiceWithRelations[] = [];
+
+  try {
+    services = await prisma.service.findMany({
+      where,
+      include: {
+        Vendor: true,
+        Category: true,
+      },
+      orderBy,
+    });
+  } catch (error) {
+    console.error("Services page database error:", error);
+  }
+
+  const categories = await prisma.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  const cities = await prisma.vendor.findMany({
+    where: {
+      Service: {
+        some: {
+          active: true,
+        },
+      },
+    },
+    select: {
+      city: true,
+    },
+    distinct: ["city"],
+    orderBy: {
+      city: "asc",
+    },
+  });
+
+  const clearFilters = "/services";
+
+  const activeFilterCount = [
+    q,
+    category,
+    city,
+    params.minPrice,
+    params.maxPrice,
+    params.rating,
+  ].filter(Boolean).length;
+
+  return (
+    <main className="min-h-screen bg-[#f8fafc] text-slate-900">
+      {/* TOP HEADER */}
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="flex items-center gap-2 text-sm text-slate-500">
+                <Link
+                  href="/"
+                  className="hover:text-amber-600"
+                >
+                  Home
+                </Link>
+
+                <ChevronRight className="h-4 w-4" />
+
+                <span className="text-slate-800">
+                  Services
+                </span>
+              </div>
+
+              <h1 className="mt-3 text-2xl font-bold sm:text-3xl">
+                Explore Event Services
+              </h1>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Find venues, catering, entertainment and other services
+                for your special occasion.
+              </p>
+            </div>
+
+            <Link
+              href="/"
+              className="hidden rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold hover:bg-slate-50 sm:inline-flex"
+            >
+              â† Back to Home
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* SEARCH BAR */}
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <form
+            method="GET"
+            action="/services"
+            className="flex flex-col gap-3 lg:flex-row"
+          >
+            <div className="flex min-h-[50px] flex-1 items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 focus-within:border-amber-400">
+              <Search className="h-5 w-5 text-slate-400" />
+
+              <input
+                type="text"
+                name="q"
+                defaultValue={q}
+                placeholder="Search venues, catering, music, hotels..."
+                className="w-full bg-transparent text-sm outline-none"
+              />
+            </div>
+
+            <div className="flex min-h-[50px] items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 lg:w-64">
+              <MapPin className="h-5 w-5 text-amber-500" />
+
+              <input
+                type="text"
+                name="city"
+                defaultValue={city}
+                placeholder="City"
+                className="w-full bg-transparent text-sm outline-none"
+              />
+            </div>
+
+            {category && (
+              <input
+                type="hidden"
+                name="category"
+                value={category}
+              />
+            )}
+
+            <button
+              type="submit"
+              className="min-h-[50px] rounded-xl bg-amber-500 px-7 font-semibold text-white transition hover:bg-amber-600"
+            >
+              <span className="flex items-center justify-center gap-2">
+                <Search className="h-5 w-5" />
+                Search
+              </span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* MAIN CONTENT */}
+      <section className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
+        <div className="grid gap-7 lg:grid-cols-[270px_1fr]">
+          {/* LEFT FILTERS */}
+          <aside className="h-fit lg:sticky lg:top-24">
+            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+              {/* FILTER HEADER */}
+              <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal className="h-5 w-5 text-amber-500" />
+
+                  <h2 className="font-bold">
+                    Filters
+                  </h2>
+
+                  {activeFilterCount > 0 && (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </div>
+
+                {activeFilterCount > 0 && (
+                  <Link
+                    href={clearFilters}
+                    className="text-xs font-semibold text-red-500 hover:text-red-600"
+                  >
+                    Clear all
+                  </Link>
+                )}
+              </div>
+
+              <form
+                method="GET"
+                action="/services"
+              >
+                {/* CATEGORY */}
+                <div className="border-b border-slate-100 p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3 className="font-semibold">
+                      Category
+                    </h3>
+
+                    <ChevronDown className="h-4 w-4 text-slate-400" />
+                  </div>
+
+                  <div className="space-y-2.5">
+                    {categories.map((item) => (
+                      <label
+                        key={item.id}
+                        className="flex cursor-pointer items-center gap-3 text-sm text-slate-600"
+                      >
+                        <input
+                          type="radio"
+                          name="category"
+                          value={item.slug}
+                          defaultChecked={category === item.slug}
+                          className="h-4 w-4 accent-amber-500"
+                        />
+
+                        <span className="flex-1">
+                          {item.name}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CITY */}
+                <div className="border-b border-slate-100 p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3 className="font-semibold">
+                      Location
+                    </h3>
+
+                    <MapPin className="h-4 w-4 text-slate-400" />
+                  </div>
+
+                  <select
+                    name="city"
+                    defaultValue={city}
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-amber-400"
+                  >
+                    <option value="">
+                      All locations
+                    </option>
+
+                    {cities.map((item) => (
+                      <option
+                        key={item.city}
+                        value={item.city}
+                      >
+                        {item.city}
+                      </option>
+                    ))}
+                  </select>
+
+                  <p className="mt-2 text-xs leading-5 text-slate-400">
+                    Location-based distance filtering will be enabled
+                    after PostGIS coordinates are added.
+                  </p>
+                </div>
+
+                {/* PRICE */}
+                <div className="border-b border-slate-100 p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3 className="font-semibold">
+                      Price Range
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="number"
+                      name="minPrice"
+                      defaultValue={params.minPrice || ""}
+                      min="0"
+                      placeholder="Min â‚¹"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400"
+                    />
+
+                    <input
+                      type="number"
+                      name="maxPrice"
+                      defaultValue={params.maxPrice || ""}
+                      min="0"
+                      placeholder="Max â‚¹"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-amber-400"
+                    />
+                  </div>
+                </div>
+
+                {/* RATING */}
+                <div className="border-b border-slate-100 p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3 className="font-semibold">
+                      Rating
+                    </h3>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    {[
+                      { value: "5", label: "5 stars" },
+                      { value: "4", label: "4+ stars" },
+                      { value: "3", label: "3+ stars" },
+                    ].map((item) => (
+                      <label
+                        key={item.value}
+                        className="flex cursor-pointer items-center gap-3 text-sm"
+                      >
+                        <input
+                          type="radio"
+                          name="rating"
+                          value={item.value}
+                          defaultChecked={
+                            params.rating === item.value
+                          }
+                          className="h-4 w-4 accent-amber-500"
+                        />
+
+                        <span className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+
+                          {item.label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* APPLY */}
+                <div className="p-5">
+                  <button
+                    type="submit"
+                    className="w-full rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                  >
+                    Apply Filters
+                  </button>
+                </div>
+              </form>
+            </div>
+          </aside>
+
+          {/* RESULTS */}
+          <div className="min-w-0">
+            {/* RESULT HEADER */}
+            <div className="mb-5 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm text-slate-500">
+                  {services.length} services found
+                </p>
+
+                <div className="mt-1 flex flex-wrap items-center gap-2">
+                  {q && (
+                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium">
+                      Search: {q}
+                    </span>
+                  )}
+
+                  {category && (
+                    <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
+                      Category: {category.replaceAll("_", " ")}
+                    </span>
+                  )}
+
+                  {city && (
+                    <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+                      ðŸ“ {city}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <label
+                  htmlFor="sort"
+                  className="hidden text-sm text-slate-500 sm:block"
+                >
+                  Sort by
+                </label>
+
+                <form
+                  method="GET"
+                  action="/services"
+                >
+                  {q && (
+                    <input
+                      type="hidden"
+                      name="q"
+                      value={q}
+                    />
+                  )}
+
+                  {category && (
+                    <input
+                      type="hidden"
+                      name="category"
+                      value={category}
+                    />
+                  )}
+
+                  {city && (
+                    <input
+                      type="hidden"
+                      name="city"
+                      value={city}
+                    />
+                  )}
+
+                  {params.minPrice && (
+                    <input
+                      type="hidden"
+                      name="minPrice"
+                      value={params.minPrice}
+                    />
+                  )}
+
+                  {params.maxPrice && (
+                    <input
+                      type="hidden"
+                      name="maxPrice"
+                      value={params.maxPrice}
+                    />
+                  )}
+
+                  {params.rating && (
+                    <input
+                      type="hidden"
+                      name="rating"
+                      value={params.rating}
+                    />
+                  )}
+
+                  <ServicesSort />
+                </form>
+              </div>
+            </div>
+
+            {/* ACTIVE FILTERS */}
+            {activeFilterCount > 0 && (
+              <div className="mb-5 flex flex-wrap gap-2">
+                {q && (
+                  <Link
+                    href={buildQuery(params, {
+                      q: undefined,
+                    })}
+                    className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-red-200 hover:text-red-500"
+                  >
+                    Search: {q}
+                    <X className="h-3.5 w-3.5" />
+                  </Link>
+                )}
+
+                {category && (
+                  <Link
+                    href={buildQuery(params, {
+                      category: undefined,
+                    })}
+                    className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-red-200 hover:text-red-500"
+                  >
+                    Category
+                    <X className="h-3.5 w-3.5" />
+                  </Link>
+                )}
+
+                {city && (
+                  <Link
+                    href={buildQuery(params, {
+                      city: undefined,
+                    })}
+                    className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-red-200 hover:text-red-500"
+                  >
+                    Location: {city}
+                    <X className="h-3.5 w-3.5" />
+                  </Link>
+                )}
+
+                {(params.minPrice || params.maxPrice) && (
+                  <Link
+                    href={buildQuery(params, {
+                      minPrice: undefined,
+                      maxPrice: undefined,
+                    })}
+                    className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-red-200 hover:text-red-500"
+                  >
+                    Price
+                    <X className="h-3.5 w-3.5" />
+                  </Link>
+                )}
+
+                {params.rating && (
+                  <Link
+                    href={buildQuery(params, {
+                      rating: undefined,
+                    })}
+                    className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:border-red-200 hover:text-red-500"
+                  >
+                    Rating: {params.rating}+
+                    <X className="h-3.5 w-3.5" />
+                  </Link>
+                )}
+              </div>
+            )}
+
+            {/* SERVICES GRID */}
+            {services.length > 0 ? (
+              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                {services.map((service) => (
+                  <ServiceCard
+                    key={service.id}
+                    service={service}
+                  />
+                ))}
+              </div>
+            ) : (
+              <EmptyState
+                query={q}
+                city={city}
+              />
+            )}
+
+            {/* PAGINATION PLACEHOLDER */}
+            {services.length > 0 && (
+              <div className="mt-8 flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4">
+                <button
+                  type="button"
+                  disabled
+                  className="inline-flex items-center gap-1 rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-300"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Previous
+                </button>
+
+                <div className="flex items-center gap-1">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500 text-sm font-bold text-white">
+                    1
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  disabled
+                  className="inline-flex items-center gap-1 rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-300"
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function ServiceCard({
+  service,
+}: {
+  service: ServiceWithRelations;
+}) {
+  const price = formatPrice(service.price);
+
+  return (
+    <article className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+      {/* IMAGE PLACEHOLDER */}
+      <div className="relative flex h-52 items-center justify-center overflow-hidden bg-gradient-to-br from-amber-100 via-orange-50 to-slate-100">
+        <div className="text-center">
+          <div className="text-5xl">
+            {getCategoryEmoji(service.Category.slug)}
+          </div>
+
+          <p className="mt-2 text-xs font-medium text-slate-400">
+            Service image
+          </p>
+        </div>
+
+        <div className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm">
+          {service.Category.name}
+        </div>
+
+        <button
+          type="button"
+          aria-label={`Save ${service.title}`}
+          className="absolute right-3 top-3 rounded-full bg-white/95 p-2 text-slate-500 shadow-sm transition hover:text-red-500"
+        >
+          <Heart className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-5">
+        <h2 className="line-clamp-1 text-lg font-bold text-slate-900">
+          {service.title}
+        </h2>
+
+        <div className="mt-2 flex items-start gap-2 text-sm text-slate-500">
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+
+          <div>
+            <p>{service.Vendor.city}</p>
+
+            {service.Vendor.address && (
+              <p className="line-clamp-1 text-xs text-slate-400">
+                {service.Vendor.address}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {service.description && (
+          <p className="mt-3 line-clamp-2 text-sm leading-5 text-slate-500">
+            {service.description}
+          </p>
+        )}
+
+        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
+          <div>
+            <p className="text-[11px] text-slate-400">
+              Starting from
+            </p>
+
+            <p className="text-lg font-bold text-slate-900">
+              {price}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs font-bold text-amber-700">
+            <Star className="h-3.5 w-3.5 fill-current" />
+            New
+          </div>
+        </div>
+
+        <Link
+          href={`/services/${service.id}`}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-500"
+        >
+          View Details
+          <ChevronRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </article>
+  );
+}
+
+function getCategoryEmoji(slug: string) {
+  switch (slug) {
+    case "banquet_hall":
+      return "ðŸ›ï¸";
+
+    case "music_band":
+      return "ðŸŽµ";
+
+    case "event_management":
+      return "ðŸŽª";
+
+    case "catering":
+      return "ðŸ½ï¸";
+
+    case "dancing":
+      return "ðŸ’ƒ";
+
+    case "priests":
+      return "ðŸª”";
+
+    case "hotels":
+      return "ðŸ¨";
+
+    default:
+      return "âœ¨";
+  }
+}
+
+function EmptyState({
+  query,
+  city,
+}: {
+  query: string;
+  city: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
+        <Search className="h-7 w-7 text-slate-400" />
+      </div>
+
+      <h2 className="mt-5 text-xl font-bold">
+        No services found
+      </h2>
+
+      <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+        We couldn't find services
+        {query ? ` matching "${query}"` : ""}
+        {city ? ` in ${city}` : ""}.
+        Try changing your search or clearing the filters.
+      </p>
+
+      <Link
+        href="/services"
+        className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+      >
+        <Filter className="h-4 w-4" />
+        Clear Filters
+      </Link>
+    </div>
+  );
+}

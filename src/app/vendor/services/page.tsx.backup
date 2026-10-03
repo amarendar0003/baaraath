@@ -1,0 +1,369 @@
+"use client";
+
+import Link from "next/link";
+import { FormEvent, useEffect, useState } from "react";
+import {
+  ArrowLeft,
+  Building2,
+  CheckCircle2,
+  Clock3,
+  IndianRupee,
+  Save,
+} from "lucide-react";
+
+type Category = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+export default function NewVendorServicePage() {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [price, setPrice] = useState("");
+  const [durationMinutes, setDurationMinutes] = useState("60");
+
+  const [loadingCategories, setLoadingCategories] =
+    useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const response = await fetch("/api/categories", {
+          cache: "no-store",
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message || "Unable to load categories."
+          );
+        }
+
+        setCategories(data.categories);
+
+        if (data.categories.length > 0) {
+          setCategoryId(data.categories[0].id);
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Unable to load categories."
+        );
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+
+    loadCategories();
+  }, []);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setError("");
+    setSuccess("");
+
+    if (!categoryId) {
+      setError("Please select a category.");
+      return;
+    }
+
+    if (!price || Number(price) < 0) {
+      setError("Please enter a valid price.");
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      const response = await fetch("/api/vendor/services", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          categoryId,
+          price,
+          durationMinutes: Number(durationMinutes),
+        }),
+      });
+
+      if (response.status === 401) {
+        window.location.href = "/login";
+        return;
+      }
+
+      if (response.status === 403) {
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Unable to create service.");
+        return;
+      }
+
+      setSuccess("Service created successfully.");
+
+      setTimeout(() => {
+        window.location.href = "/vendor/services";
+      }, 700);
+    } catch {
+      setError("Unable to connect to the server.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <main className="min-h-screen bg-slate-50">
+      <header className="border-b border-slate-200 bg-white">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5 sm:px-8">
+          <Link
+            href="/vendor/services"
+            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-950"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            My Services
+          </Link>
+
+          <Link
+            href="/"
+            className="flex items-center gap-3 text-lg font-bold text-slate-950"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-950 text-white">
+              B
+            </span>
+            Baaraath
+          </Link>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-3xl px-5 py-8 sm:px-8">
+        <div className="mb-8">
+          <p className="text-sm font-medium text-slate-500">
+            Provider services
+          </p>
+
+          <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+            Add Service
+          </h1>
+
+          <p className="mt-2 text-sm text-slate-500">
+            Add a service that customers can discover and book.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+              <CheckCircle2 className="h-4 w-4" />
+              {success}
+            </div>
+          )}
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
+                <Building2 className="h-5 w-5 text-slate-600" />
+              </div>
+
+              <div>
+                <h2 className="font-semibold text-slate-950">
+                  Service information
+                </h2>
+
+                <p className="mt-1 text-sm text-slate-500">
+                  Describe what customers are booking.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-5">
+              <div>
+                <label
+                  htmlFor="title"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  Service title
+                </label>
+
+                <input
+                  id="title"
+                  value={title}
+                  onChange={(event) =>
+                    setTitle(event.target.value)
+                  }
+                  required
+                  placeholder="Example: Wedding Catering"
+                  className="h-12 w-full rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="category"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  Category
+                </label>
+
+                <select
+                  id="category"
+                  value={categoryId}
+                  onChange={(event) =>
+                    setCategoryId(event.target.value)
+                  }
+                  disabled={loadingCategories}
+                  required
+                  className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-slate-500"
+                >
+                  {loadingCategories ? (
+                    <option>Loading categories...</option>
+                  ) : categories.length === 0 ? (
+                    <option>No categories available</option>
+                  ) : (
+                    categories.map((category) => (
+                      <option
+                        key={category.id}
+                        value={category.id}
+                      >
+                        {category.name}
+                      </option>
+                    ))
+                  )}
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="description"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  Description
+                </label>
+
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={(event) =>
+                    setDescription(event.target.value)
+                  }
+                  rows={5}
+                  placeholder="Describe the service, inclusions and important details..."
+                  className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
+                <IndianRupee className="h-5 w-5 text-slate-600" />
+              </div>
+
+              <div>
+                <h2 className="font-semibold text-slate-950">
+                  Pricing & duration
+                </h2>
+
+                <p className="mt-1 text-sm text-slate-500">
+                  Set the current service price and duration.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              <div>
+                <label
+                  htmlFor="price"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  Price (₹)
+                </label>
+
+                <input
+                  id="price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={price}
+                  onChange={(event) =>
+                    setPrice(event.target.value)
+                  }
+                  required
+                  placeholder="0.00"
+                  className="h-12 w-full rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="duration"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  Duration (minutes)
+                </label>
+
+                <div className="relative">
+                  <Clock3 className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+
+                  <input
+                    id="duration"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={durationMinutes}
+                    onChange={(event) =>
+                      setDurationMinutes(event.target.value)
+                    }
+                    required
+                    className="h-12 w-full rounded-xl border border-slate-200 pl-11 pr-4 text-sm outline-none focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <Link
+              href="/vendor/services"
+              className="inline-flex h-12 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              Cancel
+            </Link>
+
+            <button
+              type="submit"
+              disabled={saving || loadingCategories}
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Save className="h-4 w-4" />
+              {saving ? "Creating..." : "Create Service"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  );
+}
