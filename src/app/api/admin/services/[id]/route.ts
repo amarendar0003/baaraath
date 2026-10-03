@@ -22,6 +22,10 @@ async function requireAdmin() {
   return null;
 }
 
+function cleanText(value: unknown) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -70,16 +74,8 @@ export async function GET(
 
     return NextResponse.json({
       service: {
-        id: service.id,
-        title: service.title,
-        description: service.description,
+        ...service,
         price: service.price.toString(),
-        durationMinutes: service.durationMinutes,
-        active: service.active,
-        createdAt: service.createdAt.toISOString(),
-        updatedAt: service.updatedAt.toISOString(),
-        vendor: service.Vendor,
-        category: service.Category,
         bookingCount: service._count.Booking,
       },
     });
@@ -87,15 +83,7 @@ export async function GET(
     console.error("Admin service GET error:", error);
 
     return NextResponse.json(
-      {
-        message: "Unable to load service.",
-        details:
-          process.env.NODE_ENV === "development"
-            ? error instanceof Error
-              ? error.message
-              : String(error)
-            : undefined,
-      },
+      { message: "Unable to load service." },
       { status: 500 }
     );
   }
@@ -117,15 +105,12 @@ export async function PATCH(
 
     const existing = await prisma.service.findUnique({
       where: { id },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        price: true,
-        durationMinutes: true,
-        active: true,
-        vendorId: true,
-        categoryId: true,
+      include: {
+        _count: {
+          select: {
+            Booking: true,
+          },
+        },
       },
     });
 
@@ -136,21 +121,12 @@ export async function PATCH(
       );
     }
 
-    const data: {
-      title?: string;
-      description?: string | null;
-      price?: string;
-      durationMinutes?: number;
-      active?: boolean;
-      vendorId?: string;
-      categoryId?: string;
-      updatedAt: Date;
-    } = {
+    const data: any = {
       updatedAt: new Date(),
     };
 
     if (body.title !== undefined) {
-      const title = String(body.title).trim();
+      const title = cleanText(body.title);
 
       if (!title) {
         return NextResponse.json(
@@ -159,32 +135,20 @@ export async function PATCH(
         );
       }
 
-      if (title.length > 200) {
-        return NextResponse.json(
-          { message: "Service title is too long." },
-          { status: 400 }
-        );
-      }
-
       data.title = title;
     }
 
     if (body.description !== undefined) {
-      const description =
-        body.description === null
-          ? null
-          : String(body.description).trim();
-
+      const description = cleanText(body.description);
       data.description = description || null;
     }
 
     if (body.price !== undefined) {
-      const priceText = String(body.price).trim();
-      const price = Number(priceText);
+      const price = Number(body.price);
 
-      if (!priceText || !Number.isFinite(price) || price <= 0) {
+      if (!Number.isFinite(price) || price < 0) {
         return NextResponse.json(
-          { message: "Price must be a valid amount greater than zero." },
+          { message: "Enter a valid service price." },
           { status: 400 }
         );
       }
@@ -195,16 +159,9 @@ export async function PATCH(
     if (body.durationMinutes !== undefined) {
       const duration = Number(body.durationMinutes);
 
-      if (
-        !Number.isInteger(duration) ||
-        duration <= 0 ||
-        duration > 1440
-      ) {
+      if (!Number.isInteger(duration) || duration < 1) {
         return NextResponse.json(
-          {
-            message:
-              "Duration must be a whole number between 1 and 1440 minutes.",
-          },
+          { message: "Enter a valid duration." },
           { status: 400 }
         );
       }
@@ -212,26 +169,8 @@ export async function PATCH(
       data.durationMinutes = duration;
     }
 
-    if (body.active !== undefined) {
-      if (typeof body.active !== "boolean") {
-        return NextResponse.json(
-          { message: "Active must be true or false." },
-          { status: 400 }
-        );
-      }
-
-      data.active = body.active;
-    }
-
     if (body.vendorId !== undefined) {
-      const vendorId = String(body.vendorId).trim();
-
-      if (!vendorId) {
-        return NextResponse.json(
-          { message: "Provider is required." },
-          { status: 400 }
-        );
-      }
+      const vendorId = cleanText(body.vendorId);
 
       const vendor = await prisma.vendor.findUnique({
         where: { id: vendorId },
@@ -240,8 +179,8 @@ export async function PATCH(
 
       if (!vendor) {
         return NextResponse.json(
-          { message: "Selected provider was not found." },
-          { status: 400 }
+          { message: "Provider not found." },
+          { status: 404 }
         );
       }
 
@@ -249,14 +188,7 @@ export async function PATCH(
     }
 
     if (body.categoryId !== undefined) {
-      const categoryId = String(body.categoryId).trim();
-
-      if (!categoryId) {
-        return NextResponse.json(
-          { message: "Category is required." },
-          { status: 400 }
-        );
-      }
+      const categoryId = cleanText(body.categoryId);
 
       const category = await prisma.category.findUnique({
         where: { id: categoryId },
@@ -265,12 +197,16 @@ export async function PATCH(
 
       if (!category) {
         return NextResponse.json(
-          { message: "Selected category was not found." },
-          { status: 400 }
+          { message: "Category not found." },
+          { status: 404 }
         );
       }
 
       data.categoryId = categoryId;
+    }
+
+    if (body.active !== undefined) {
+      data.active = Boolean(body.active);
     }
 
     const updated = await prisma.service.update({
@@ -301,31 +237,16 @@ export async function PATCH(
     return NextResponse.json({
       message: "Service updated successfully.",
       service: {
-        id: updated.id,
-        title: updated.title,
-        description: updated.description,
+        ...updated,
         price: updated.price.toString(),
-        durationMinutes: updated.durationMinutes,
-        active: updated.active,
-        vendor: updated.Vendor,
-        category: updated.Category,
         bookingCount: updated._count.Booking,
-        updatedAt: updated.updatedAt.toISOString(),
       },
     });
   } catch (error) {
     console.error("Admin service PATCH error:", error);
 
     return NextResponse.json(
-      {
-        message: "Unable to update service.",
-        details:
-          process.env.NODE_ENV === "development"
-            ? error instanceof Error
-              ? error.message
-              : String(error)
-            : undefined,
-      },
+      { message: "Unable to update service." },
       { status: 500 }
     );
   }
@@ -349,6 +270,7 @@ export async function DELETE(
       select: {
         id: true,
         title: true,
+        active: true,
         _count: {
           select: {
             Booking: true,
@@ -368,7 +290,7 @@ export async function DELETE(
       return NextResponse.json(
         {
           message:
-            "This service cannot be deleted because it has existing bookings.",
+            "This service cannot be deleted because it has existing bookings. Deactivate it instead.",
           bookingCount: service._count.Booking,
         },
         { status: 409 }
@@ -380,22 +302,13 @@ export async function DELETE(
     });
 
     return NextResponse.json({
-      success: true,
       message: "Service deleted successfully.",
     });
   } catch (error) {
     console.error("Admin service DELETE error:", error);
 
     return NextResponse.json(
-      {
-        message: "Unable to delete service.",
-        details:
-          process.env.NODE_ENV === "development"
-            ? error instanceof Error
-              ? error.message
-              : String(error)
-            : undefined,
-      },
+      { message: "Unable to delete service." },
       { status: 500 }
     );
   }

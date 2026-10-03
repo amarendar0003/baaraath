@@ -1,26 +1,20 @@
-import { NextResponse } from "next/server";
-import { getSession } from "@/lib/auth";
+﻿import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-type RouteContext = {
-  params: Promise<{
-    id: string;
-  }>;
-};
+import { getSession } from "@/lib/auth";
 
 async function requireAdmin() {
   const session = await getSession();
 
-  if (!session?.userId) {
+  if (!session) {
     return NextResponse.json(
-      { error: "Unauthorized" },
+      { message: "Authentication required." },
       { status: 401 }
     );
   }
 
   if (session.role !== "ADMIN") {
     return NextResponse.json(
-      { error: "Forbidden. Admin access required." },
+      { message: "Admin access required." },
       { status: 403 }
     );
   }
@@ -28,9 +22,21 @@ async function requireAdmin() {
   return null;
 }
 
+function cleanText(value: unknown) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function createSlug(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
+
 export async function GET(
   _request: Request,
-  context: RouteContext
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const authError = await requireAdmin();
@@ -39,18 +45,249 @@ export async function GET(
       return authError;
     }
 
-    const { id } = await context.params;
+    const { id } = await params;
 
-    if (!id) {
+    const category = await prisma.category.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        _count: {
+          select: {
+            Service: true,
+          },
+        },
+        Service: {
+          select: {
+            id: true,
+            title: true,
+            active: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 20,
+        },
+      },
+    });
+
+    if (!category) {
       return NextResponse.json(
-        { error: "Category ID is required." },
+        {
+          message: "Category not found.",
+        },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      category: {
+        id: category.id,
+        name: category.name,
+        slug: category.slug,
+        createdAt: category.createdAt.toISOString(),
+        serviceCount: category._count.Service,
+        services: category.Service,
+      },
+    });
+  } catch (error) {
+    console.error("Admin category GET error:", error);
+
+    return NextResponse.json(
+      {
+        message: "Unable to load category.",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const authError = await requireAdmin();
+
+    if (authError) {
+      return authError;
+    }
+
+    const { id } = await params;
+    const body = await request.json();
+
+    const existing = await prisma.category.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        _count: {
+          select: {
+            Service: true,
+          },
+        },
+      },
+    });
+
+    if (!existing) {
+      return NextResponse.json(
+        {
+          message: "Category not found.",
+        },
+        { status: 404 }
+      );
+    }
+
+    const data: {
+      name?: string;
+      slug?: string;
+    } = {};
+
+    if (body.name !== undefined) {
+      const name = cleanText(body.name);
+
+      if (!name) {
+        return NextResponse.json(
+          {
+            message: "Category name is required.",
+          },
+          { status: 400 }
+        );
+      }
+
+      const duplicateName = await prisma.category.findFirst({
+        where: {
+          name,
+          NOT: {
+            id,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (duplicateName) {
+        return NextResponse.json(
+          {
+            message: "Another category already uses this name.",
+          },
+          { status: 409 }
+        );
+      }
+
+      data.name = name;
+    }
+
+    if (body.slug !== undefined || body.name !== undefined) {
+      const requestedSlug =
+        body.slug !== undefined
+          ? cleanText(body.slug)
+          : data.name || existing.name;
+
+      const slug = createSlug(requestedSlug);
+
+      if (!slug) {
+        return NextResponse.json(
+          {
+            message: "Enter a valid category slug.",
+          },
+          { status: 400 }
+        );
+      }
+
+      const duplicateSlug = await prisma.category.findFirst({
+        where: {
+          slug,
+          NOT: {
+            id,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (duplicateSlug) {
+        return NextResponse.json(
+          {
+            message: "Another category already uses this slug.",
+          },
+          { status: 409 }
+        );
+      }
+
+      data.slug = slug;
+    }
+
+    if (Object.keys(data).length === 0) {
+      return NextResponse.json(
+        {
+          message: "No changes supplied.",
+        },
         { status: 400 }
       );
     }
 
-    const category = await prisma.category.findUnique({
-      where: { id },
+    const updated = await prisma.category.update({
+      where: {
+        id,
+      },
+      data,
       include: {
+        _count: {
+          select: {
+            Service: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({
+      message: "Category updated successfully.",
+      category: {
+        id: updated.id,
+        name: updated.name,
+        slug: updated.slug,
+        createdAt: updated.createdAt.toISOString(),
+        serviceCount: updated._count.Service,
+      },
+    });
+  } catch (error) {
+    console.error("Admin category PATCH error:", error);
+
+    return NextResponse.json(
+      {
+        message: "Unable to update category.",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const authError = await requireAdmin();
+
+    if (authError) {
+      return authError;
+    }
+
+    const { id } = await params;
+
+    const category = await prisma.category.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
         _count: {
           select: {
             Service: true,
@@ -61,224 +298,9 @@ export async function GET(
 
     if (!category) {
       return NextResponse.json(
-        { error: "Category not found." },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({
-      category,
-    });
-  } catch (error) {
-    console.error("Admin category GET error:", error);
-
-    return NextResponse.json(
-      {
-        error: "Unable to load category.",
-        details:
-          process.env.NODE_ENV === "development"
-            ? error instanceof Error
-              ? error.message
-              : String(error)
-            : undefined,
-      },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PATCH(
-  request: Request,
-  context: RouteContext
-) {
-  try {
-    const authError = await requireAdmin();
-
-    if (authError) {
-      return authError;
-    }
-
-    const { id } = await context.params;
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Category ID is required." },
-        { status: 400 }
-      );
-    }
-
-    let body: {
-      name?: unknown;
-      slug?: unknown;
-    };
-
-    try {
-      body = await request.json();
-    } catch {
-      return NextResponse.json(
-        { error: "Invalid JSON request body." },
-        { status: 400 }
-      );
-    }
-
-    const name =
-      typeof body.name === "string"
-        ? body.name.trim()
-        : "";
-
-    const slug =
-      typeof body.slug === "string"
-        ? body.slug.trim().toLowerCase()
-        : "";
-
-    if (!name) {
-      return NextResponse.json(
-        { error: "Category name is required." },
-        { status: 400 }
-      );
-    }
-
-    if (!slug) {
-      return NextResponse.json(
-        { error: "Category slug is required." },
-        { status: 400 }
-      );
-    }
-
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
-      return NextResponse.json(
         {
-          error:
-            "Slug can contain only lowercase letters, numbers and hyphens.",
+          message: "Category not found.",
         },
-        { status: 400 }
-      );
-    }
-
-    const existingCategory =
-      await prisma.category.findUnique({
-        where: { id },
-      });
-
-    if (!existingCategory) {
-      return NextResponse.json(
-        { error: "Category not found." },
-        { status: 404 }
-      );
-    }
-
-    const duplicateName =
-      await prisma.category.findFirst({
-        where: {
-          name,
-          NOT: { id },
-        },
-        select: { id: true },
-      });
-
-    if (duplicateName) {
-      return NextResponse.json(
-        {
-          error:
-            "Another category with this name already exists.",
-        },
-        { status: 409 }
-      );
-    }
-
-    const duplicateSlug =
-      await prisma.category.findFirst({
-        where: {
-          slug,
-          NOT: { id },
-        },
-        select: { id: true },
-      });
-
-    if (duplicateSlug) {
-      return NextResponse.json(
-        {
-          error:
-            "Another category with this slug already exists.",
-        },
-        { status: 409 }
-      );
-    }
-
-    const updatedCategory =
-      await prisma.category.update({
-        where: { id },
-        data: {
-          name,
-          slug,
-        },
-        include: {
-          _count: {
-            select: {
-              Service: true,
-            },
-          },
-        },
-      });
-
-    return NextResponse.json({
-      success: true,
-      message: "Category updated successfully.",
-      category: updatedCategory,
-    });
-  } catch (error) {
-    console.error("Admin category PATCH error:", error);
-
-    return NextResponse.json(
-      {
-        error: "Unable to update category.",
-        details:
-          process.env.NODE_ENV === "development"
-            ? error instanceof Error
-              ? error.message
-              : String(error)
-            : undefined,
-      },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(
-  _request: Request,
-  context: RouteContext
-) {
-  try {
-    const authError = await requireAdmin();
-
-    if (authError) {
-      return authError;
-    }
-
-    const { id } = await context.params;
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Category ID is required." },
-        { status: 400 }
-      );
-    }
-
-    const category =
-      await prisma.category.findUnique({
-        where: { id },
-        include: {
-          _count: {
-            select: {
-              Service: true,
-            },
-          },
-        },
-      });
-
-    if (!category) {
-      return NextResponse.json(
-        { error: "Category not found." },
         { status: 404 }
       );
     }
@@ -286,8 +308,8 @@ export async function DELETE(
     if (category._count.Service > 0) {
       return NextResponse.json(
         {
-          error:
-            "This category cannot be deleted because services are using it.",
+          message:
+            "This category cannot be deleted because services are using it. Move those services to another category first.",
           serviceCount: category._count.Service,
         },
         { status: 409 }
@@ -295,11 +317,12 @@ export async function DELETE(
     }
 
     await prisma.category.delete({
-      where: { id },
+      where: {
+        id,
+      },
     });
 
     return NextResponse.json({
-      success: true,
       message: "Category deleted successfully.",
     });
   } catch (error) {
@@ -307,13 +330,7 @@ export async function DELETE(
 
     return NextResponse.json(
       {
-        error: "Unable to delete category.",
-        details:
-          process.env.NODE_ENV === "development"
-            ? error instanceof Error
-              ? error.message
-              : String(error)
-            : undefined,
+        message: "Unable to delete category.",
       },
       { status: 500 }
     );
