@@ -1,59 +1,54 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(
   request: Request,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await context.params;
-
-    console.log("SERVICE API REQUEST:", id);
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Service ID is required." },
-        { status: 400 }
-      );
-    }
+    const { id } = await params;
 
     const service = await prisma.service.findUnique({
       where: {
-        id: id,
+        id,
       },
+
       include: {
-        Category: true,
-        Vendor: true,
+        Vendor: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            city: true,
+            address: true,
+            ownerId: true,
+          },
+        },
+
+        Category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+
+        _count: {
+          select: {
+            Booking: true,
+          },
+        },
       },
     });
-
-    console.log(
-      "SERVICE API RESULT:",
-      service
-        ? {
-            id: service.id,
-            title: service.title,
-            active: service.active,
-          }
-        : null
-    );
 
     if (!service) {
       return NextResponse.json(
         {
-          error: "Service not found.",
-          serviceId: id,
+          message: "Service not found.",
         },
-        { status: 404 }
-      );
-    }
-
-    if (!service.active) {
-      return NextResponse.json(
         {
-          error: "This service is currently unavailable.",
-        },
-        { status: 410 }
+          status: 404,
+        }
       );
     }
 
@@ -65,37 +60,25 @@ export async function GET(
         price: service.price.toString(),
         durationMinutes: service.durationMinutes,
         active: service.active,
+        createdAt: service.createdAt,
+        updatedAt: service.updatedAt,
 
-        category: {
-          id: service.Category.id,
-          name: service.Category.name,
-          slug: service.Category.slug,
-        },
+        vendor: service.Vendor,
+        category: service.Category,
 
-        vendor: {
-          id: service.Vendor.id,
-          name: service.Vendor.name,
-          description: service.Vendor.description,
-          city: service.Vendor.city,
-          address: service.Vendor.address,
-        },
+        bookingCount: service._count.Booking,
       },
     });
   } catch (error) {
-    console.error(
-      "SERVICE API ERROR:",
-      error
-    );
+    console.error("Service detail GET error:", error);
 
     return NextResponse.json(
       {
-        error: "Unable to load service.",
-        details:
-          error instanceof Error
-            ? error.message
-            : String(error),
+        message: "Unable to load service.",
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }

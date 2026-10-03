@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import {
   ArrowRight,
   CalendarDays,
@@ -69,8 +70,13 @@ export default function VendorDashboardPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
+
     async function loadDashboard() {
       try {
+        setLoading(true);
+        setError("");
+
         const response = await fetch("/api/vendor/dashboard", {
           cache: "no-store",
         });
@@ -88,24 +94,32 @@ export default function VendorDashboardPage() {
         const result = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            result.message || "Unable to load dashboard."
-          );
+          throw new Error(result.message || "Unable to load dashboard.");
         }
 
-        setData(result);
+        if (!cancelled) {
+          setData(result);
+        }
       } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load dashboard."
-        );
+        if (!cancelled) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Unable to load dashboard.",
+          );
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
     loadDashboard();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (loading) {
@@ -116,7 +130,16 @@ export default function VendorDashboardPage() {
     return (
       <main className="min-h-screen bg-slate-50 px-5 py-12">
         <div className="mx-auto max-w-4xl rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
-          {error}
+          <p className="font-semibold">Unable to load dashboard</p>
+          <p className="mt-1">{error}</p>
+
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="mt-4 rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+          >
+            Retry
+          </button>
         </div>
       </main>
     );
@@ -128,11 +151,7 @@ export default function VendorDashboardPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      {/* Header */}
-      
-
       <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
-        {/* Welcome */}
         <section>
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
@@ -145,22 +164,30 @@ export default function VendorDashboardPage() {
               </h1>
 
               <p className="mt-2 text-sm text-slate-500">
-                Manage {data.vendor.name} and keep track of customer
-                bookings.
+                Manage {data.vendor.name} and keep track of customer bookings.
               </p>
             </div>
 
-            <Link
-              href="/vendor/services/new"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white hover:bg-slate-800"
-            >
-              <Plus className="h-4 w-4" />
-              Add Service
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/vendor/bookings"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                <CalendarDays className="h-4 w-4" />
+                Bookings
+              </Link>
+
+              <Link
+                href="/vendor/services/new"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white hover:bg-slate-800"
+              >
+                <Plus className="h-4 w-4" />
+                Add Service
+              </Link>
+            </div>
           </div>
         </section>
 
-        {/* Business card */}
         <section className="mt-8 overflow-hidden rounded-2xl bg-slate-950 text-white">
           <div className="flex flex-col justify-between gap-6 p-6 sm:p-8 md:flex-row md:items-center">
             <div className="flex items-start gap-4">
@@ -183,9 +210,7 @@ export default function VendorDashboardPage() {
                     {data.vendor.city}
                   </span>
 
-                  <span>
-                    {data.vendor.owner.email}
-                  </span>
+                  <span>{data.vendor.owner.email}</span>
                 </div>
               </div>
             </div>
@@ -200,7 +225,6 @@ export default function VendorDashboardPage() {
           </div>
         </section>
 
-        {/* Stats */}
         <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             icon={<Store className="h-5 w-5" />}
@@ -232,7 +256,6 @@ export default function VendorDashboardPage() {
         </section>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
-          {/* Recent bookings */}
           <section className="rounded-2xl border border-slate-200 bg-white">
             <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
               <div>
@@ -259,16 +282,12 @@ export default function VendorDashboardPage() {
             ) : (
               <div className="divide-y divide-slate-100">
                 {data.recentBookings.map((booking) => (
-                  <BookingRow
-                    key={booking.id}
-                    booking={booking}
-                  />
+                  <BookingRow key={booking.id} booking={booking} />
                 ))}
               </div>
             )}
           </section>
 
-          {/* Quick actions */}
           <aside className="space-y-6">
             <section className="rounded-2xl border border-slate-200 bg-white p-5">
               <h2 className="font-semibold text-slate-950">
@@ -346,7 +365,7 @@ function StatCard({
   value,
   href,
 }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   value: number;
   href: string;
@@ -360,9 +379,7 @@ function StatCard({
         {icon}
       </div>
 
-      <p className="mt-4 text-2xl font-bold text-slate-950">
-        {value}
-      </p>
+      <p className="mt-4 text-2xl font-bold text-slate-950">{value}</p>
 
       <p className="mt-1 text-xs text-slate-500">{label}</p>
     </Link>
@@ -408,12 +425,8 @@ function BookingRow({ booking }: { booking: Booking }) {
   );
 }
 
-function StatusBadge({
-  status,
-}: {
-  status: Booking["status"];
-}) {
-  const styles = {
+function StatusBadge({ status }: { status: Booking["status"] }) {
+  const styles: Record<Booking["status"], string> = {
     PENDING: "bg-amber-50 text-amber-700 border-amber-200",
     CONFIRMED: "bg-emerald-50 text-emerald-700 border-emerald-200",
     COMPLETED: "bg-blue-50 text-blue-700 border-blue-200",
@@ -435,7 +448,7 @@ function QuickAction({
   text,
 }: {
   href: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   text: string;
 }) {
   return (
@@ -458,7 +471,7 @@ function OverviewRow({
   label,
   value,
 }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   value: number;
 }) {
@@ -469,9 +482,7 @@ function OverviewRow({
         {label}
       </span>
 
-      <span className="text-sm font-semibold text-slate-950">
-        {value}
-      </span>
+      <span className="text-sm font-semibold text-slate-950">{value}</span>
     </div>
   );
 }
@@ -522,10 +533,15 @@ function getFirstName(name: string) {
 }
 
 function formatDate(value: string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Date unavailable";
+  }
+
   return new Intl.DateTimeFormat("en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",
-  }).format(new Date(value));
+  }).format(date);
 }
-

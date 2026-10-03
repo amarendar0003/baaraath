@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { getSession } from "@/lib/auth";
+﻿import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getSession } from "@/lib/auth";
 
 export async function GET() {
   try {
@@ -8,14 +8,14 @@ export async function GET() {
 
     if (!session) {
       return NextResponse.json(
-        { error: "Authentication required." },
+        { message: "Authentication required." },
         { status: 401 },
       );
     }
 
     if (session.role !== "PROVIDER") {
       return NextResponse.json(
-        { error: "Provider access required." },
+        { message: "Provider access required." },
         { status: 403 },
       );
     }
@@ -25,21 +25,13 @@ export async function GET() {
         ownerId: session.userId,
       },
       include: {
-        User: {
-          select: {
-            id: true,
-            fullName: true,
-            email: true,
-            phone: true,
-            role: true,
-          },
-        },
+        User: true,
       },
     });
 
     if (!vendor) {
       return NextResponse.json(
-        { error: "Vendor profile not found." },
+        { message: "Vendor profile not found." },
         { status: 404 },
       );
     }
@@ -51,14 +43,21 @@ export async function GET() {
         description: vendor.description,
         city: vendor.city,
         address: vendor.address,
-        owner: vendor.User,
+        createdAt: vendor.createdAt,
+        updatedAt: vendor.updatedAt,
+      },
+      owner: {
+        id: vendor.User.id,
+        fullName: vendor.User.fullName,
+        email: vendor.User.email,
+        phone: vendor.User.phone,
       },
     });
   } catch (error) {
     console.error("Vendor profile GET error:", error);
 
     return NextResponse.json(
-      { error: "Unable to load vendor profile." },
+      { message: "Unable to load vendor profile." },
       { status: 500 },
     );
   }
@@ -70,14 +69,14 @@ export async function PATCH(request: Request) {
 
     if (!session) {
       return NextResponse.json(
-        { error: "Authentication required." },
+        { message: "Authentication required." },
         { status: 401 },
       );
     }
 
     if (session.role !== "PROVIDER") {
       return NextResponse.json(
-        { error: "Provider access required." },
+        { message: "Provider access required." },
         { status: 403 },
       );
     }
@@ -89,25 +88,40 @@ export async function PATCH(request: Request) {
     const city = String(body.city ?? "").trim();
     const address = String(body.address ?? "").trim();
     const fullName = String(body.fullName ?? "").trim();
+    const email = String(body.email ?? "").trim().toLowerCase();
     const phone = String(body.phone ?? "").trim();
 
     if (!name) {
       return NextResponse.json(
-        { error: "Business name is required." },
+        { message: "Business name is required." },
         { status: 400 },
       );
     }
 
     if (!city) {
       return NextResponse.json(
-        { error: "City is required." },
+        { message: "City is required." },
         { status: 400 },
       );
     }
 
     if (!fullName) {
       return NextResponse.json(
-        { error: "Owner name is required." },
+        { message: "Owner name is required." },
+        { status: 400 },
+      );
+    }
+
+    if (!email) {
+      return NextResponse.json(
+        { message: "Email is required." },
+        { status: 400 },
+      );
+    }
+
+    if (!email.includes("@")) {
+      return NextResponse.json(
+        { message: "Please enter a valid email address." },
         { status: 400 },
       );
     }
@@ -120,32 +134,43 @@ export async function PATCH(request: Request) {
 
     if (!vendor) {
       return NextResponse.json(
-        { error: "Vendor profile not found." },
+        { message: "Vendor profile not found." },
         { status: 404 },
       );
     }
 
-    if (phone) {
-      const existingUser = await prisma.user.findFirst({
+    const existingEmail = await prisma.user.findFirst({
+      where: {
+        email,
+        NOT: {
+          id: session.userId,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (existingEmail) {
+      return NextResponse.json(
+        { message: "This email address is already in use." },
+        { status: 409 },
+      );
+    }
+
+    const updated = await prisma.$transaction(async (tx) => {
+      const updatedUser = await tx.user.update({
         where: {
-          phone,
-          NOT: {
-            id: session.userId,
-          },
+          id: session.userId,
+        },
+        data: {
+          fullName,
+          email,
+          phone: phone || null,
+          updatedAt: new Date(),
         },
       });
 
-      if (existingUser) {
-        return NextResponse.json(
-          { error: "This phone number is already registered." },
-          { status: 409 },
-        );
-      }
-    }
-
-    const now = new Date();
-
-    const result = await prisma.$transaction(async (tx) => {
       const updatedVendor = await tx.vendor.update({
         where: {
           id: vendor.id,
@@ -155,50 +180,39 @@ export async function PATCH(request: Request) {
           description: description || null,
           city,
           address: address || null,
-          updatedAt: now,
-        },
-      });
-
-      const updatedUser = await tx.user.update({
-        where: {
-          id: session.userId,
-        },
-        data: {
-          fullName,
-          phone: phone || null,
-          updatedAt: now,
-        },
-        select: {
-          id: true,
-          fullName: true,
-          email: true,
-          phone: true,
-          role: true,
+          updatedAt: new Date(),
         },
       });
 
       return {
-        vendor: updatedVendor,
         user: updatedUser,
+        vendor: updatedVendor,
       };
     });
 
     return NextResponse.json({
       message: "Vendor profile updated successfully.",
       vendor: {
-        id: result.vendor.id,
-        name: result.vendor.name,
-        description: result.vendor.description,
-        city: result.vendor.city,
-        address: result.vendor.address,
-        owner: result.user,
+        id: updated.vendor.id,
+        name: updated.vendor.name,
+        description: updated.vendor.description,
+        city: updated.vendor.city,
+        address: updated.vendor.address,
+        createdAt: updated.vendor.createdAt,
+        updatedAt: updated.vendor.updatedAt,
+      },
+      owner: {
+        id: updated.user.id,
+        fullName: updated.user.fullName,
+        email: updated.user.email,
+        phone: updated.user.phone,
       },
     });
   } catch (error) {
     console.error("Vendor profile PATCH error:", error);
 
     return NextResponse.json(
-      { error: "Unable to update vendor profile." },
+      { message: "Unable to update vendor profile." },
       { status: 500 },
     );
   }

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -9,14 +9,14 @@ export async function GET(request: Request) {
     if (!session) {
       return NextResponse.json(
         { error: "Authentication required." },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
     if (session.role !== "PROVIDER") {
       return NextResponse.json(
         { error: "Provider access required." },
-        { status: 403 },
+        { status: 403 }
       );
     }
 
@@ -24,44 +24,50 @@ export async function GET(request: Request) {
       where: {
         ownerId: session.userId,
       },
+      select: {
+        id: true,
+      },
     });
 
     if (!vendor) {
       return NextResponse.json(
-        { error: "Vendor profile not found." },
-        { status: 404 },
+        { error: "Provider profile not found." },
+        { status: 404 }
       );
     }
 
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
 
-    const where: {
-      service: {
-        vendorId: string;
-      };
-      status?: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
-    } = {
-      service: {
-        vendorId: vendor.id,
-      },
-    };
-
-    if (
-      status === "PENDING" ||
-      status === "CONFIRMED" ||
-      status === "CANCELLED" ||
-      status === "COMPLETED"
-    ) {
-      where.status = status;
-    }
+    const validStatuses = [
+      "PENDING",
+      "CONFIRMED",
+      "CANCELLED",
+      "COMPLETED",
+    ];
 
     const bookings = await prisma.booking.findMany({
-      where,
-      orderBy: {
-        createdAt: "desc",
+      where: {
+        Service: {
+          vendorId: vendor.id,
+        },
+        ...(status && validStatuses.includes(status)
+          ? {
+              status:
+                status as
+                  | "PENDING"
+                  | "CONFIRMED"
+                  | "CANCELLED"
+                  | "COMPLETED",
+            }
+          : {}),
       },
       include: {
+        Service: {
+          include: {
+            Category: true,
+          },
+        },
         User: {
           select: {
             id: true,
@@ -70,56 +76,41 @@ export async function GET(request: Request) {
             phone: true,
           },
         },
-        Service: {
-          select: {
-            id: true,
-            title: true,
-            price: true,
-            durationMinutes: true,
-            Category: {
-              select: {
-                id: true,
-                name: true,
-                slug: true,
-              },
-            },
-          },
-        },
+      },
+      orderBy: {
+        bookingDate: "desc",
       },
     });
-
-    const normalized = bookings.map((booking) => ({
-      id: booking.id,
-      reference: booking.id,
-      customer: {
-        id: booking.User.id,
-        fullName: booking.User.fullName,
-        email: booking.User.email,
-        phone: booking.User.phone,
-      },
-      service: {
-        id: booking.Service.id,
-        title: booking.Service.title,
-        price: booking.Service.price.toString(),
-        durationMinutes: booking.Service.durationMinutes,
-        category: booking.Service.Category,
-      },
-      bookingDate: booking.bookingDate,
-      status: booking.status,
-      notes: booking.notes,
-      createdAt: booking.createdAt,
-    }));
 
     return NextResponse.json({
-      bookings: normalized,
-      total: normalized.length,
+      bookings: bookings.map((booking) => ({
+        id: booking.id,
+        reference: booking.id,
+        bookingDate: booking.bookingDate,
+        status: booking.status,
+        notes: booking.notes,
+        createdAt: booking.createdAt,
+        customer: {
+          id: booking.User.id,
+          name: booking.User.fullName,
+          email: booking.User.email,
+          phone: booking.User.phone,
+        },
+        service: {
+          id: booking.Service.id,
+          title: booking.Service.title,
+          price: booking.Service.price.toString(),
+          durationMinutes: booking.Service.durationMinutes,
+          category: booking.Service.Category.name,
+        },
+      })),
     });
   } catch (error) {
-    console.error("Vendor bookings GET error:", error);
+    console.error("Vendor bookings error:", error);
 
     return NextResponse.json(
-      { error: "Unable to load vendor bookings." },
-      { status: 500 },
+      { error: "Unable to load bookings." },
+      { status: 500 }
     );
   }
 }

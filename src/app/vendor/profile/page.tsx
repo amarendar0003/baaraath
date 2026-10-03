@@ -1,24 +1,29 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   ArrowLeft,
   Building2,
+  CheckCircle2,
   Loader2,
   Mail,
   MapPin,
   Phone,
   Save,
-  UserRound,
+  User,
 } from "lucide-react";
 
-type Profile = {
-  name: string;
-  description: string | null;
-  city: string;
-  address: string | null;
+type ProfileData = {
+  vendor: {
+    id: string;
+    name: string;
+    description: string | null;
+    city: string;
+    address: string | null;
+  };
   owner: {
+    id: string;
     fullName: string;
     email: string;
     phone: string | null;
@@ -26,7 +31,7 @@ type Profile = {
 };
 
 export default function VendorProfilePage() {
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [data, setData] = useState<ProfileData | null>(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -34,6 +39,7 @@ export default function VendorProfilePage() {
     city: "",
     address: "",
     fullName: "",
+    email: "",
     phone: "",
   });
 
@@ -43,67 +49,73 @@ export default function VendorProfilePage() {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    async function loadProfile() {
-      try {
-        const response = await fetch("/api/vendor/profile");
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(
-            data.error || "Unable to load vendor profile.",
-          );
-        }
-
-        const vendor = data.vendor;
-
-        setProfile(vendor);
-
-        setForm({
-          name: vendor.name || "",
-          description: vendor.description || "",
-          city: vendor.city || "",
-          address: vendor.address || "",
-          fullName: vendor.owner.fullName || "",
-          phone: vendor.owner.phone || "",
-        });
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load vendor profile.",
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
     loadProfile();
   }, []);
 
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>,
+  async function loadProfile() {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch("/api/vendor/profile", {
+        cache: "no-store",
+      });
+
+      if (response.status === 401) {
+        window.location.href = "/login";
+        return;
+      }
+
+      if (response.status === 403) {
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Unable to load profile.");
+      }
+
+      setData(result);
+
+      setForm({
+        name: result.vendor.name || "",
+        description: result.vendor.description || "",
+        city: result.vendor.city || "",
+        address: result.vendor.address || "",
+        fullName: result.owner.fullName || "",
+        email: result.owner.email || "",
+        phone: result.owner.phone || "",
+      });
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to load vendor profile.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function updateField(
+    field: keyof typeof form,
+    value: string,
   ) {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+    setSuccess("");
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    setSaving(true);
     setError("");
     setSuccess("");
-
-    if (!form.name.trim()) {
-      setError("Business name is required.");
-      return;
-    }
-
-    if (!form.city.trim()) {
-      setError("City is required.");
-      return;
-    }
-
-    if (!form.fullName.trim()) {
-      setError("Owner name is required.");
-      return;
-    }
-
-    setSaving(true);
 
     try {
       const response = await fetch("/api/vendor/profile", {
@@ -114,22 +126,35 @@ export default function VendorProfilePage() {
         body: JSON.stringify(form),
       });
 
-      const data = await response.json();
+      const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.error || "Unable to update vendor profile.",
-        );
+      if (response.status === 401) {
+        window.location.href = "/login";
+        return;
       }
 
-      setProfile(data.vendor);
+      if (!response.ok) {
+        throw new Error(result.message || "Unable to update profile.");
+      }
+
+      setData(result);
+
+      setForm({
+        name: result.vendor.name || "",
+        description: result.vendor.description || "",
+        city: result.vendor.city || "",
+        address: result.vendor.address || "",
+        fullName: result.owner.fullName || "",
+        email: result.owner.email || "",
+        phone: result.owner.phone || "",
+      });
 
       setSuccess("Vendor profile updated successfully.");
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Unable to update vendor profile.",
+          : "Unable to update profile.",
       );
     } finally {
       setSaving(false);
@@ -138,272 +163,254 @@ export default function VendorProfilePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-slate-50 px-4 py-16">
-        <div className="mx-auto flex max-w-4xl items-center justify-center gap-3 rounded-3xl bg-white p-12 shadow-sm">
-          <Loader2 className="h-5 w-5 animate-spin" />
-          Loading profile...
+      <main className="min-h-screen bg-slate-50 px-5 py-10">
+        <div className="mx-auto max-w-4xl">
+          <div className="h-8 w-56 animate-pulse rounded-lg bg-slate-200" />
+          <div className="mt-6 h-[600px] animate-pulse rounded-2xl bg-white" />
+        </div>
+      </main>
+    );
+  }
+
+  if (!data) {
+    return (
+      <main className="min-h-screen bg-slate-50 px-5 py-12">
+        <div className="mx-auto max-w-4xl rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+          {error || "Unable to load vendor profile."}
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8">
-      <div className="mx-auto max-w-5xl">
-        <Link
-          href="/vendor/dashboard"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Vendor Dashboard
-        </Link>
+    <main className="min-h-screen bg-slate-50">
+      <div className="mx-auto max-w-4xl px-5 py-8 sm:px-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <Link
+              href="/vendor/dashboard"
+              className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Link>
 
-        <div className="mt-5">
-          <h1 className="text-3xl font-bold text-slate-900">
-            Vendor Profile
-          </h1>
+            <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-950">
+              Business Profile
+            </h1>
 
-          <p className="mt-1 text-sm text-slate-500">
-            Manage your business and owner information.
-          </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Manage your business and provider contact information.
+            </p>
+          </div>
         </div>
 
-        {profile && (
-          <div className="mt-6 grid gap-6 lg:grid-cols-[280px_1fr]">
-            <aside className="h-fit rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-50 text-amber-600">
-                <Building2 className="h-9 w-9" />
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          <section className="rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
+                <Building2 className="h-5 w-5 text-slate-600" />
               </div>
 
-              <h2 className="mt-5 text-xl font-bold text-slate-900">
-                {profile.name}
-              </h2>
+              <div>
+                <h2 className="font-semibold text-slate-950">
+                  Business Information
+                </h2>
 
-              <p className="mt-1 flex items-center gap-2 text-sm text-slate-500">
-                <MapPin className="h-4 w-4" />
-                {profile.city}
-              </p>
-
-              <div className="mt-6 border-t border-slate-100 pt-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  Account type
-                </p>
-
-                <p className="mt-1 font-semibold text-slate-900">
-                  Service Provider
+                <p className="text-sm text-slate-500">
+                  Information customers see about your business.
                 </p>
               </div>
-            </aside>
+            </div>
 
-            <section className="rounded-3xl border border-slate-200 bg-white shadow-sm">
-              <form onSubmit={handleSubmit}>
-                <div className="border-b border-slate-200 p-6">
-                  <h2 className="text-xl font-bold text-slate-900">
-                    Business Information
-                  </h2>
+            <div className="mt-6 grid gap-5">
+              <Field
+                label="Business name"
+                value={form.name}
+                onChange={(value) => updateField("name", value)}
+                placeholder="Enter business name"
+                required
+              />
 
-                  <p className="mt-1 text-sm text-slate-500">
-                    Information displayed to customers.
-                  </p>
-                </div>
+              <div>
+                <label className="text-sm font-semibold text-slate-700">
+                  Description
+                </label>
 
-                <div className="space-y-6 p-6">
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      Business Name *
-                    </label>
+                <textarea
+                  value={form.description}
+                  onChange={(event) =>
+                    updateField("description", event.target.value)
+                  }
+                  rows={5}
+                  placeholder="Describe your business..."
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
+                />
+              </div>
 
-                    <div className="relative">
-                      <Building2 className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+              <Field
+                label="City"
+                value={form.city}
+                onChange={(value) => updateField("city", value)}
+                placeholder="Hyderabad"
+                icon={<MapPin className="h-4 w-4" />}
+                required
+              />
 
-                      <input
-                        value={form.name}
-                        onChange={(e) =>
-                          setForm({
-                            ...form,
-                            name: e.target.value,
-                          })
-                        }
-                        className="w-full rounded-xl border border-slate-300 py-3 pl-12 pr-4 outline-none focus:border-amber-500"
-                        placeholder="Business name"
-                      />
-                    </div>
-                  </div>
+              <div>
+                <label className="text-sm font-semibold text-slate-700">
+                  Address
+                </label>
 
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      Business Description
-                    </label>
+                <textarea
+                  value={form.address}
+                  onChange={(event) =>
+                    updateField("address", event.target.value)
+                  }
+                  rows={3}
+                  placeholder="Business address"
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
+                />
+              </div>
+            </div>
+          </section>
 
-                    <textarea
-                      rows={5}
-                      value={form.description}
-                      onChange={(e) =>
-                        setForm({
-                          ...form,
-                          description: e.target.value,
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-amber-500"
-                      placeholder="Tell customers about your business"
-                    />
-                  </div>
+          <section className="rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
+                <User className="h-5 w-5 text-slate-600" />
+              </div>
 
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label className="mb-2 block text-sm font-semibold text-slate-700">
-                        City *
-                      </label>
+              <div>
+                <h2 className="font-semibold text-slate-950">
+                  Provider Contact
+                </h2>
 
-                      <div className="relative">
-                        <MapPin className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <p className="text-sm text-slate-500">
+                  Your account and contact information.
+                </p>
+              </div>
+            </div>
 
-                        <input
-                          value={form.city}
-                          onChange={(e) =>
-                            setForm({
-                              ...form,
-                              city: e.target.value,
-                            })
-                          }
-                          className="w-full rounded-xl border border-slate-300 py-3 pl-12 pr-4 outline-none focus:border-amber-500"
-                          placeholder="Hyderabad"
-                        />
-                      </div>
-                    </div>
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              <Field
+                label="Full name"
+                value={form.fullName}
+                onChange={(value) => updateField("fullName", value)}
+                placeholder="Your full name"
+                icon={<User className="h-4 w-4" />}
+                required
+              />
 
-                    <div>
-                      <label className="mb-2 block text-sm font-semibold text-slate-700">
-                        Business Address
-                      </label>
+              <Field
+                label="Phone"
+                value={form.phone}
+                onChange={(value) => updateField("phone", value)}
+                placeholder="Phone number"
+                icon={<Phone className="h-4 w-4" />}
+              />
 
-                      <input
-                        value={form.address}
-                        onChange={(e) =>
-                          setForm({
-                            ...form,
-                            address: e.target.value,
-                          })
-                        }
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-amber-500"
-                        placeholder="Full business address"
-                      />
-                    </div>
-                  </div>
+              <div className="sm:col-span-2">
+                <Field
+                  label="Email"
+                  type="email"
+                  value={form.email}
+                  onChange={(value) => updateField("email", value)}
+                  placeholder="you@example.com"
+                  icon={<Mail className="h-4 w-4" />}
+                  required
+                />
+              </div>
+            </div>
+          </section>
 
-                  <div className="border-t border-slate-200 pt-6">
-                    <h2 className="text-xl font-bold text-slate-900">
-                      Owner Information
-                    </h2>
+          {error && (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
 
-                    <p className="mt-1 text-sm text-slate-500">
-                      Your provider account information.
-                    </p>
-                  </div>
+          {success && (
+            <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+              <CheckCircle2 className="h-4 w-4 shrink-0" />
+              {success}
+            </div>
+          )}
 
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label className="mb-2 block text-sm font-semibold text-slate-700">
-                        Owner Name *
-                      </label>
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <Link
+              href="/vendor/dashboard"
+              className="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              Cancel
+            </Link>
 
-                      <div className="relative">
-                        <UserRound className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-
-                        <input
-                          value={form.fullName}
-                          onChange={(e) =>
-                            setForm({
-                              ...form,
-                              fullName: e.target.value,
-                            })
-                          }
-                          className="w-full rounded-xl border border-slate-300 py-3 pl-12 pr-4 outline-none focus:border-amber-500"
-                          placeholder="Owner name"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="mb-2 block text-sm font-semibold text-slate-700">
-                        Email
-                      </label>
-
-                      <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-
-                        <input
-                          value={profile.owner.email}
-                          readOnly
-                          className="w-full cursor-not-allowed rounded-xl border border-slate-200 bg-slate-50 py-3 pl-12 pr-4 text-slate-500"
-                        />
-                      </div>
-
-                      <p className="mt-1 text-xs text-slate-400">
-                        Email cannot be changed here.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
-                      Phone Number
-                    </label>
-
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-
-                      <input
-                        value={form.phone}
-                        onChange={(e) =>
-                          setForm({
-                            ...form,
-                            phone: e.target.value,
-                          })
-                        }
-                        className="w-full rounded-xl border border-slate-300 py-3 pl-12 pr-4 outline-none focus:border-amber-500"
-                        placeholder="Phone number"
-                      />
-                    </div>
-                  </div>
-
-                  {error && (
-                    <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                      {error}
-                    </div>
-                  )}
-
-                  {success && (
-                    <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-                      {success}
-                    </div>
-                  )}
-
-                  <div className="flex justify-end border-t border-slate-200 pt-6">
-                    <button
-                      type="submit"
-                      disabled={saving}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                      {saving ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Saving...
-                        </>
-                      ) : (
-                        <>
-                          <Save className="h-4 w-4" />
-                          Save Changes
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </section>
+            <button
+              type="submit"
+              disabled={saving}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4" />
+                  Save Changes
+                </>
+              )}
+            </button>
           </div>
-        )}
+        </form>
       </div>
     </main>
+  );
+}
+
+function Field({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  icon,
+  required = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  type?: string;
+  icon?: React.ReactNode;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label className="text-sm font-semibold text-slate-700">
+        {label}
+        {required && <span className="ml-1 text-red-500">*</span>}
+      </label>
+
+      <div className="relative mt-2">
+        {icon && (
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+            {icon}
+          </span>
+        )}
+
+        <input
+          type={type}
+          value={value}
+          required={required}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          className={`h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-100 ${
+            icon ? "pl-10" : ""
+          }`}
+        />
+      </div>
+    </div>
   );
 }

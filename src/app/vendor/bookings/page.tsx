@@ -1,23 +1,28 @@
-"use client";
+﻿"use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   CalendarDays,
-  Clock,
-  Mail,
-  Phone,
-  UserRound,
-  MapPin,
+  Clock3,
   Loader2,
+  Mail,
+  MapPin,
+  Phone,
+  Search,
+  UserRound,
 } from "lucide-react";
 
 type Booking = {
   id: string;
   reference: string;
+  bookingDate: string;
+  status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
+  notes: string | null;
+  createdAt: string;
   customer: {
     id: string;
-    fullName: string;
+    name: string;
     email: string;
     phone: string | null;
   };
@@ -26,19 +31,11 @@ type Booking = {
     title: string;
     price: string;
     durationMinutes: number;
-    category: {
-      id: string;
-      name: string;
-      slug: string;
-    };
+    category: string;
   };
-  bookingDate: string;
-  status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
-  notes: string | null;
-  createdAt: string;
 };
 
-const tabs = [
+const filters = [
   { value: "", label: "All" },
   { value: "PENDING", label: "Pending" },
   { value: "CONFIRMED", label: "Confirmed" },
@@ -49,37 +46,57 @@ const tabs = [
 function statusClass(status: Booking["status"]) {
   switch (status) {
     case "CONFIRMED":
-      return "bg-blue-50 text-blue-700 border-blue-200";
+      return "bg-blue-50 text-blue-700";
     case "COMPLETED":
-      return "bg-green-50 text-green-700 border-green-200";
+      return "bg-emerald-50 text-emerald-700";
     case "CANCELLED":
-      return "bg-red-50 text-red-700 border-red-200";
+      return "bg-red-50 text-red-700";
     default:
-      return "bg-amber-50 text-amber-700 border-amber-200";
+      return "bg-amber-50 text-amber-700";
   }
+}
+
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(value));
+}
+
+function formatTime(value: string) {
+  return new Intl.DateTimeFormat("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(value));
 }
 
 export default function VendorBookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [activeTab, setActiveTab] = useState("");
+  const [status, setStatus] = useState("");
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  async function loadBookings(status = "") {
-    setLoading(true);
-    setError("");
-
+  async function loadBookings(selectedStatus = status) {
     try {
-      const query = status
-        ? `?status=${encodeURIComponent(status)}`
-        : "";
+      setLoading(true);
+      setError("");
 
-      const response = await fetch(`/api/vendor/bookings${query}`);
+      const url = selectedStatus
+        ? `/api/vendor/bookings?status=${selectedStatus}`
+        : "/api/vendor/bookings";
+
+      const response = await fetch(url, {
+        cache: "no-store",
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Unable to load bookings.");
+        throw new Error(
+          data.error || "Unable to load bookings."
+        );
       }
 
       setBookings(data.bookings || []);
@@ -87,7 +104,7 @@ export default function VendorBookingsPage() {
       setError(
         err instanceof Error
           ? err.message
-          : "Unable to load bookings.",
+          : "Unable to load bookings."
       );
     } finally {
       setLoading(false);
@@ -95,206 +112,233 @@ export default function VendorBookingsPage() {
   }
 
   useEffect(() => {
-    loadBookings(activeTab);
-  }, [activeTab]);
+    loadBookings(status);
+  }, [status]);
+
+  const filteredBookings = bookings.filter((booking) => {
+    const query = search.trim().toLowerCase();
+
+    if (!query) return true;
+
+    return (
+      booking.reference.toLowerCase().includes(query) ||
+      booking.customer.name.toLowerCase().includes(query) ||
+      booking.customer.email.toLowerCase().includes(query) ||
+      booking.service.title.toLowerCase().includes(query)
+    );
+  });
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-6">
-          <Link
-            href="/vendor/dashboard"
-            className="text-sm font-medium text-slate-500 hover:text-slate-900"
-          >
-            ? Back to Vendor Dashboard
-          </Link>
+    <main className="min-h-screen bg-slate-50">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 
-          <div className="mt-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900">
-                Customer Bookings
-              </h1>
-              <p className="mt-1 text-sm text-slate-500">
-                Manage booking requests received for your services.
-              </p>
-            </div>
+        <div className="mb-7">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+            Bookings
+          </h1>
 
-            <div className="rounded-xl bg-white px-4 py-3 shadow-sm ring-1 ring-slate-200">
-              <span className="text-sm text-slate-500">
-                Total bookings
-              </span>
-              <div className="text-2xl font-bold text-slate-900">
-                {bookings.length}
-              </div>
-            </div>
-          </div>
+          <p className="mt-1 text-sm text-slate-500">
+            View booking requests for your services.
+          </p>
         </div>
 
-        <div className="mb-6 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2">
-          <div className="flex min-w-max gap-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.value}
-                type="button"
-                onClick={() => setActiveTab(tab.value)}
-                className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition ${
-                  activeTab === tab.value
-                    ? "bg-slate-900 text-white"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+        {/* Filters */}
+        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+            <div className="flex flex-wrap gap-2">
+              {filters.map((filter) => (
+                <button
+                  key={filter.value}
+                  type="button"
+                  onClick={() => setStatus(filter.value)}
+                  className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                    status === filter.value
+                      ? "bg-slate-900 text-white"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="relative w-full lg:max-w-sm">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
+              <input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search booking, customer or service..."
+                className="w-full rounded-xl border border-slate-300 py-2.5 pl-9 pr-4 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+              />
+            </div>
           </div>
         </div>
 
         {error && (
-          <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
           </div>
         )}
 
         {loading ? (
-          <div className="flex min-h-60 items-center justify-center rounded-3xl border border-slate-200 bg-white">
-            <div className="flex items-center gap-3 text-slate-600">
+          <div className="flex items-center justify-center rounded-2xl border border-slate-200 bg-white py-24 shadow-sm">
+            <div className="flex items-center gap-3 text-sm text-slate-500">
               <Loader2 className="h-5 w-5 animate-spin" />
               Loading bookings...
             </div>
           </div>
-        ) : bookings.length === 0 ? (
-          <div className="rounded-3xl border border-slate-200 bg-white p-12 text-center">
-            <CalendarDays className="mx-auto h-12 w-12 text-slate-300" />
+        ) : filteredBookings.length === 0 ? (
+          <div className="rounded-2xl border border-slate-200 bg-white px-6 py-20 text-center shadow-sm">
+            <CalendarDays className="mx-auto h-10 w-10 text-slate-300" />
 
-            <h2 className="mt-4 text-xl font-bold text-slate-900">
+            <h2 className="mt-4 text-lg font-semibold text-slate-900">
               No bookings found
             </h2>
 
-            <p className="mt-2 text-sm text-slate-500">
-              Booking requests for your services will appear here.
+            <p className="mt-1 text-sm text-slate-500">
+              {search
+                ? "Try a different search."
+                : "Bookings for your services will appear here."}
             </p>
           </div>
         ) : (
           <div className="space-y-4">
-            {bookings.map((booking) => (
+            {filteredBookings.map((booking) => (
               <article
                 key={booking.id}
-                className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
+                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
               >
-                <div className="flex flex-col justify-between gap-4 lg:flex-row">
-                  <div className="flex gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
-                      <CalendarDays className="h-6 w-6" />
-                    </div>
+                <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
 
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h2 className="text-lg font-bold text-slate-900">
-                          {booking.service.title}
-                        </h2>
+                  {/* Main */}
+                  <div className="min-w-0 flex-1">
 
-                        <span
-                          className={`rounded-full border px-3 py-1 text-xs font-bold ${statusClass(
-                            booking.status,
-                          )}`}
-                        >
-                          {booking.status}
-                        </span>
-                      </div>
-
-                      <p className="mt-1 text-xs font-medium text-slate-400">
-                        Booking reference: {booking.reference}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-left lg:text-right">
-                    <div className="text-xs text-slate-400">
-                      Service price
-                    </div>
-                    <div className="text-xl font-bold text-slate-900">
-                      ?{Number(booking.service.price).toLocaleString("en-IN")}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-5 grid gap-4 border-t border-slate-100 pt-5 md:grid-cols-2 lg:grid-cols-4">
-                  <div className="flex gap-3">
-                    <UserRound className="mt-0.5 h-5 w-5 text-slate-400" />
-                    <div>
-                      <div className="text-xs text-slate-400">
-                        Customer
-                      </div>
-                      <div className="font-semibold text-slate-900">
-                        {booking.customer.fullName}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <CalendarDays className="mt-0.5 h-5 w-5 text-slate-400" />
-                    <div>
-                      <div className="text-xs text-slate-400">
-                        Booking date
-                      </div>
-                      <div className="font-semibold text-slate-900">
-                        {new Date(
-                          booking.bookingDate,
-                        ).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <Clock className="mt-0.5 h-5 w-5 text-slate-400" />
-                    <div>
-                      <div className="text-xs text-slate-400">
-                        Duration
-                      </div>
-                      <div className="font-semibold text-slate-900">
-                        {booking.service.durationMinutes} minutes
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <MapPin className="mt-0.5 h-5 w-5 text-slate-400" />
-                    <div>
-                      <div className="text-xs text-slate-400">
-                        Category
-                      </div>
-                      <div className="font-semibold text-slate-900">
-                        {booking.service.category.name}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex flex-wrap gap-4 text-sm text-slate-500">
-                    <span className="inline-flex items-center gap-2">
-                      <Mail className="h-4 w-4" />
-                      {booking.customer.email}
-                    </span>
-
-                    {booking.customer.phone && (
-                      <span className="inline-flex items-center gap-2">
-                        <Phone className="h-4 w-4" />
-                        {booking.customer.phone}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-slate-500">
+                        {booking.reference}
                       </span>
+
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-bold ${statusClass(
+                          booking.status
+                        )}`}
+                      >
+                        {booking.status}
+                      </span>
+                    </div>
+
+                    <h2 className="mt-2 text-lg font-bold text-slate-950">
+                      {booking.service.title}
+                    </h2>
+
+                    <p className="mt-1 text-xs font-medium text-slate-400">
+                      {booking.service.category}
+                    </p>
+
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+
+                      <div className="flex items-start gap-2">
+                        <UserRound className="mt-0.5 h-4 w-4 text-slate-400" />
+
+                        <div>
+                          <p className="text-xs text-slate-400">
+                            Customer
+                          </p>
+
+                          <p className="text-sm font-semibold text-slate-700">
+                            {booking.customer.name}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2">
+                        <CalendarDays className="mt-0.5 h-4 w-4 text-slate-400" />
+
+                        <div>
+                          <p className="text-xs text-slate-400">
+                            Booking date
+                          </p>
+
+                          <p className="text-sm font-semibold text-slate-700">
+                            {formatDate(booking.bookingDate)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2">
+                        <Clock3 className="mt-0.5 h-4 w-4 text-slate-400" />
+
+                        <div>
+                          <p className="text-xs text-slate-400">
+                            Time
+                          </p>
+
+                          <p className="text-sm font-semibold text-slate-700">
+                            {formatTime(booking.bookingDate)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2">
+                        <MapPin className="mt-0.5 h-4 w-4 text-slate-400" />
+
+                        <div>
+                          <p className="text-xs text-slate-400">
+                            Service
+                          </p>
+
+                          <p className="text-sm font-semibold text-slate-700">
+                            ₹{Number(
+                              booking.service.price
+                            ).toLocaleString("en-IN")}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {booking.notes && (
+                      <div className="mt-5 rounded-xl bg-slate-50 p-4">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                          Booking notes
+                        </p>
+
+                        <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-slate-600">
+                          {booking.notes}
+                        </p>
+                      </div>
                     )}
                   </div>
 
-                  {booking.notes && (
-                    <div className="max-w-xl rounded-xl bg-slate-50 px-4 py-2 text-sm text-slate-600">
-                      <span className="font-semibold">Notes:</span>{" "}
-                      {booking.notes}
+                  {/* Customer contact */}
+                  <div className="w-full shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-4 lg:w-64">
+                    <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                      Customer contact
+                    </p>
+
+                    <div className="mt-3 space-y-2">
+                      <a
+                        href={`mailto:${booking.customer.email}`}
+                        className="flex items-center gap-2 text-sm text-slate-600 hover:text-amber-600"
+                      >
+                        <Mail className="h-4 w-4" />
+                        <span className="truncate">
+                          {booking.customer.email}
+                        </span>
+                      </a>
+
+                      {booking.customer.phone && (
+                        <a
+                          href={`tel:${booking.customer.phone}`}
+                          className="flex items-center gap-2 text-sm text-slate-600 hover:text-amber-600"
+                        >
+                          <Phone className="h-4 w-4" />
+                          {booking.customer.phone}
+                        </a>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               </article>
             ))}
