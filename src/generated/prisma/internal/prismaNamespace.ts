@@ -402,7 +402,10 @@ export const ModelName = {
   Service: 'Service',
   User: 'User',
   Vendor: 'Vendor',
-  spatial_ref_sys: 'spatial_ref_sys'
+  VendorRegistration: 'VendorRegistration',
+  VendorBankAccount: 'VendorBankAccount',
+  VendorDocument: 'VendorDocument',
+  VendorMember: 'VendorMember'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "booking" | "category" | "service" | "user" | "vendor" | "spatial_ref_sys"
+    modelProps: "booking" | "category" | "service" | "user" | "vendor" | "vendorRegistration" | "vendorBankAccount" | "vendorDocument" | "vendorMember"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -792,77 +795,299 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    spatial_ref_sys: {
-      payload: Prisma.$spatial_ref_sysPayload<ExtArgs>
-      fields: Prisma.spatial_ref_sysFieldRefs
+    VendorRegistration: {
+      payload: Prisma.$VendorRegistrationPayload<ExtArgs>
+      fields: Prisma.VendorRegistrationFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.spatial_ref_sysFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload> | null
+          args: Prisma.VendorRegistrationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.spatial_ref_sysFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>
+          args: Prisma.VendorRegistrationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>
         }
         findFirst: {
-          args: Prisma.spatial_ref_sysFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload> | null
+          args: Prisma.VendorRegistrationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.spatial_ref_sysFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>
+          args: Prisma.VendorRegistrationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>
         }
         findMany: {
-          args: Prisma.spatial_ref_sysFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>[]
+          args: Prisma.VendorRegistrationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>[]
         }
         create: {
-          args: Prisma.spatial_ref_sysCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>
+          args: Prisma.VendorRegistrationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>
         }
         createMany: {
-          args: Prisma.spatial_ref_sysCreateManyArgs<ExtArgs>
+          args: Prisma.VendorRegistrationCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.spatial_ref_sysCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>[]
+          args: Prisma.VendorRegistrationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>[]
         }
         delete: {
-          args: Prisma.spatial_ref_sysDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>
+          args: Prisma.VendorRegistrationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>
         }
         update: {
-          args: Prisma.spatial_ref_sysUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>
+          args: Prisma.VendorRegistrationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>
         }
         deleteMany: {
-          args: Prisma.spatial_ref_sysDeleteManyArgs<ExtArgs>
+          args: Prisma.VendorRegistrationDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.spatial_ref_sysUpdateManyArgs<ExtArgs>
+          args: Prisma.VendorRegistrationUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.spatial_ref_sysUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>[]
+          args: Prisma.VendorRegistrationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>[]
         }
         upsert: {
-          args: Prisma.spatial_ref_sysUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$spatial_ref_sysPayload>
+          args: Prisma.VendorRegistrationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorRegistrationPayload>
         }
         aggregate: {
-          args: Prisma.Spatial_ref_sysAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateSpatial_ref_sys>
+          args: Prisma.VendorRegistrationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVendorRegistration>
         }
         groupBy: {
-          args: Prisma.spatial_ref_sysGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Spatial_ref_sysGroupByOutputType>[]
+          args: Prisma.VendorRegistrationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorRegistrationGroupByOutputType>[]
         }
         count: {
-          args: Prisma.spatial_ref_sysCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Spatial_ref_sysCountAggregateOutputType> | number
+          args: Prisma.VendorRegistrationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorRegistrationCountAggregateOutputType> | number
+        }
+      }
+    }
+    VendorBankAccount: {
+      payload: Prisma.$VendorBankAccountPayload<ExtArgs>
+      fields: Prisma.VendorBankAccountFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VendorBankAccountFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VendorBankAccountFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        findFirst: {
+          args: Prisma.VendorBankAccountFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VendorBankAccountFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        findMany: {
+          args: Prisma.VendorBankAccountFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>[]
+        }
+        create: {
+          args: Prisma.VendorBankAccountCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        createMany: {
+          args: Prisma.VendorBankAccountCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VendorBankAccountCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>[]
+        }
+        delete: {
+          args: Prisma.VendorBankAccountDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        update: {
+          args: Prisma.VendorBankAccountUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        deleteMany: {
+          args: Prisma.VendorBankAccountDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VendorBankAccountUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VendorBankAccountUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>[]
+        }
+        upsert: {
+          args: Prisma.VendorBankAccountUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorBankAccountPayload>
+        }
+        aggregate: {
+          args: Prisma.VendorBankAccountAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVendorBankAccount>
+        }
+        groupBy: {
+          args: Prisma.VendorBankAccountGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorBankAccountGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VendorBankAccountCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorBankAccountCountAggregateOutputType> | number
+        }
+      }
+    }
+    VendorDocument: {
+      payload: Prisma.$VendorDocumentPayload<ExtArgs>
+      fields: Prisma.VendorDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VendorDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VendorDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.VendorDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VendorDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.VendorDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.VendorDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.VendorDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VendorDocumentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>[]
+        }
+        delete: {
+          args: Prisma.VendorDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>
+        }
+        update: {
+          args: Prisma.VendorDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.VendorDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VendorDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VendorDocumentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>[]
+        }
+        upsert: {
+          args: Prisma.VendorDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.VendorDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVendorDocument>
+        }
+        groupBy: {
+          args: Prisma.VendorDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VendorDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
+    VendorMember: {
+      payload: Prisma.$VendorMemberPayload<ExtArgs>
+      fields: Prisma.VendorMemberFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VendorMemberFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VendorMemberFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>
+        }
+        findFirst: {
+          args: Prisma.VendorMemberFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VendorMemberFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>
+        }
+        findMany: {
+          args: Prisma.VendorMemberFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>[]
+        }
+        create: {
+          args: Prisma.VendorMemberCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>
+        }
+        createMany: {
+          args: Prisma.VendorMemberCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VendorMemberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>[]
+        }
+        delete: {
+          args: Prisma.VendorMemberDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>
+        }
+        update: {
+          args: Prisma.VendorMemberUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>
+        }
+        deleteMany: {
+          args: Prisma.VendorMemberDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VendorMemberUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VendorMemberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>[]
+        }
+        upsert: {
+          args: Prisma.VendorMemberUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VendorMemberPayload>
+        }
+        aggregate: {
+          args: Prisma.VendorMemberAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVendorMember>
+        }
+        groupBy: {
+          args: Prisma.VendorMemberGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorMemberGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VendorMemberCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VendorMemberCountAggregateOutputType> | number
         }
       }
     }
@@ -967,22 +1192,105 @@ export const VendorScalarFieldEnum = {
   ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  latitude: 'latitude',
-  longitude: 'longitude'
+  businessName: 'businessName',
+  businessType: 'businessType',
+  registrationNo: 'registrationNo',
+  gstNumber: 'gstNumber',
+  panNumber: 'panNumber',
+  website: 'website',
+  contactEmail: 'contactEmail',
+  contactPhone: 'contactPhone',
+  postalCode: 'postalCode',
+  state: 'state',
+  country: 'country',
+  status: 'status',
+  approvalNotes: 'approvalNotes',
+  approvedAt: 'approvedAt',
+  profileComplete: 'profileComplete'
 } as const
 
 export type VendorScalarFieldEnum = (typeof VendorScalarFieldEnum)[keyof typeof VendorScalarFieldEnum]
 
 
-export const Spatial_ref_sysScalarFieldEnum = {
-  srid: 'srid',
-  auth_name: 'auth_name',
-  auth_srid: 'auth_srid',
-  srtext: 'srtext',
-  proj4text: 'proj4text'
+export const VendorRegistrationScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  personalFirstName: 'personalFirstName',
+  personalLastName: 'personalLastName',
+  personalPhone: 'personalPhone',
+  personalEmail: 'personalEmail',
+  organizationName: 'organizationName',
+  organizationType: 'organizationType',
+  organizationDesc: 'organizationDesc',
+  addressLine1: 'addressLine1',
+  addressLine2: 'addressLine2',
+  city: 'city',
+  state: 'state',
+  postalCode: 'postalCode',
+  country: 'country',
+  submittedAt: 'submittedAt',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  status: 'status'
 } as const
 
-export type Spatial_ref_sysScalarFieldEnum = (typeof Spatial_ref_sysScalarFieldEnum)[keyof typeof Spatial_ref_sysScalarFieldEnum]
+export type VendorRegistrationScalarFieldEnum = (typeof VendorRegistrationScalarFieldEnum)[keyof typeof VendorRegistrationScalarFieldEnum]
+
+
+export const VendorBankAccountScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  accountHolderName: 'accountHolderName',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
+  ifscCode: 'ifscCode',
+  branchName: 'branchName',
+  accountType: 'accountType',
+  isPrimary: 'isPrimary',
+  verified: 'verified',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorBankAccountScalarFieldEnum = (typeof VendorBankAccountScalarFieldEnum)[keyof typeof VendorBankAccountScalarFieldEnum]
+
+
+export const VendorDocumentScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  fileName: 'fileName',
+  storagePath: 'storagePath',
+  mimeType: 'mimeType',
+  fileSize: 'fileSize',
+  status: 'status',
+  rejectionNote: 'rejectionNote',
+  uploadedAt: 'uploadedAt',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type VendorDocumentScalarFieldEnum = (typeof VendorDocumentScalarFieldEnum)[keyof typeof VendorDocumentScalarFieldEnum]
+
+
+export const VendorMemberScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  userId: 'userId',
+  memberRole: 'memberRole',
+  canViewDashboard: 'canViewDashboard',
+  canManageBookings: 'canManageBookings',
+  canManageServices: 'canManageServices',
+  canManageStaff: 'canManageStaff',
+  canViewFinance: 'canViewFinance',
+  canManageDocuments: 'canManageDocuments',
+  canEditVendor: 'canEditVendor',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorMemberScalarFieldEnum = (typeof VendorMemberScalarFieldEnum)[keyof typeof VendorMemberScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1103,6 +1411,76 @@ export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
  * Reference to a field of type 'UserRole[]'
  */
 export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorStatus'
+ */
+export type EnumVendorStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorStatus[]'
+ */
+export type ListEnumVendorStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorRegistrationStatus'
+ */
+export type EnumVendorRegistrationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorRegistrationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorRegistrationStatus[]'
+ */
+export type ListEnumVendorRegistrationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorRegistrationStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorDocumentType'
+ */
+export type EnumVendorDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorDocumentType'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorDocumentType[]'
+ */
+export type ListEnumVendorDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorDocumentType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorDocumentStatus'
+ */
+export type EnumVendorDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorDocumentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorDocumentStatus[]'
+ */
+export type ListEnumVendorDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorDocumentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorMemberRole'
+ */
+export type EnumVendorMemberRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorMemberRole'>
+    
+
+
+/**
+ * Reference to a field of type 'VendorMemberRole[]'
+ */
+export type ListEnumVendorMemberRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorMemberRole[]'>
     
 
 
@@ -1275,7 +1653,10 @@ export type GlobalOmitConfig = {
   service?: Prisma.ServiceOmit
   user?: Prisma.UserOmit
   vendor?: Prisma.VendorOmit
-  spatial_ref_sys?: Prisma.spatial_ref_sysOmit
+  vendorRegistration?: Prisma.VendorRegistrationOmit
+  vendorBankAccount?: Prisma.VendorBankAccountOmit
+  vendorDocument?: Prisma.VendorDocumentOmit
+  vendorMember?: Prisma.VendorMemberOmit
 }
 
 /* Types for Logging */

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -6,10 +6,9 @@ export async function GET() {
   try {
     const session = await getSession();
 
-    if (!session) {
+    if (!session?.userId) {
       return NextResponse.json(
         {
-          success: false,
           message: "Not authenticated.",
         },
         { status: 401 }
@@ -33,24 +32,28 @@ export async function GET() {
     if (!user) {
       return NextResponse.json(
         {
-          success: false,
           message: "User not found.",
         },
-        { status: 404 }
+        { status: 401 }
       );
     }
 
     return NextResponse.json({
-      success: true,
-      user,
+      user: {
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        createdAt: user.createdAt.toISOString(),
+      },
     });
   } catch (error) {
     console.error("Auth me error:", error);
 
     return NextResponse.json(
       {
-        success: false,
-        message: "Unable to load account.",
+        message: "Unable to verify session.",
       },
       { status: 500 }
     );

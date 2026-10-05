@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import RoleDashboardGuard from "@/components/RoleDashboardGuard";
 import { useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -51,7 +52,7 @@ type DashboardData = {
   recentBookings: Booking[];
 };
 
-export default function DashboardPage() {
+function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -467,5 +468,12 @@ function formatDate(value: string) {
     month: "short",
     year: "numeric",
   }).format(new Date(value));
+}
+export default function CustomerDashboardWithRoleGuard() {
+  return (
+    <RoleDashboardGuard>
+      <DashboardPage />
+    </RoleDashboardGuard>
+  );
 }
 

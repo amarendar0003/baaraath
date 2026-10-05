@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/auth";
@@ -7,16 +7,19 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const email = String(body.email || "")
-      .trim()
-      .toLowerCase();
+    const email =
+      typeof body.email === "string"
+        ? body.email.trim().toLowerCase()
+        : "";
 
-    const password = String(body.password || "");
+    const password =
+      typeof body.password === "string"
+        ? body.password
+        : "";
 
     if (!email || !password) {
       return NextResponse.json(
         {
-          success: false,
           message: "Email and password are required.",
         },
         { status: 400 }
@@ -27,27 +30,33 @@ export async function POST(request: Request) {
       where: {
         email,
       },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        phone: true,
+        passwordHash: true,
+        role: true,
+      },
     });
 
     if (!user || !user.passwordHash) {
       return NextResponse.json(
         {
-          success: false,
           message: "Invalid email or password.",
         },
         { status: 401 }
       );
     }
 
-    const passwordValid = await bcrypt.compare(
+    const passwordMatches = await bcrypt.compare(
       password,
       user.passwordHash
     );
 
-    if (!passwordValid) {
+    if (!passwordMatches) {
       return NextResponse.json(
         {
-          success: false,
           message: "Invalid email or password.",
         },
         { status: 401 }
@@ -60,13 +69,25 @@ export async function POST(request: Request) {
       role: user.role,
     });
 
+    let redirectTo = "/dashboard";
+
+    if (user.role === "ADMIN") {
+      redirectTo = "/admin/dashboard";
+    } else if (user.role === "PROVIDER") {
+      redirectTo = "/vendor/dashboard";
+    } else if (user.role === "CUSTOMER") {
+      redirectTo = "/dashboard";
+    }
+
     return NextResponse.json({
       success: true,
       message: "Login successful.",
+      redirectTo,
       user: {
         id: user.id,
         fullName: user.fullName,
         email: user.email,
+        phone: user.phone,
         role: user.role,
       },
     });
@@ -75,8 +96,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        success: false,
-        message: "Something went wrong while logging in.",
+        message: "Unable to login. Please try again.",
       },
       { status: 500 }
     );

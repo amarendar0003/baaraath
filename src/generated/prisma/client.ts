@@ -67,7 +67,22 @@ export type User = Prisma.UserModel
  */
 export type Vendor = Prisma.VendorModel
 /**
- * Model spatial_ref_sys
- * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ * Model VendorRegistration
+ * 
  */
-export type spatial_ref_sys = Prisma.spatial_ref_sysModel
+export type VendorRegistration = Prisma.VendorRegistrationModel
+/**
+ * Model VendorBankAccount
+ * 
+ */
+export type VendorBankAccount = Prisma.VendorBankAccountModel
+/**
+ * Model VendorDocument
+ * 
+ */
+export type VendorDocument = Prisma.VendorDocumentModel
+/**
+ * Model VendorMember
+ * 
+ */
+export type VendorMember = Prisma.VendorMemberModel

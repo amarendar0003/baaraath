@@ -56,7 +56,10 @@ export const ModelName = {
   Service: 'Service',
   User: 'User',
   Vendor: 'Vendor',
-  spatial_ref_sys: 'spatial_ref_sys'
+  VendorRegistration: 'VendorRegistration',
+  VendorBankAccount: 'VendorBankAccount',
+  VendorDocument: 'VendorDocument',
+  VendorMember: 'VendorMember'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -137,22 +140,105 @@ export const VendorScalarFieldEnum = {
   ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  latitude: 'latitude',
-  longitude: 'longitude'
+  businessName: 'businessName',
+  businessType: 'businessType',
+  registrationNo: 'registrationNo',
+  gstNumber: 'gstNumber',
+  panNumber: 'panNumber',
+  website: 'website',
+  contactEmail: 'contactEmail',
+  contactPhone: 'contactPhone',
+  postalCode: 'postalCode',
+  state: 'state',
+  country: 'country',
+  status: 'status',
+  approvalNotes: 'approvalNotes',
+  approvedAt: 'approvedAt',
+  profileComplete: 'profileComplete'
 } as const
 
 export type VendorScalarFieldEnum = (typeof VendorScalarFieldEnum)[keyof typeof VendorScalarFieldEnum]
 
 
-export const Spatial_ref_sysScalarFieldEnum = {
-  srid: 'srid',
-  auth_name: 'auth_name',
-  auth_srid: 'auth_srid',
-  srtext: 'srtext',
-  proj4text: 'proj4text'
+export const VendorRegistrationScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  personalFirstName: 'personalFirstName',
+  personalLastName: 'personalLastName',
+  personalPhone: 'personalPhone',
+  personalEmail: 'personalEmail',
+  organizationName: 'organizationName',
+  organizationType: 'organizationType',
+  organizationDesc: 'organizationDesc',
+  addressLine1: 'addressLine1',
+  addressLine2: 'addressLine2',
+  city: 'city',
+  state: 'state',
+  postalCode: 'postalCode',
+  country: 'country',
+  submittedAt: 'submittedAt',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  status: 'status'
 } as const
 
-export type Spatial_ref_sysScalarFieldEnum = (typeof Spatial_ref_sysScalarFieldEnum)[keyof typeof Spatial_ref_sysScalarFieldEnum]
+export type VendorRegistrationScalarFieldEnum = (typeof VendorRegistrationScalarFieldEnum)[keyof typeof VendorRegistrationScalarFieldEnum]
+
+
+export const VendorBankAccountScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  accountHolderName: 'accountHolderName',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
+  ifscCode: 'ifscCode',
+  branchName: 'branchName',
+  accountType: 'accountType',
+  isPrimary: 'isPrimary',
+  verified: 'verified',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorBankAccountScalarFieldEnum = (typeof VendorBankAccountScalarFieldEnum)[keyof typeof VendorBankAccountScalarFieldEnum]
+
+
+export const VendorDocumentScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  fileName: 'fileName',
+  storagePath: 'storagePath',
+  mimeType: 'mimeType',
+  fileSize: 'fileSize',
+  status: 'status',
+  rejectionNote: 'rejectionNote',
+  uploadedAt: 'uploadedAt',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type VendorDocumentScalarFieldEnum = (typeof VendorDocumentScalarFieldEnum)[keyof typeof VendorDocumentScalarFieldEnum]
+
+
+export const VendorMemberScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  userId: 'userId',
+  memberRole: 'memberRole',
+  canViewDashboard: 'canViewDashboard',
+  canManageBookings: 'canManageBookings',
+  canManageServices: 'canManageServices',
+  canManageStaff: 'canManageStaff',
+  canViewFinance: 'canViewFinance',
+  canManageDocuments: 'canManageDocuments',
+  canEditVendor: 'canEditVendor',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorMemberScalarFieldEnum = (typeof VendorMemberScalarFieldEnum)[keyof typeof VendorMemberScalarFieldEnum]
 
 
 export const SortOrder = {

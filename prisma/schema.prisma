@@ -15,6 +15,7 @@ model Booking {
   status      BookingStatus @default(PENDING)
   notes       String?
   createdAt   DateTime      @default(now())
+
   User        User          @relation(fields: [customerId], references: [id])
   Service     Service       @relation(fields: [serviceId], references: [id])
 
@@ -28,6 +29,7 @@ model Category {
   name      String    @unique
   slug      String    @unique
   createdAt DateTime  @default(now())
+
   Service   Service[]
 }
 
@@ -42,6 +44,7 @@ model Service {
   categoryId      String
   createdAt       DateTime  @default(now())
   updatedAt       DateTime
+
   Booking         Booking[]
   Category        Category  @relation(fields: [categoryId], references: [id])
   Vendor          Vendor    @relation(fields: [vendorId], references: [id], onDelete: Cascade)
@@ -51,43 +54,157 @@ model Service {
 }
 
 model User {
-  id           String    @id
+  id           String          @id
   fullName     String
-  email        String    @unique
-  phone        String?   @unique
+  email        String          @unique
+  phone        String?         @unique
   passwordHash String?
-  role         UserRole  @default(CUSTOMER)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime
+  role         UserRole        @default(CUSTOMER)
+  createdAt    DateTime        @default(now())
+  updatedAt   DateTime
+
   Booking      Booking[]
   Vendor       Vendor?
+  VendorMember VendorMember[]
 }
 
 model Vendor {
-  id          String                    @id
-  name        String
-  description String?
-  city        String
-  address     String?
-  ownerId     String                    @unique
-  createdAt   DateTime                  @default(now())
-  updatedAt   DateTime
-  latitude    Float?
-  longitude   Float?
-  location    Unsupported("geography")?
-  Service     Service[]
-  User        User                      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id              String          @id
+  name            String
+  description     String?
+  city            String
+  address         String?
+  ownerId         String          @unique
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime
 
-  @@index([location], map: "Vendor_location_gist_idx", type: Gist)
+  businessName    String?
+  businessType    String?
+  registrationNo  String?
+  gstNumber       String?
+  panNumber       String?
+  website         String?
+  contactEmail    String?
+  contactPhone    String?
+  postalCode      String?
+  state           String?
+  country         String?         @default("India")
+
+  status          VendorStatus    @default(PENDING)
+  approvalNotes   String?
+  approvedAt      DateTime?
+  profileComplete Boolean         @default(false)
+
+  Service         Service[]
+  User            User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  BankAccounts    VendorBankAccount[]
+  Documents       VendorDocument[]
+  Members         VendorMember[]
+  Registration    VendorRegistration?
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model spatial_ref_sys {
-  srid      Int     @id
-  auth_name String? @db.VarChar(256)
-  auth_srid Int?
-  srtext    String? @db.VarChar(2048)
-  proj4text String? @db.VarChar(2048)
+model VendorRegistration {
+  id                String                @id
+  vendorId          String                @unique
+
+  personalFirstName String?
+  personalLastName  String?
+  personalPhone     String?
+  personalEmail     String?
+
+  organizationName  String?
+  organizationType  String?
+  organizationDesc  String?
+
+  addressLine1      String?
+  addressLine2      String?
+  city              String?
+  state             String?
+  postalCode        String?
+  country           String?               @default("India")
+
+  submittedAt       DateTime?
+  reviewedAt        DateTime?
+  reviewNotes       String?
+
+  status            VendorRegistrationStatus @default(DRAFT)
+
+  Vendor            Vendor                @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
+
+model VendorBankAccount {
+  id                String          @id
+  vendorId          String
+
+  accountHolderName String
+  bankName          String
+  accountNumber     String
+  ifscCode          String
+  branchName        String?
+  accountType       String?
+
+  isPrimary         Boolean         @default(false)
+  verified          Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime
+
+  Vendor            Vendor          @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId])
+}
+
+model VendorDocument {
+  id            String                @id
+  vendorId      String
+
+  documentType  VendorDocumentType
+  documentName  String
+  fileName      String
+  storagePath   String
+  mimeType      String?
+  fileSize      Int?
+
+  status        VendorDocumentStatus  @default(PENDING)
+  rejectionNote String?
+
+  uploadedAt    DateTime              @default(now())
+  reviewedAt    DateTime?
+
+  Vendor        Vendor                @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId])
+  @@index([status])
+}
+
+model VendorMember {
+  id                  String              @id
+
+  vendorId            String
+  userId              String
+
+  memberRole          VendorMemberRole    @default(STAFF)
+
+  canViewDashboard    Boolean             @default(true)
+  canManageBookings   Boolean             @default(false)
+  canManageServices   Boolean             @default(false)
+  canManageStaff      Boolean             @default(false)
+  canViewFinance      Boolean             @default(false)
+  canManageDocuments  Boolean             @default(false)
+  canEditVendor       Boolean             @default(false)
+
+  active              Boolean             @default(true)
+
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime
+
+  Vendor              Vendor              @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  User                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, userId])
+  @@index([vendorId])
+  @@index([userId])
 }
 
 enum BookingStatus {
@@ -101,4 +218,44 @@ enum UserRole {
   CUSTOMER
   PROVIDER
   ADMIN
+}
+
+enum VendorStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  SUSPENDED
+  INACTIVE
+}
+
+enum VendorRegistrationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum VendorDocumentType {
+  PAN
+  GST
+  BUSINESS_REGISTRATION
+  ID_PROOF
+  ADDRESS_PROOF
+  BANK_PROOF
+  LICENSE
+  OTHER
+}
+
+enum VendorDocumentStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum VendorMemberRole {
+  OWNER
+  MANAGER
+  STAFF
 }

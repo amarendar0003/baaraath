@@ -208,6 +208,7 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   Booking?: Prisma.BookingListRelationFilter
   Vendor?: Prisma.XOR<Prisma.VendorNullableScalarRelationFilter, Prisma.VendorWhereInput> | null
+  VendorMember?: Prisma.VendorMemberListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -221,6 +222,7 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   Booking?: Prisma.BookingOrderByRelationAggregateInput
   Vendor?: Prisma.VendorOrderByWithRelationInput
+  VendorMember?: Prisma.VendorMemberOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -237,6 +239,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   Booking?: Prisma.BookingListRelationFilter
   Vendor?: Prisma.XOR<Prisma.VendorNullableScalarRelationFilter, Prisma.VendorWhereInput> | null
+  VendorMember?: Prisma.VendorMemberListRelationFilter
 }, "id" | "email" | "phone">
 
 export type UserOrderByWithAggregationInput = {
@@ -278,6 +281,7 @@ export type UserCreateInput = {
   updatedAt: Date | string
   Booking?: Prisma.BookingCreateNestedManyWithoutUserInput
   Vendor?: Prisma.VendorCreateNestedOneWithoutUserInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -291,6 +295,7 @@ export type UserUncheckedCreateInput = {
   updatedAt: Date | string
   Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
   Vendor?: Prisma.VendorUncheckedCreateNestedOneWithoutUserInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -304,6 +309,7 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Booking?: Prisma.BookingUpdateManyWithoutUserNestedInput
   Vendor?: Prisma.VendorUpdateOneWithoutUserNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -317,6 +323,7 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Booking?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
   Vendor?: Prisma.VendorUncheckedUpdateOneWithoutUserNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -422,6 +429,20 @@ export type UserUpdateOneRequiredWithoutVendorNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVendorInput, Prisma.UserUpdateWithoutVendorInput>, Prisma.UserUncheckedUpdateWithoutVendorInput>
 }
 
+export type UserCreateNestedOneWithoutVendorMemberInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVendorMemberInput, Prisma.UserUncheckedCreateWithoutVendorMemberInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVendorMemberInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutVendorMemberNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVendorMemberInput, Prisma.UserUncheckedCreateWithoutVendorMemberInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVendorMemberInput
+  upsert?: Prisma.UserUpsertWithoutVendorMemberInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVendorMemberInput, Prisma.UserUpdateWithoutVendorMemberInput>, Prisma.UserUncheckedUpdateWithoutVendorMemberInput>
+}
+
 export type UserCreateWithoutBookingInput = {
   id: string
   fullName: string
@@ -432,6 +453,7 @@ export type UserCreateWithoutBookingInput = {
   createdAt?: Date | string
   updatedAt: Date | string
   Vendor?: Prisma.VendorCreateNestedOneWithoutUserInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBookingInput = {
@@ -444,6 +466,7 @@ export type UserUncheckedCreateWithoutBookingInput = {
   createdAt?: Date | string
   updatedAt: Date | string
   Vendor?: Prisma.VendorUncheckedCreateNestedOneWithoutUserInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBookingInput = {
@@ -472,6 +495,7 @@ export type UserUpdateWithoutBookingInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Vendor?: Prisma.VendorUpdateOneWithoutUserNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBookingInput = {
@@ -484,6 +508,7 @@ export type UserUncheckedUpdateWithoutBookingInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Vendor?: Prisma.VendorUncheckedUpdateOneWithoutUserNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVendorInput = {
@@ -496,6 +521,7 @@ export type UserCreateWithoutVendorInput = {
   createdAt?: Date | string
   updatedAt: Date | string
   Booking?: Prisma.BookingCreateNestedManyWithoutUserInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVendorInput = {
@@ -508,6 +534,7 @@ export type UserUncheckedCreateWithoutVendorInput = {
   createdAt?: Date | string
   updatedAt: Date | string
   Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVendorInput = {
@@ -536,6 +563,7 @@ export type UserUpdateWithoutVendorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Booking?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVendorInput = {
@@ -548,6 +576,75 @@ export type UserUncheckedUpdateWithoutVendorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Booking?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutVendorMemberInput = {
+  id: string
+  fullName: string
+  email: string
+  phone?: string | null
+  passwordHash?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt: Date | string
+  Booking?: Prisma.BookingCreateNestedManyWithoutUserInput
+  Vendor?: Prisma.VendorCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutVendorMemberInput = {
+  id: string
+  fullName: string
+  email: string
+  phone?: string | null
+  passwordHash?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt: Date | string
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  Vendor?: Prisma.VendorUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutVendorMemberInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutVendorMemberInput, Prisma.UserUncheckedCreateWithoutVendorMemberInput>
+}
+
+export type UserUpsertWithoutVendorMemberInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutVendorMemberInput, Prisma.UserUncheckedUpdateWithoutVendorMemberInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutVendorMemberInput, Prisma.UserUncheckedCreateWithoutVendorMemberInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutVendorMemberInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutVendorMemberInput, Prisma.UserUncheckedUpdateWithoutVendorMemberInput>
+}
+
+export type UserUpdateWithoutVendorMemberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Booking?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  Vendor?: Prisma.VendorUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutVendorMemberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  Vendor?: Prisma.VendorUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -557,10 +654,12 @@ export type UserUncheckedUpdateWithoutVendorInput = {
 
 export type UserCountOutputType = {
   Booking: number
+  VendorMember: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Booking?: boolean | UserCountOutputTypeCountBookingArgs
+  VendorMember?: boolean | UserCountOutputTypeCountVendorMemberArgs
 }
 
 /**
@@ -580,6 +679,13 @@ export type UserCountOutputTypeCountBookingArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.BookingWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountVendorMemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VendorMemberWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -592,6 +698,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   Booking?: boolean | Prisma.User$BookingArgs<ExtArgs>
   Vendor?: boolean | Prisma.User$VendorArgs<ExtArgs>
+  VendorMember?: boolean | Prisma.User$VendorMemberArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -632,6 +739,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Booking?: boolean | Prisma.User$BookingArgs<ExtArgs>
   Vendor?: boolean | Prisma.User$VendorArgs<ExtArgs>
+  VendorMember?: boolean | Prisma.User$VendorMemberArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -642,6 +750,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     Booking: Prisma.$BookingPayload<ExtArgs>[]
     Vendor: Prisma.$VendorPayload<ExtArgs> | null
+    VendorMember: Prisma.$VendorMemberPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1048,6 +1157,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   Booking<T extends Prisma.User$BookingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$BookingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   Vendor<T extends Prisma.User$VendorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$VendorArgs<ExtArgs>>): Prisma.Prisma__VendorClient<runtime.Types.Result.GetResult<Prisma.$VendorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  VendorMember<T extends Prisma.User$VendorMemberArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$VendorMemberArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1518,6 +1628,30 @@ export type User$VendorArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.VendorInclude<ExtArgs> | null
   where?: Prisma.VendorWhereInput
+}
+
+/**
+ * User.VendorMember
+ */
+export type User$VendorMemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VendorMember
+   */
+  select?: Prisma.VendorMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VendorMember
+   */
+  omit?: Prisma.VendorMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorMemberInclude<ExtArgs> | null
+  where?: Prisma.VendorMemberWhereInput
+  orderBy?: Prisma.VendorMemberOrderByWithRelationInput | Prisma.VendorMemberOrderByWithRelationInput[]
+  cursor?: Prisma.VendorMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VendorMemberScalarFieldEnum | Prisma.VendorMemberScalarFieldEnum[]
 }
 
 /**

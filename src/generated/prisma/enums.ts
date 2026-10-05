@@ -26,3 +26,58 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const VendorStatus = {
+  PENDING: 'PENDING',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  SUSPENDED: 'SUSPENDED',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type VendorStatus = (typeof VendorStatus)[keyof typeof VendorStatus]
+
+
+export const VendorRegistrationStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type VendorRegistrationStatus = (typeof VendorRegistrationStatus)[keyof typeof VendorRegistrationStatus]
+
+
+export const VendorDocumentType = {
+  PAN: 'PAN',
+  GST: 'GST',
+  BUSINESS_REGISTRATION: 'BUSINESS_REGISTRATION',
+  ID_PROOF: 'ID_PROOF',
+  ADDRESS_PROOF: 'ADDRESS_PROOF',
+  BANK_PROOF: 'BANK_PROOF',
+  LICENSE: 'LICENSE',
+  OTHER: 'OTHER'
+} as const
+
+export type VendorDocumentType = (typeof VendorDocumentType)[keyof typeof VendorDocumentType]
+
+
+export const VendorDocumentStatus = {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type VendorDocumentStatus = (typeof VendorDocumentStatus)[keyof typeof VendorDocumentStatus]
+
+
+export const VendorMemberRole = {
+  OWNER: 'OWNER',
+  MANAGER: 'MANAGER',
+  STAFF: 'STAFF'
+} as const
+
+export type VendorMemberRole = (typeof VendorMemberRole)[keyof typeof VendorMemberRole]
