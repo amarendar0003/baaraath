@@ -7,6 +7,8 @@ import {
   ChevronDown,
   LocateFixed,
   LogIn,
+  LogOut,
+  Loader2,
   MapPin,
   Menu,
   X,
@@ -35,8 +37,14 @@ const navLinks = [
   { label: "My Bookings", href: "/dashboard/bookings" },
 ];
 
-// The saved location may be a plain city name (written by this header)
-// or a JSON object like {"city": "...", "state": "..."} (written by other pages).
+type CurrentUser = {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string | null;
+  role: "CUSTOMER" | "PROVIDER" | "ADMIN";
+};
+
 function readSavedCity(raw: string | null) {
   if (!raw) return "";
 
@@ -51,7 +59,7 @@ function readSavedCity(raw: string | null) {
       return parsed;
     }
   } catch {
-    // Not JSON - treat it as a plain city name.
+    // Plain city value.
   }
 
   return raw;
@@ -66,7 +74,54 @@ export default function Header() {
   const [detecting, setDetecting] = useState(false);
   const [locationError, setLocationError] = useState("");
 
+  const [user, setUser] = useState<CurrentUser | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
   const locationRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadCurrentUser() {
+      try {
+        const response = await fetch("/api/auth/me", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          if (!cancelled) {
+            setUser(null);
+          }
+          return;
+        }
+
+        const data = await response.json();
+
+        if (!cancelled) {
+          setUser(data.user ?? null);
+        }
+      } catch (error) {
+        console.error("Unable to load current user:", error);
+
+        if (!cancelled) {
+          setUser(null);
+        }
+      } finally {
+        if (!cancelled) {
+          setAuthLoading(false);
+        }
+      }
+    }
+
+    loadCurrentUser();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -78,7 +133,9 @@ export default function Header() {
       return;
     }
 
-    const savedCity = readSavedCity(localStorage.getItem("baaraath_location"));
+    const savedCity = readSavedCity(
+      localStorage.getItem("baaraath_location"),
+    );
 
     if (savedCity) {
       setLocation(savedCity);
@@ -99,7 +156,10 @@ export default function Header() {
       }
     }
 
-    window.addEventListener("baaraath-location-changed", handleLocationChanged);
+    window.addEventListener(
+      "baaraath-location-changed",
+      handleLocationChanged,
+    );
 
     return () => {
       window.removeEventListener(
@@ -111,11 +171,20 @@ export default function Header() {
 
   useEffect(() => {
     function handleClick(event: MouseEvent) {
+      const target = event.target as Node;
+
       if (
         locationRef.current &&
-        !locationRef.current.contains(event.target as Node)
+        !locationRef.current.contains(target)
       ) {
         setLocationOpen(false);
+      }
+
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(target)
+      ) {
+        setUserMenuOpen(false);
       }
     }
 
@@ -126,11 +195,13 @@ export default function Header() {
     };
   }, []);
 
-  function detectLocation() {
+  async function detectLocation() {
     setLocationError("");
 
     if (!navigator.geolocation) {
-      setLocationError("Location is not supported by this browser.");
+      setLocationError(
+        "Location is not supported by this browser.",
+      );
       return;
     }
 
@@ -155,7 +226,6 @@ export default function Header() {
           }
 
           const data = await response.json();
-
           const address = data.address || {};
 
           const detectedCity =
@@ -170,17 +240,28 @@ export default function Header() {
           }
 
           setLocation(detectedCity);
-          localStorage.setItem("baaraath_location", detectedCity);
+          localStorage.setItem(
+            "baaraath_location",
+            detectedCity,
+          );
 
           const url = new URL(window.location.href);
           url.searchParams.set("city", detectedCity);
 
-          window.history.replaceState({}, "", url.toString());
+          window.history.replaceState(
+            {},
+            "",
+            url.toString(),
+          );
 
-          window.dispatchEvent(new Event("baaraath-location-changed"));
+          window.dispatchEvent(
+            new Event("baaraath-location-changed"),
+          );
         } catch (error) {
           console.error(error);
-          setLocationError("Unable to determine your city.");
+          setLocationError(
+            "Unable to determine your city.",
+          );
         } finally {
           setDetecting(false);
         }
@@ -190,7 +271,10 @@ export default function Header() {
 
         setDetecting(false);
 
-        if (error.code === error.PERMISSION_DENIED) {
+        if (
+          error.code ===
+          error.PERMISSION_DENIED
+        ) {
           setLocationError(
             "Location permission was denied. You can choose a city manually.",
           );
@@ -213,10 +297,12 @@ export default function Header() {
     setLocationOpen(false);
     setLocationError("");
 
-    localStorage.setItem("baaraath_location", city);
+    localStorage.setItem(
+      "baaraath_location",
+      city,
+    );
 
     const url = new URL(window.location.href);
-
     url.searchParams.set("city", city);
 
     window.location.href = url.toString();
@@ -226,15 +312,37 @@ export default function Header() {
     setLocationOpen((current) => !current);
   }
 
+  async function handleLogout() {
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      window.location.href = "/login";
+    }
+  }
+
   function isActive(href: string) {
     if (href === "/") return pathname === "/";
     if (href.includes("#")) return false;
-    return pathname === href || pathname.startsWith(`${href}/`);
+
+    return (
+      pathname === href ||
+      pathname.startsWith(`${href}/`)
+    );
   }
 
-  // The public navbar is not shown on admin, vendor or auth screens.
-  const hideHeader = ["/admin", "/vendor", "/login", "/register"].some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  const hideHeader = [
+    "/admin",
+    "/vendor",
+    "/login",
+    "/register",
+  ].some(
+    (prefix) =>
+      pathname === prefix ||
+      pathname.startsWith(`${prefix}/`),
   );
 
   if (hideHeader) {
@@ -242,7 +350,6 @@ export default function Header() {
   }
 
   function getHref(href: string) {
-    // Carry the chosen city to the services page so results stay local.
     if (href === "/services" && location) {
       return `/services?city=${encodeURIComponent(location)}`;
     }
@@ -256,13 +363,22 @@ export default function Header() {
   ) {
     setMobileOpen(false);
 
-    // Section links (#about / #contact) while on the home page: smooth scroll.
-    if (href.startsWith("/#") && pathname === "/") {
-      const target = document.getElementById(href.slice(2));
+    if (
+      href.startsWith("/#") &&
+      pathname === "/"
+    ) {
+      const target = document.getElementById(
+        href.slice(2),
+      );
 
       if (target) {
         event.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
         window.history.replaceState(
           {},
           "",
@@ -273,18 +389,46 @@ export default function Header() {
       return;
     }
 
-    // Already on the home page: scroll back to the very top.
     if (href === "/" && pathname === "/") {
       event.preventDefault();
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
 
       window.history.replaceState(
         {},
         "",
-        window.location.pathname + window.location.search,
+        window.location.pathname +
+          window.location.search,
       );
     }
+  }
+
+  function getDashboardHref() {
+    if (!user) return "/login";
+
+    if (user.role === "ADMIN") {
+      return "/admin/dashboard";
+    }
+
+    if (user.role === "PROVIDER") {
+      return "/vendor/dashboard";
+    }
+
+    return "/dashboard";
+  }
+
+  function getInitials(name: string) {
+    return name
+      .trim()
+      .split(/\s+/)
+      .map((part) => part[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
   }
 
   return (
@@ -295,12 +439,14 @@ export default function Header() {
         }`}
       >
 
-        {/* LEFT - LOGO */}
+        {/* LOGO */}
         <div className="flex flex-1 items-center">
           <Link
             href="/"
             className="flex items-center gap-3"
-            onClick={(event) => handleNavClick(event, "/")}
+            onClick={(event) =>
+              handleNavClick(event, "/")
+            }
           >
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-300 to-amber-600 text-lg font-black text-slate-950 shadow-md shadow-amber-500/30">
               B
@@ -318,13 +464,15 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* CENTER - DESKTOP NAVIGATION */}
+        {/* DESKTOP NAVIGATION */}
         <nav className="hidden items-center gap-8 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={getHref(link.href)}
-              onClick={(event) => handleNavClick(event, link.href)}
+              onClick={(event) =>
+                handleNavClick(event, link.href)
+              }
               className={`relative py-1 text-sm font-medium tracking-wide transition after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:bg-amber-400 after:transition-all hover:text-amber-400 ${
                 isActive(link.href)
                   ? "text-amber-400 after:w-full"
@@ -336,11 +484,14 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* RIGHT - LOCATION + SIGN IN */}
+        {/* RIGHT SIDE */}
         <div className="flex flex-1 items-center justify-end gap-2 sm:gap-3">
 
           {/* LOCATION */}
-          <div ref={locationRef} className="relative">
+          <div
+            ref={locationRef}
+            className="relative"
+          >
             <button
               type="button"
               onClick={handleLocationClick}
@@ -380,7 +531,6 @@ export default function Header() {
                   </div>
                 </div>
 
-                {/* AUTO DETECT */}
                 <button
                   type="button"
                   onClick={detectLocation}
@@ -408,7 +558,6 @@ export default function Header() {
                   </div>
                 )}
 
-                {/* MANUAL CITIES */}
                 <div className="p-3">
                   <p className="px-2 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
                     Choose city manually
@@ -419,17 +568,22 @@ export default function Header() {
                       <button
                         key={city}
                         type="button"
-                        onClick={() => selectCity(city)}
+                        onClick={() =>
+                          selectCity(city)
+                        }
                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition ${
-                          location.toLowerCase() === city.toLowerCase()
+                          location.toLowerCase() ===
+                          city.toLowerCase()
                             ? "bg-amber-50 font-semibold text-amber-700"
                             : "text-slate-600 hover:bg-slate-50"
                         }`}
                       >
                         <MapPin className="h-4 w-4 shrink-0" />
+
                         {city}
 
-                        {location.toLowerCase() === city.toLowerCase() && (
+                        {location.toLowerCase() ===
+                          city.toLowerCase() && (
                           <span className="ml-auto text-xs">
                             ✓
                           </span>
@@ -438,25 +592,138 @@ export default function Header() {
                     ))}
                   </div>
                 </div>
-
               </div>
             )}
           </div>
 
-          {/* SIGN IN */}
-          <Link
-            href="/login"
-            className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-md shadow-amber-500/20 transition hover:from-amber-300 hover:to-amber-400 sm:inline-flex"
-          >
-            <LogIn className="h-4 w-4" />
-            Sign In
-          </Link>
+          {/* DESKTOP AUTH */}
+          {authLoading ? (
+            <div className="hidden h-10 w-24 items-center justify-center rounded-full bg-white/5 sm:flex">
+              <Loader2 className="h-4 w-4 animate-spin text-amber-400" />
+            </div>
+          ) : user ? (
+            <div
+              ref={userMenuRef}
+              className="relative hidden sm:block"
+            >
+              <button
+                type="button"
+                onClick={() =>
+                  setUserMenuOpen(
+                    (current) => !current,
+                  )
+                }
+                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-200 transition hover:border-amber-400/40 hover:bg-white/10 hover:text-amber-400"
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-400 text-xs font-bold text-slate-950">
+                  {getInitials(user.fullName)}
+                </span>
 
-          {/* MOBILE MENU BUTTON */}
+                <span className="max-w-[120px] truncate">
+                  {user.fullName}
+                </span>
+
+                <ChevronDown className="h-4 w-4" />
+              </button>
+
+              {userMenuOpen && (
+                <div className="absolute right-0 top-12 z-50 w-64 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+
+                  <div className="border-b border-slate-100 px-4 py-3">
+                    <p className="truncate text-sm font-semibold text-slate-900">
+                      {user.fullName}
+                    </p>
+
+                    <p className="truncate text-xs text-slate-500">
+                      {user.email}
+                    </p>
+
+                    <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-amber-600">
+                      {user.role === "PROVIDER"
+                        ? "Vendor"
+                        : user.role}
+                    </p>
+                  </div>
+
+                  <div className="p-2">
+
+                    <Link
+                      href={getDashboardHref()}
+                      onClick={() =>
+                        setUserMenuOpen(false)
+                      }
+                      className="block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                    >
+                      Dashboard
+                    </Link>
+
+                    {user.role === "CUSTOMER" && (
+                      <>
+                        <Link
+                          href="/dashboard/profile"
+                          onClick={() =>
+                            setUserMenuOpen(false)
+                          }
+                          className="block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                        >
+                          My Profile
+                        </Link>
+
+                        <Link
+                          href="/dashboard/bookings"
+                          onClick={() =>
+                            setUserMenuOpen(false)
+                          }
+                          className="block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                        >
+                          My Bookings
+                        </Link>
+                      </>
+                    )}
+
+                    {user.role === "PROVIDER" && (
+                      <Link
+                        href="/vendor/profile"
+                        onClick={() =>
+                          setUserMenuOpen(false)
+                        }
+                        className="block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                      >
+                        My Profile
+                      </Link>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="mt-1 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-red-600 transition hover:bg-red-50"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-md shadow-amber-500/20 transition hover:from-amber-300 hover:to-amber-400 sm:inline-flex"
+            >
+              <LogIn className="h-4 w-4" />
+              Sign In
+            </Link>
+          )}
+
+          {/* MOBILE MENU */}
           <button
             type="button"
             className="rounded-lg p-2 text-slate-200 hover:bg-white/10 lg:hidden"
-            onClick={() => setMobileOpen((current) => !current)}
+            onClick={() =>
+              setMobileOpen(
+                (current) => !current,
+              )
+            }
             aria-label="Open menu"
           >
             {mobileOpen ? (
@@ -477,7 +744,9 @@ export default function Header() {
               <Link
                 key={link.label}
                 href={getHref(link.href)}
-                onClick={(event) => handleNavClick(event, link.href)}
+                onClick={(event) =>
+                  handleNavClick(event, link.href)
+                }
                 className={`block rounded-xl px-4 py-3 text-sm font-medium hover:bg-white/5 ${
                   isActive(link.href)
                     ? "bg-amber-400/10 text-amber-400"
@@ -490,15 +759,81 @@ export default function Header() {
 
             <div className="my-2 border-t border-white/10" />
 
-            <Link
-              href="/login"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-3 text-sm font-semibold text-slate-950"
-            >
-              <LogIn className="h-4 w-4" />
-              Sign In
-            </Link>
+            {authLoading ? (
+              <div className="flex items-center justify-center rounded-full bg-white/5 px-4 py-3 text-sm text-slate-400">
+                <Loader2 className="h-4 w-4 animate-spin" />
+              </div>
+            ) : user ? (
+              <div className="space-y-2">
 
+                <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                  <p className="text-sm font-semibold text-white">
+                    {user.fullName}
+                  </p>
+
+                  <p className="mt-1 text-xs text-slate-400">
+                    {user.email}
+                  </p>
+                </div>
+
+                <Link
+                  href={getDashboardHref()}
+                  onClick={() =>
+                    setMobileOpen(false)
+                  }
+                  className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-300 hover:bg-white/5"
+                >
+                  Dashboard
+                </Link>
+
+                {user.role === "CUSTOMER" && (
+                  <>
+                    <Link
+                      href="/dashboard/profile"
+                      onClick={() =>
+                        setMobileOpen(false)
+                      }
+                      className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-300 hover:bg-white/5"
+                    >
+                      My Profile
+                    </Link>
+
+                    <Link
+                      href="/dashboard/bookings"
+                      onClick={() =>
+                        setMobileOpen(false)
+                      }
+                      className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-300 hover:bg-white/5"
+                    >
+                      My Bookings
+                    </Link>
+                  </>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    handleLogout();
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-300"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() =>
+                  setMobileOpen(false)
+                }
+                className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-3 text-sm font-semibold text-slate-950"
+              >
+                <LogIn className="h-4 w-4" />
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       )}

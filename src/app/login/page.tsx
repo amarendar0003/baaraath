@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
@@ -19,8 +19,8 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -157,7 +157,7 @@ export default function LoginPage() {
           </div>
 
           <p className="text-xs text-slate-500">
-            © {new Date().getFullYear()} Baaraath
+            Â© {new Date().getFullYear()} Baaraath
           </p>
         </div>
 
@@ -250,11 +250,7 @@ export default function LoginPage() {
                     <input
                       id="password"
                       name="password"
-                      type={
-                        showPassword
-                          ? "text"
-                          : "password"
-                      }
+                      type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
                       value={password}
                       onChange={(event) =>
@@ -265,12 +261,13 @@ export default function LoginPage() {
                       className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-12 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
                     />
 
+
                     <button
                       type="button"
                       onClick={() =>
                         setShowPassword((value) => !value)
                       }
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700"
                       aria-label={
                         showPassword
                           ? "Hide password"
