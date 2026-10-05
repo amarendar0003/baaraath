@@ -433,11 +433,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-amber-500/20 bg-slate-950/95 shadow-lg shadow-slate-950/20 backdrop-blur">
-      <div
-        className={`mx-auto flex h-16 w-full items-center px-4 sm:px-6 lg:px-8 ${
-          pathname === "/services" ? "max-w-[1920px] 2xl:px-12" : "max-w-7xl"
-        }`}
-      >
+      <div className="mx-auto flex h-16 w-full max-w-[1920px] items-center px-4 sm:px-6 lg:px-8 2xl:px-12">
 
         {/* LOGO */}
         <div className="flex flex-1 items-center">
@@ -613,9 +609,9 @@ export default function Header() {
                     (current) => !current,
                   )
                 }
-                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-200 transition hover:border-amber-400/40 hover:bg-white/10 hover:text-amber-400"
+                className="flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 py-1.5 pl-1.5 pr-3.5 text-sm font-medium text-slate-200 transition hover:border-amber-400/40 hover:bg-white/10 hover:text-amber-400"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-400 text-xs font-bold text-slate-950">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-400 text-xs font-bold text-slate-950">
                   {getInitials(user.fullName)}
                 </span>
 
