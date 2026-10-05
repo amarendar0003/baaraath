@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import {
   Search,
   Store,
   UserRound,
+  Plus,
 } from "lucide-react";
 
 type Provider = {
@@ -118,6 +119,14 @@ export default function AdminProvidersPage() {
             <p className="mt-2 text-sm text-slate-500">
               Manage provider businesses registered on Baaraath.
             </p>
+          
+            <Link
+              href="/admin/providers/register"
+              className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+            >
+              <Plus className="h-4 w-4" />
+              Register Provider
+            </Link>
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-white px-5 py-3">
@@ -334,7 +343,7 @@ function formatDate(value: string) {
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) {
-    return "—";
+    return "â€”";
   }
 
   return new Intl.DateTimeFormat("en-IN", {
@@ -343,3 +352,6 @@ function formatDate(value: string) {
     year: "numeric",
   }).format(date);
 }
+
+
+

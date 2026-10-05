@@ -1,15 +1,13 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+﻿import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 const validRoles = ["CUSTOMER", "PROVIDER", "ADMIN"] as const;
-
-type Role = (typeof validRoles)[number];
 
 async function requireAdmin() {
   const session = await getSession();
 
-  if (!session) {
+  if (!session?.userId) {
     return NextResponse.json(
       { message: "Authentication required." },
       { status: 401 }
@@ -23,44 +21,59 @@ async function requireAdmin() {
     );
   }
 
-  return session;
+  return null;
 }
 
-export async function PATCH(
-  request: Request,
+function serializeUser(user: any) {
+  return {
+    id: user.id,
+    fullName: user.fullName,
+    email: user.email,
+    phone: user.phone,
+    role: user.role,
+    createdAt: user.createdAt?.toISOString?.() ?? user.createdAt,
+    updatedAt: user.updatedAt?.toISOString?.() ?? user.updatedAt,
+    provider: user.Vendor
+      ? {
+          id: user.Vendor.id,
+          name: user.Vendor.name,
+          city: user.Vendor.city,
+          address: user.Vendor.address,
+        }
+      : null,
+    bookingCount: user._count?.Booking ?? 0,
+  };
+}
+
+export async function GET(
+  _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await requireAdmin();
+    const authError = await requireAdmin();
 
-    if (session instanceof NextResponse) {
-      return session;
+    if (authError) {
+      return authError;
     }
 
     const { id } = await params;
-    const body = await request.json();
-
-    const role = String(body.role ?? "")
-      .trim()
-      .toUpperCase() as Role;
-
-    if (!validRoles.includes(role)) {
-      return NextResponse.json(
-        {
-          message:
-            "Invalid role. Allowed roles are CUSTOMER, PROVIDER and ADMIN.",
-        },
-        { status: 400 }
-      );
-    }
 
     const user = await prisma.user.findUnique({
       where: { id },
-      select: {
-        id: true,
-        fullName: true,
-        email: true,
-        role: true,
+      include: {
+        Vendor: {
+          select: {
+            id: true,
+            name: true,
+            city: true,
+            address: true,
+          },
+        },
+        _count: {
+          select: {
+            Booking: true,
+          },
+        },
       },
     });
 
@@ -71,17 +84,278 @@ export async function PATCH(
       );
     }
 
-    if (user.id === session.userId && role !== "ADMIN") {
+    return NextResponse.json({
+      user: serializeUser(user),
+    });
+  } catch (error) {
+    console.error("Admin user GET error:", error);
+
+    return NextResponse.json(
+      {
+        message: "Unable to load user.",
+        details:
+          process.env.NODE_ENV === "development"
+            ? error instanceof Error
+              ? error.message
+              : String(error)
+            : undefined,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const authError = await requireAdmin();
+
+    if (authError) {
+      return authError;
+    }
+
+    const session = await getSession();
+    const { id } = await params;
+    const body = await request.json();
+
+    const existing = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        phone: true,
+        role: true,
+      },
+    });
+
+    if (!existing) {
+      return NextResponse.json(
+        { message: "User not found." },
+        { status: 404 }
+      );
+    }
+
+    const data: {
+      fullName?: string;
+      email?: string;
+      phone?: string | null;
+      role?: (typeof validRoles)[number];
+      updatedAt: Date;
+    } = {
+      updatedAt: new Date(),
+    };
+
+    if (body.fullName !== undefined) {
+      const fullName =
+        typeof body.fullName === "string"
+          ? body.fullName.trim()
+          : "";
+
+      if (!fullName) {
+        return NextResponse.json(
+          { message: "Full name is required." },
+          { status: 400 }
+        );
+      }
+
+      data.fullName = fullName;
+    }
+
+    if (body.email !== undefined) {
+      const email =
+        typeof body.email === "string"
+          ? body.email.trim().toLowerCase()
+          : "";
+
+      if (!email) {
+        return NextResponse.json(
+          { message: "Email is required." },
+          { status: 400 }
+        );
+      }
+
+      const duplicateEmail = await prisma.user.findFirst({
+        where: {
+          email,
+          NOT: { id },
+        },
+        select: { id: true },
+      });
+
+      if (duplicateEmail) {
+        return NextResponse.json(
+          { message: "Another user already uses this email." },
+          { status: 409 }
+        );
+      }
+
+      data.email = email;
+    }
+
+    if (body.phone !== undefined) {
+      const phone =
+        typeof body.phone === "string"
+          ? body.phone.trim()
+          : "";
+
+      if (phone) {
+        const duplicatePhone = await prisma.user.findFirst({
+          where: {
+            phone,
+            NOT: { id },
+          },
+          select: { id: true },
+        });
+
+        if (duplicatePhone) {
+          return NextResponse.json(
+            { message: "Another user already uses this phone number." },
+            { status: 409 }
+          );
+        }
+
+        data.phone = phone;
+      } else {
+        data.phone = null;
+      }
+    }
+
+    if (body.role !== undefined) {
+      const role = String(body.role).toUpperCase();
+
+      if (!validRoles.includes(role as (typeof validRoles)[number])) {
+        return NextResponse.json(
+          {
+            message:
+              "Invalid role. Allowed roles: CUSTOMER, PROVIDER, ADMIN.",
+          },
+          { status: 400 }
+        );
+      }
+
+      if (
+        existing.role === "ADMIN" &&
+        role !== "ADMIN"
+      ) {
+        const adminCount = await prisma.user.count({
+          where: {
+            role: "ADMIN",
+          },
+        });
+
+        if (adminCount <= 1) {
+          return NextResponse.json(
+            {
+              message:
+                "The last administrator cannot be changed to another role.",
+            },
+            { status: 409 }
+          );
+        }
+      }
+
+      data.role = role as (typeof validRoles)[number];
+    }
+
+    const updated = await prisma.user.update({
+      where: { id },
+      data,
+      include: {
+        Vendor: {
+          select: {
+            id: true,
+            name: true,
+            city: true,
+            address: true,
+          },
+        },
+        _count: {
+          select: {
+            Booking: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({
+      message: "User updated successfully.",
+      user: serializeUser(updated),
+    });
+  } catch (error) {
+    console.error("Admin user PATCH error:", error);
+
+    return NextResponse.json(
+      {
+        message: "Unable to update user.",
+        details:
+          process.env.NODE_ENV === "development"
+            ? error instanceof Error
+              ? error.message
+              : String(error)
+            : undefined,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const authError = await requireAdmin();
+
+    if (authError) {
+      return authError;
+    }
+
+    const session = await getSession();
+    const { id } = await params;
+
+    if (!session?.userId) {
+      return NextResponse.json(
+        { message: "Authentication required." },
+        { status: 401 }
+      );
+    }
+
+    if (session.userId === id) {
       return NextResponse.json(
         {
           message:
-            "You cannot remove your own ADMIN role while signed in.",
+            "You cannot delete the administrator account you are currently using.",
         },
         { status: 409 }
       );
     }
 
-    if (user.role === "ADMIN" && role !== "ADMIN") {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        role: true,
+        _count: {
+          select: {
+            Booking: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { message: "User not found." },
+        { status: 404 }
+      );
+    }
+
+    if (user.role === "ADMIN") {
       const adminCount = await prisma.user.count({
         where: {
           role: "ADMIN",
@@ -92,75 +366,45 @@ export async function PATCH(
         return NextResponse.json(
           {
             message:
-              "The last ADMIN account cannot be changed to another role.",
+              "The last administrator account cannot be deleted.",
           },
           { status: 409 }
         );
       }
     }
 
-    if (role === "PROVIDER") {
-      const provider = await prisma.vendor.findUnique({
-        where: {
-          ownerId: id,
+    if (user._count.Booking > 0) {
+      return NextResponse.json(
+        {
+          message:
+            "This user cannot be deleted because booking records are associated with this account.",
+          bookingCount: user._count.Booking,
         },
-      });
-
-      if (!provider) {
-        return NextResponse.json(
-          {
-            message:
-              "This user cannot be changed to PROVIDER because no provider profile exists for this account.",
-          },
-          { status: 409 }
-        );
-      }
+        { status: 409 }
+      );
     }
 
-    if (user.role === "PROVIDER" && role !== "PROVIDER") {
-      const provider = await prisma.vendor.findUnique({
-        where: {
-          ownerId: id,
-        },
-      });
-
-      if (provider) {
-        return NextResponse.json(
-          {
-            message:
-              "This user has a provider profile. Remove or migrate the provider profile before changing the role.",
-          },
-          { status: 409 }
-        );
-      }
-    }
-
-    const updated = await prisma.user.update({
+    await prisma.user.delete({
       where: { id },
-      data: {
-        role,
-        updatedAt: new Date(),
-      },
-      select: {
-        id: true,
-        fullName: true,
-        email: true,
-        phone: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-      },
     });
 
     return NextResponse.json({
-      message: `User role changed to ${updated.role}.`,
-      user: updated,
+      message: "User deleted successfully.",
+      deletedUserId: id,
     });
   } catch (error) {
-    console.error("Admin user role PATCH error:", error);
+    console.error("Admin user DELETE error:", error);
 
     return NextResponse.json(
-      { message: "Unable to update user role." },
+      {
+        message: "Unable to delete user.",
+        details:
+          process.env.NODE_ENV === "development"
+            ? error instanceof Error
+              ? error.message
+              : String(error)
+            : undefined,
+      },
       { status: 500 }
     );
   }
