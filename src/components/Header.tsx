@@ -1,14 +1,14 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
-  Bell,
   ChevronDown,
   LocateFixed,
+  LogIn,
   MapPin,
   Menu,
-  Search,
   X,
 } from "lucide-react";
 
@@ -27,7 +27,39 @@ const cities = [
   "Delhi",
 ];
 
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "About Us", href: "/#about" },
+  { label: "Contact Us", href: "/#contact" },
+  { label: "My Bookings", href: "/dashboard/bookings" },
+];
+
+// The saved location may be a plain city name (written by this header)
+// or a JSON object like {"city": "...", "state": "..."} (written by other pages).
+function readSavedCity(raw: string | null) {
+  if (!raw) return "";
+
+  try {
+    const parsed = JSON.parse(raw);
+
+    if (parsed && typeof parsed === "object" && parsed.city) {
+      return String(parsed.city);
+    }
+
+    if (typeof parsed === "string") {
+      return parsed;
+    }
+  } catch {
+    // Not JSON - treat it as a plain city name.
+  }
+
+  return raw;
+}
+
 export default function Header() {
+  const pathname = usePathname();
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [locationOpen, setLocationOpen] = useState(false);
   const [location, setLocation] = useState("");
@@ -46,7 +78,7 @@ export default function Header() {
       return;
     }
 
-    const savedCity = localStorage.getItem("baaraath_location");
+    const savedCity = readSavedCity(localStorage.getItem("baaraath_location"));
 
     if (savedCity) {
       setLocation(savedCity);
@@ -54,6 +86,27 @@ export default function Header() {
     }
 
     detectLocation();
+  }, []);
+
+  useEffect(() => {
+    function handleLocationChanged() {
+      const savedCity = readSavedCity(
+        localStorage.getItem("baaraath_location"),
+      );
+
+      if (savedCity) {
+        setLocation(savedCity);
+      }
+    }
+
+    window.addEventListener("baaraath-location-changed", handleLocationChanged);
+
+    return () => {
+      window.removeEventListener(
+        "baaraath-location-changed",
+        handleLocationChanged,
+      );
+    };
   }, []);
 
   useEffect(() => {
@@ -173,60 +226,135 @@ export default function Header() {
     setLocationOpen((current) => !current);
   }
 
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    if (href.includes("#")) return false;
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
+  // The public navbar is not shown on admin, vendor or auth screens.
+  const hideHeader = ["/admin", "/vendor", "/login", "/register"].some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+
+  if (hideHeader) {
+    return null;
+  }
+
+  function getHref(href: string) {
+    // Carry the chosen city to the services page so results stay local.
+    if (href === "/services" && location) {
+      return `/services?city=${encodeURIComponent(location)}`;
+    }
+
+    return href;
+  }
+
+  function handleNavClick(
+    event: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) {
+    setMobileOpen(false);
+
+    // Section links (#about / #contact) while on the home page: smooth scroll.
+    if (href.startsWith("/#") && pathname === "/") {
+      const target = document.getElementById(href.slice(2));
+
+      if (target) {
+        event.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.history.replaceState(
+          {},
+          "",
+          `${window.location.pathname}${window.location.search}${href.slice(1)}`,
+        );
+      }
+
+      return;
+    }
+
+    // Already on the home page: scroll back to the very top.
+    if (href === "/" && pathname === "/") {
+      event.preventDefault();
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      window.history.replaceState(
+        {},
+        "",
+        window.location.pathname + window.location.search,
+      );
+    }
+  }
+
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-amber-500/20 bg-slate-950/95 shadow-lg shadow-slate-950/20 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
 
-        {/* LOGO */}
-        <Link
-          href="/"
-          className="flex items-center gap-3"
-          onClick={() => setMobileOpen(false)}
-        >
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500 text-lg font-black text-white">
-            B
-          </div>
-
-          <div className="hidden sm:block">
-            <div className="text-lg font-bold leading-none text-slate-900">
-              Baaraath
-            </div>
-
-            <div className="mt-1 text-[9px] font-semibold tracking-[0.18em] text-slate-400">
-              CELEBRATE EVERYTHING
-            </div>
-          </div>
-        </Link>
-
-        {/* DESKTOP NAVIGATION */}
-        <nav className="hidden items-center gap-7 lg:flex">
-
+        {/* LEFT - LOGO */}
+        <div className="flex flex-1 items-center">
           <Link
-            href="/services"
-            className="text-sm font-medium text-slate-600 transition hover:text-amber-600"
+            href="/"
+            className="flex items-center gap-3"
+            onClick={(event) => handleNavClick(event, "/")}
           >
-            Explore Services
-          </Link>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-300 to-amber-600 text-lg font-black text-slate-950 shadow-md shadow-amber-500/30">
+              B
+            </div>
 
+            <div className="hidden sm:block">
+              <div className="text-lg font-bold leading-none tracking-wide text-white">
+                Baaraath
+              </div>
+
+              <div className="mt-1 text-[9px] font-semibold tracking-[0.18em] text-amber-400/80">
+                CELEBRATE EVERYTHING
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* CENTER - DESKTOP NAVIGATION */}
+        <nav className="hidden items-center gap-8 lg:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={getHref(link.href)}
+              onClick={(event) => handleNavClick(event, link.href)}
+              className={`relative py-1 text-sm font-medium tracking-wide transition after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:bg-amber-400 after:transition-all hover:text-amber-400 ${
+                isActive(link.href)
+                  ? "text-amber-400 after:w-full"
+                  : "text-slate-300 after:w-0 hover:after:w-full"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* RIGHT - LOCATION + SIGN IN */}
+        <div className="flex flex-1 items-center justify-end gap-2 sm:gap-3">
+
+          {/* LOCATION */}
           <div ref={locationRef} className="relative">
             <button
               type="button"
               onClick={handleLocationClick}
-              className="flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-amber-600"
+              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-200 transition hover:border-amber-400/40 hover:bg-white/10 hover:text-amber-400"
             >
-              <MapPin className="h-4 w-4" />
+              <MapPin className="h-4 w-4 shrink-0 text-amber-400" />
 
-              <span>
+              <span className="max-w-[90px] truncate sm:max-w-[140px]">
                 {detecting
                   ? "Detecting..."
                   : location || "Set Location"}
               </span>
 
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="h-4 w-4 shrink-0" />
             </button>
 
             {locationOpen && (
-              <div className="absolute right-0 top-10 w-80 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+              <div className="absolute right-0 top-12 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
 
                 <div className="border-b border-slate-100 p-4">
                   <div className="flex items-center gap-3">
@@ -311,106 +439,60 @@ export default function Header() {
             )}
           </div>
 
-          <Link
-            href="/vendor/register"
-            className="text-sm font-medium text-slate-600 transition hover:text-amber-600"
-          >
-            Become a Provider
-          </Link>
-        </nav>
-
-        {/* RIGHT SIDE */}
-        <div className="hidden items-center gap-4 md:flex">
-
-          <button
-            type="button"
-            aria-label="Notifications"
-            className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
-          >
-            <Bell className="h-5 w-5" />
-          </button>
-
+          {/* SIGN IN */}
           <Link
             href="/login"
-            className="text-sm font-semibold text-slate-700 hover:text-amber-600"
+            className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-md shadow-amber-500/20 transition hover:from-amber-300 hover:to-amber-400 sm:inline-flex"
           >
-            Login
+            <LogIn className="h-4 w-4" />
+            Sign In
           </Link>
 
-          <Link
-            href="/register"
-            className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+          {/* MOBILE MENU BUTTON */}
+          <button
+            type="button"
+            className="rounded-lg p-2 text-slate-200 hover:bg-white/10 lg:hidden"
+            onClick={() => setMobileOpen((current) => !current)}
+            aria-label="Open menu"
           >
-            Register
-          </Link>
+            {mobileOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
         </div>
-
-        {/* MOBILE MENU BUTTON */}
-        <button
-          type="button"
-          className="rounded-lg p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
-          onClick={() => setMobileOpen((current) => !current)}
-          aria-label="Open menu"
-        >
-          {mobileOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
       </div>
 
       {/* MOBILE NAVIGATION */}
       {mobileOpen && (
-        <div className="border-t border-slate-200 bg-white px-4 py-4 lg:hidden">
-
+        <div className="border-t border-white/10 bg-slate-950 px-4 py-4 lg:hidden">
           <div className="space-y-1">
 
-            <Link
-              href="/services"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
-            >
-              <Search className="h-5 w-5" />
-              Explore Services
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={getHref(link.href)}
+                onClick={(event) => handleNavClick(event, link.href)}
+                className={`block rounded-xl px-4 py-3 text-sm font-medium hover:bg-white/5 ${
+                  isActive(link.href)
+                    ? "bg-amber-400/10 text-amber-400"
+                    : "text-slate-300"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
 
-            <button
-              type="button"
-              onClick={() => {
-                setMobileOpen(false);
-                setLocationOpen(true);
-              }}
-              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-50"
-            >
-              <MapPin className="h-5 w-5" />
-              {location || "Set Location"}
-            </button>
-
-            <Link
-              href="/vendor/register"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
-            >
-              Become a Provider
-            </Link>
-
-            <div className="my-2 border-t border-slate-100" />
+            <div className="my-2 border-t border-white/10" />
 
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="block rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-3 text-sm font-semibold text-slate-950"
             >
-              Login
-            </Link>
-
-            <Link
-              href="/register"
-              onClick={() => setMobileOpen(false)}
-              className="block rounded-xl bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white"
-            >
-              Register
+              <LogIn className="h-4 w-4" />
+              Sign In
             </Link>
 
           </div>

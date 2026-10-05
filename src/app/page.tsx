@@ -280,8 +280,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#fafafa] text-slate-900">
-      {/* HEADER */}
-      
+      {/* HEADER - rendered globally from app/layout.tsx */}
 
       {/* HERO / SEARCH */}
       <section className="border-b border-slate-200 bg-white">
@@ -579,7 +578,7 @@ export default function HomePage() {
       </section>
 
       {/* BENEFITS */}
-      <section className="bg-[#fafafa] py-16">
+      <section id="about" className="scroll-mt-20 bg-[#fafafa] py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-sm font-semibold uppercase tracking-wider text-amber-600">
@@ -648,7 +647,7 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-slate-950 text-white">
+      <footer id="contact" className="scroll-mt-20 bg-slate-950 text-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-10 md:grid-cols-4">
             <div className="md:col-span-2">
@@ -804,4 +803,3 @@ function CheckCircle() {
     </span>
   );
 }
-
