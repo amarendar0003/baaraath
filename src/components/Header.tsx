@@ -30,8 +30,8 @@ const cities = [
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
-  { label: "About Us", href: "/about" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "About Us", href: "/#about" },
+  { label: "Contact Us", href: "/#contact" },
   { label: "My Bookings", href: "/dashboard/bookings" },
 ];
 
@@ -289,7 +289,11 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-amber-500/20 bg-slate-950/95 shadow-lg shadow-slate-950/20 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+      <div
+        className={`mx-auto flex h-16 w-full items-center px-4 sm:px-6 lg:px-8 ${
+          pathname === "/services" ? "max-w-[1920px] 2xl:px-12" : "max-w-7xl"
+        }`}
+      >
 
         {/* LEFT - LOGO */}
         <div className="flex flex-1 items-center">
