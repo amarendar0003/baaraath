@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Bell,
-  CalendarDays,
   ChevronRight,
   Crosshair,
   Filter,
@@ -17,8 +16,6 @@ import {
   Menu,
   Music,
   Search,
-  ShieldCheck,
-  SlidersHorizontal,
   Sparkles,
   Star,
   Utensils,
@@ -144,33 +141,6 @@ const popularServices = [
     reviews: "72",
     image:
       "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1000&q=85",
-  },
-];
-
-const benefits = [
-  {
-    icon: ShieldCheck,
-    title: "Verified Providers",
-    description:
-      "Discover services from registered and verified service providers.",
-  },
-  {
-    icon: SlidersHorizontal,
-    title: "Compare Services",
-    description:
-      "Compare prices, ratings, locations and service details easily.",
-  },
-  {
-    icon: CalendarDays,
-    title: "Easy Booking",
-    description:
-      "Choose your date and submit your booking request in minutes.",
-  },
-  {
-    icon: Users,
-    title: "Everything in One Place",
-    description:
-      "Plan venues, catering, entertainment and more from one platform.",
   },
 ];
 
@@ -590,27 +560,27 @@ export default function HomePage() {
       </section>
 
       {/* FIND SERVICES CTA */}
-      <section className="bg-slate-950 py-16">
+      <section className="bg-slate-950 py-10 sm:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.3fr_0.7fr]">
+          <div className="grid items-center gap-7 lg:grid-cols-[1.3fr_0.7fr]">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white">
                 <Sparkles className="h-4 w-4 text-amber-400" />
                 Plan everything in one place
               </div>
 
-              <h2 className="mt-5 max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              <h2 className="mt-4 max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 From the venue to the final celebration, Baaraath helps you
                 find the services you need.
               </h2>
 
-              <p className="mt-5 max-w-2xl leading-7 text-slate-300">
+              <p className="mt-4 max-w-2xl leading-7 text-slate-300">
                 Search by category, location, price and rating. Compare
                 providers and book services according to your event
                 requirements.
               </p>
 
-              <div className="mt-7">
+              <div className="mt-5">
                 <Link
                   href="/services"
                   className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-6 py-3 font-semibold text-white hover:bg-amber-600"
@@ -621,10 +591,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-7">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-5 sm:p-6">
               <div className="text-5xl">🎉</div>
 
-              <h3 className="mt-5 text-2xl font-bold text-white">
+              <h3 className="mt-4 text-2xl font-bold text-white">
                 Your event. Your choice.
               </h3>
 
@@ -633,61 +603,21 @@ export default function HomePage() {
                 requirements.
               </p>
 
-              <div className="mt-6 flex items-center gap-2 text-sm text-slate-300">
+              <div className="mt-4 flex items-center gap-2 text-sm text-slate-300">
                 <CheckCircle />
                 Easy discovery
               </div>
 
-              <div className="mt-3 flex items-center gap-2 text-sm text-slate-300">
+              <div className="mt-2 flex items-center gap-2 text-sm text-slate-300">
                 <CheckCircle />
                 Location-based search
               </div>
 
-              <div className="mt-3 flex items-center gap-2 text-sm text-slate-300">
+              <div className="mt-2 flex items-center gap-2 text-sm text-slate-300">
                 <CheckCircle />
                 Simple booking
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* BENEFITS */}
-      <section id="about" className="scroll-mt-20 bg-[#fafafa] py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-wider text-amber-600">
-              Why Baaraath
-            </p>
-
-            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">
-              Everything made simpler
-            </h2>
-          </div>
-
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {benefits.map((benefit) => {
-              const Icon = benefit.icon;
-
-              return (
-                <div
-                  key={benefit.title}
-                  className="rounded-2xl border border-slate-200 bg-white p-6"
-                >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-                    <Icon className="h-5 w-5" />
-                  </div>
-
-                  <h3 className="mt-5 font-bold">
-                    {benefit.title}
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    {benefit.description}
-                  </p>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>

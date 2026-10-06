@@ -64,16 +64,16 @@ const commitments = [
 
 export default function ContactPage() {
   return (
-    <main className="bg-[#fffaf5] text-[#35180f]">
-      <section className="border-b border-[#f5d9c3] bg-[#fff5eb] px-5 py-10 text-center sm:py-14">
+    <main className="bg-[#f8fafc] text-[#0f172a]">
+      <section className="border-b border-[#e2e8f0] bg-[#fff7ed] px-5 py-10 text-center sm:py-14">
         <div className="mx-auto max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#f0b482] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#b2532d]">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#fcd34d] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#b45309]">
             <CircleHelp size={13} aria-hidden="true" /> Baaraath support & guidance
           </span>
           <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
             Get in touch with Baaraath
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#735e53]">
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#475569]">
             Need help with a booking, have a question about a service, or want to work with us? We’re here to help.
           </p>
         </div>
@@ -81,14 +81,14 @@ export default function ContactPage() {
 
       <section aria-label="Contact options" className="mx-auto grid max-w-6xl gap-4 px-5 py-8 sm:grid-cols-3 sm:px-8">
         {contactOptions.map(({ icon: Icon, title, detail, note, href, action }) => (
-          <article key={title} className="rounded-xl border border-[#f2c9a5] bg-white p-5 shadow-[0_4px_14px_rgba(96,54,25,0.05)]">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#fff0e3] text-[#e4673f]">
+          <article key={title} className="rounded-xl border border-[#e2e8f0] bg-white p-5 shadow-[0_4px_14px_rgba(96,54,25,0.05)]">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#fffbeb] text-[#d97706]">
               <Icon size={18} aria-hidden="true" />
             </span>
             <h2 className="mt-3 text-sm font-extrabold">{title}</h2>
-            <p className="mt-1 text-sm font-semibold text-[#9b472a]">{detail}</p>
-            <p className="mt-1 min-h-10 text-xs leading-5 text-[#806c61]">{note}</p>
-            <Link href={href} className="mt-3 inline-flex items-center gap-1 rounded-md border border-[#f0b482] px-3 py-1.5 text-[11px] font-bold text-[#9b472a] transition hover:bg-[#fff5eb]">
+            <p className="mt-1 text-sm font-semibold text-[#b45309]">{detail}</p>
+            <p className="mt-1 min-h-10 text-xs leading-5 text-[#64748b]">{note}</p>
+            <Link href={href} className="mt-3 inline-flex items-center gap-1 rounded-md border border-[#fcd34d] px-3 py-1.5 text-[11px] font-bold text-[#b45309] transition hover:bg-[#fff7ed]">
               {action} <ArrowUpRight size={13} aria-hidden="true" />
             </Link>
           </article>
@@ -97,9 +97,9 @@ export default function ContactPage() {
 
       <section className="mx-auto max-w-6xl px-5 pb-9 sm:px-8">
         <div className="mb-4 text-center">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#e4673f]">We’re here to help</p>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#d97706]">We’re here to help</p>
           <h2 className="mt-1 text-xl font-black">Connect with the right team</h2>
-          <p className="mt-1 text-xs text-[#806c61]">Choose the option that best matches what you need.</p>
+          <p className="mt-1 text-xs text-[#64748b]">Choose the option that best matches what you need.</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
           {[
@@ -107,23 +107,23 @@ export default function ContactPage() {
             { icon: Store, title: "Become a vendor", text: "Offer venues or event services? Register your business with Baaraath.", label: "Vendor registration", href: "/vendor/register" },
             { icon: Headset, title: "General support", text: "For other questions, email the Baaraath support team and tell us how we can help.", label: "Email support", href: "mailto:support@baaraath.com" },
           ].map(({ icon: Icon, title, text, label, href }) => (
-            <article key={title} className="rounded-xl border border-[#f2c9a5] bg-white p-4">
-              <div className="flex items-center gap-2 text-[#e4673f]"><Icon size={17} aria-hidden="true" /><h3 className="text-sm font-extrabold text-[#35180f]">{title}</h3></div>
-              <p className="mt-2 min-h-10 text-xs leading-5 text-[#806c61]">{text}</p>
-              <Link href={href} className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#a54f2c] hover:underline">{label} <ArrowUpRight size={12} aria-hidden="true" /></Link>
+            <article key={title} className="rounded-xl border border-[#e2e8f0] bg-white p-4">
+              <div className="flex items-center gap-2 text-[#d97706]"><Icon size={17} aria-hidden="true" /><h3 className="text-sm font-extrabold text-[#0f172a]">{title}</h3></div>
+              <p className="mt-2 min-h-10 text-xs leading-5 text-[#64748b]">{text}</p>
+              <Link href={href} className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#b45309] hover:underline">{label} <ArrowUpRight size={12} aria-hidden="true" /></Link>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="mx-5 rounded-xl bg-[#562311] text-white sm:mx-auto sm:max-w-6xl">
+      <section className="mx-5 rounded-xl bg-[#0f172a] text-white sm:mx-auto sm:max-w-6xl">
         <div className="px-5 py-6 sm:px-8">
-          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#ffd385]">Our service commitments</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#fcd34d]">Our service commitments</p>
           <h2 className="mt-1 text-lg font-black">A little more confidence at every step</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-3">
             {commitments.map(({ icon: Icon, title, text }) => (
               <div key={title} className="flex gap-2.5">
-                <span className="mt-0.5 text-[#ffd385]"><Icon size={17} aria-hidden="true" /></span>
+                <span className="mt-0.5 text-[#fcd34d]"><Icon size={17} aria-hidden="true" /></span>
                 <div><h3 className="text-xs font-bold">{title}</h3><p className="mt-1 text-[11px] leading-5 text-white/70">{text}</p></div>
               </div>
             ))}
@@ -133,26 +133,26 @@ export default function ContactPage() {
 
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
         <div className="text-center">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#e4673f]">Helpful information</p>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#d97706]">Helpful information</p>
           <h2 className="mt-1 text-xl font-black">Frequently asked questions</h2>
         </div>
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           {helpTopics.map(({ question, answer }) => (
-            <details key={question} className="group rounded-lg border border-[#f2c9a5] bg-white p-4">
-              <summary className="cursor-pointer text-xs font-bold marker:text-[#e4673f]">{question}</summary>
-              <p className="mt-2 text-xs leading-5 text-[#806c61]">{answer}</p>
+            <details key={question} className="group rounded-lg border border-[#e2e8f0] bg-white p-4">
+              <summary className="cursor-pointer text-xs font-bold marker:text-[#d97706]">{question}</summary>
+              <p className="mt-2 text-xs leading-5 text-[#64748b]">{answer}</p>
             </details>
           ))}
         </div>
       </section>
 
-      <section className="mx-5 mb-10 rounded-xl border border-[#f2c9a5] bg-white px-5 py-6 text-center sm:mx-auto sm:max-w-6xl sm:px-8">
-        <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#e4673f]">Plan with Baaraath</p>
+      <section className="mx-5 mb-10 rounded-xl border border-[#e2e8f0] bg-white px-5 py-6 text-center sm:mx-auto sm:max-w-6xl sm:px-8">
+        <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#d97706]">Plan with Baaraath</p>
         <h2 className="mt-1 text-xl font-black">Find something for your celebration</h2>
-        <p className="mx-auto mt-2 max-w-xl text-xs leading-5 text-[#806c61]">
+        <p className="mx-auto mt-2 max-w-xl text-xs leading-5 text-[#64748b]">
           Browse venues and event services, compare what works for you, and plan your day with Baaraath.
         </p>
-        <Link href="/services" className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#f0b482] px-4 py-2 text-[11px] font-bold text-[#9b472a] transition hover:bg-[#fff5eb]">
+        <Link href="/services" className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#fcd34d] px-4 py-2 text-[11px] font-bold text-[#b45309] transition hover:bg-[#fff7ed]">
           Browse services <ArrowUpRight size={13} aria-hidden="true" />
         </Link>
       </section>

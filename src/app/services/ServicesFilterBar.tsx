@@ -123,8 +123,8 @@ export default function ServicesFilterBar({
       <div
         className={`grid items-center gap-2 sm:grid-cols-2 lg:grid-cols-3 ${
           showType
-            ? "xl:grid-cols-[minmax(0,1.3fr)_repeat(6,minmax(0,1fr))_auto_auto]"
-            : "xl:grid-cols-[minmax(0,1.3fr)_repeat(5,minmax(0,1fr))_auto_auto]"
+            ? "lg:grid-cols-[minmax(0,1.3fr)_repeat(6,minmax(0,1fr))_auto_auto]"
+            : "lg:grid-cols-[minmax(0,1.3fr)_repeat(5,minmax(0,1fr))_auto_auto]"
         }`}
       >
         <div className="relative">

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Bot, MessageCircle, Send, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type Message = {
   role: "user" | "assistant";
@@ -15,6 +17,7 @@ const suggestions = [
 ];
 
 export default function Chatbot() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -23,6 +26,7 @@ export default function Chatbot() {
     { role: "assistant", content: "👋 Hello! How can I help you today?" },
   ]);
   const endRef = useRef<HTMLDivElement>(null);
+  const showBookNow = ["/", "/contact", "/about", "/dashboard/bookings"].includes(pathname);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -151,6 +155,17 @@ export default function Chatbot() {
             </button>
           </form>
         </section>
+      )}
+
+      {showBookNow && (
+        <div className="mb-3 flex justify-end">
+          <Link
+            href="/services"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-5 text-sm font-bold text-slate-950 shadow-md shadow-amber-500/25 transition hover:-translate-y-0.5 hover:from-amber-300 hover:to-amber-400"
+          >
+            Book Now
+          </Link>
+        </div>
       )}
 
       <button
