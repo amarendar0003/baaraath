@@ -212,6 +212,23 @@ for (const key of sslParams) {
   }
 }
 
+if (
+  url.searchParams.get("sslmode") === "verify-full" &&
+  !url.searchParams.has("sslrootcert")
+) {
+  const systemCaBundle = "/etc/ssl/certs/ca-certificates.crt";
+  try {
+    await readFile(systemCaBundle);
+    childEnv.PGSSLROOTCERT = systemCaBundle;
+  } catch {
+    console.error(
+      `sslmode=verify-full requires a CA certificate; ${systemCaBundle} is not available.`,
+    );
+    await rm(tempDir, { recursive: true, force: true });
+    process.exit(2);
+  }
+}
+
 try {
   const result = spawnSync(
     "pg_dump",
