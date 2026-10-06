@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import {
   ArrowLeft,
@@ -57,17 +58,17 @@ export default function VendorProfilePage() {
       setLoading(true);
       setError("");
 
-      const response = await fetch("/api/vendor/profile", {
+      const response = await fetch(appPath("/api/vendor/profile"), {
         cache: "no-store",
       });
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
-        window.location.href = "/dashboard";
+        window.location.href = appPath("/dashboard");
         return;
       }
 
@@ -118,7 +119,7 @@ export default function VendorProfilePage() {
     setSuccess("");
 
     try {
-      const response = await fetch("/api/vendor/profile", {
+      const response = await fetch(appPath("/api/vendor/profile"), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -129,7 +130,7 @@ export default function VendorProfilePage() {
       const result = await response.json();
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 

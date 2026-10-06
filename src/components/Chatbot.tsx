@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { appPath } from "@/lib/app-path";
 import { Bot, MessageCircle, Send, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -43,7 +44,7 @@ export default function Chatbot() {
     setBusy(true);
 
     try {
-      const response = await fetch("/api/chatbot", {
+      const response = await fetch(appPath("/api/chatbot"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: nextMessages.slice(-12) }),

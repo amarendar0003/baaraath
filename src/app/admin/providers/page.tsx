@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import {
   ArrowLeft,
@@ -59,19 +60,19 @@ export default function AdminProvidersPage() {
       }
 
       const response = await fetch(
-        `/api/admin/providers?${params.toString()}`,
+        appPath(`/api/admin/providers?${params.toString()}`),
         {
           cache: "no-store",
         },
       );
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
-        window.location.href = "/dashboard";
+        window.location.href = appPath("/dashboard");
         return;
       }
 
@@ -352,6 +353,4 @@ function formatDate(value: string) {
     year: "numeric",
   }).format(date);
 }
-
-
 

@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState } from "react";
+import { appPath } from "@/lib/app-path";
 import { LogOut, Loader2 } from "lucide-react";
 
 export default function LogoutButton() {
@@ -12,7 +13,7 @@ export default function LogoutButton() {
     try {
       setLoggingOut(true);
 
-      const response = await fetch("/api/auth/logout", {
+      const response = await fetch(appPath("/api/auth/logout"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export default function LogoutButton() {
         throw new Error("Unable to logout.");
       }
 
-      window.location.href = "/login";
+      window.location.href = appPath("/login");
     } catch (error) {
       console.error("Logout error:", error);
       setLoggingOut(false);

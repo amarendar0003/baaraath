@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
@@ -181,12 +182,12 @@ export default function AdminBookingsPage() {
       );
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
-        window.location.href = "/dashboard";
+        window.location.href = appPath("/dashboard");
         return;
       }
 
@@ -226,17 +227,17 @@ export default function AdminBookingsPage() {
       setDetailsLoading(true);
       setError("");
 
-      const response = await fetch(`/api/admin/bookings/${id}`, {
+      const response = await fetch(appPath(`/api/admin/bookings/${id}`), {
         cache: "no-store",
       });
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
-        window.location.href = "/dashboard";
+        window.location.href = appPath("/dashboard");
         return;
       }
 
@@ -300,12 +301,12 @@ export default function AdminBookingsPage() {
       );
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
-        window.location.href = "/dashboard";
+        window.location.href = appPath("/dashboard");
         return;
       }
 

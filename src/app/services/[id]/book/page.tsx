@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import {
   ArrowLeft,
@@ -70,7 +71,7 @@ export default function BookingPage({
   useEffect(() => {
     async function loadCustomer() {
       try {
-        const response = await fetch("/api/auth/me", {
+        const response = await fetch(appPath("/api/auth/me"), {
           cache: "no-store",
         });
 
@@ -110,7 +111,7 @@ export default function BookingPage({
         setServiceId(resolvedParams.id);
 
         const response = await fetch(
-          `/api/services/${resolvedParams.id}`,
+          appPath(`/api/services/${resolvedParams.id}`),
         );
 
         if (!response.ok) {
@@ -183,7 +184,7 @@ export default function BookingPage({
     setSubmitting(true);
 
     try {
-      const response = await fetch("/api/bookings", {
+      const response = await fetch(appPath("/api/bookings"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

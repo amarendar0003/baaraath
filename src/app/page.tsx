@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Playfair_Display } from "next/font/google";
 import { useEffect, useState } from "react";
+import { appPath } from "@/lib/app-path";
 import {
   ArrowRight,
   Bell,
@@ -248,7 +249,7 @@ export default function HomePage() {
       params.set("city", city);
     }
 
-    window.location.href = `/services?${params.toString()}`;
+    window.location.href = appPath(`/services?${params.toString()}`);
   }
 
   function displayLocation() {

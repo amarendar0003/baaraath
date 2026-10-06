@@ -2,6 +2,7 @@ import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
 const COOKIE_NAME = "baaraath_session";
+const COOKIE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "/";
 
 function getSecret() {
   const secret = process.env.AUTH_SECRET;
@@ -34,7 +35,7 @@ export async function createSession(user: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    path: "/",
+    path: COOKIE_PATH,
     maxAge: 60 * 60 * 24 * 7,
   });
 }
@@ -67,7 +68,7 @@ export async function destroySession() {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    path: "/",
+    path: COOKIE_PATH,
     maxAge: 0,
   });
 }

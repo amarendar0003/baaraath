@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { FormEvent, useEffect, useState } from "react";
 import {
   ArrowLeft,
@@ -35,7 +36,7 @@ export default function NewVendorServicePage() {
   useEffect(() => {
     async function loadCategories() {
       try {
-        const response = await fetch("/api/categories", {
+        const response = await fetch(appPath("/api/categories"), {
           cache: "no-store",
         });
 
@@ -85,7 +86,7 @@ export default function NewVendorServicePage() {
     setSaving(true);
 
     try {
-      const response = await fetch("/api/vendor/services", {
+      const response = await fetch(appPath("/api/vendor/services"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,12 +101,12 @@ export default function NewVendorServicePage() {
       });
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
-        window.location.href = "/dashboard";
+        window.location.href = appPath("/dashboard");
         return;
       }
 
@@ -119,7 +120,7 @@ export default function NewVendorServicePage() {
       setSuccess("Service created successfully.");
 
       setTimeout(() => {
-        window.location.href = "/vendor/services";
+        window.location.href = appPath("/vendor/services");
       }, 700);
     } catch {
       setError("Unable to connect to the server.");
@@ -347,4 +348,3 @@ export default function NewVendorServicePage() {
     </main>
   );
 }
-

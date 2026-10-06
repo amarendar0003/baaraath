@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { FormEvent, useState } from "react";
 import {
   ArrowRight,
@@ -28,7 +29,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(appPath("/api/auth/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +67,7 @@ export default function LoginPage() {
             ? "/vendor/dashboard"
             : "/");
 
-      window.location.replace(redirectTo);
+      window.location.replace(appPath(redirectTo));
     } catch (err) {
       console.error("Login error:", err);
 

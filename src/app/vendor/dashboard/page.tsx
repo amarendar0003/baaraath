@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import {
@@ -77,17 +78,17 @@ export default function VendorDashboardPage() {
         setLoading(true);
         setError("");
 
-        const response = await fetch("/api/vendor/dashboard", {
+        const response = await fetch(appPath("/api/vendor/dashboard"), {
           cache: "no-store",
         });
 
         if (response.status === 401) {
-          window.location.href = "/login";
+          window.location.href = appPath("/login");
           return;
         }
 
         if (response.status === 403) {
-          window.location.href = "/dashboard";
+          window.location.href = appPath("/dashboard");
           return;
         }
 
