@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Playfair_Display } from "next/font/google";
 import { useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -24,6 +25,27 @@ import {
   Users,
   X,
 } from "lucide-react";
+import HeroBackground from "@/components/HeroBackground";
+
+const displayFont = Playfair_Display({
+  subsets: ["latin"],
+  style: ["italic"],
+  weight: ["600", "700"],
+});
+
+const headlineFont = Playfair_Display({
+  subsets: ["latin"],
+  style: ["normal"],
+  weight: ["600", "700"],
+});
+
+const heroWords = [
+  "Wedding",
+  "Reception",
+  "Engagement",
+  "Birthdays",
+  "Meetings",
+];
 
 type LocationInfo = {
   city: string;
@@ -159,6 +181,7 @@ export default function HomePage() {
   const [location, setLocation] = useState<LocationInfo | null>(null);
   const [searchText, setSearchText] = useState("");
   const [manualLocation, setManualLocation] = useState("");
+  const [hasHeroImages, setHasHeroImages] = useState(false);
 
   useEffect(() => {
     detectLocation();
@@ -283,34 +306,75 @@ export default function HomePage() {
       {/* HEADER - rendered globally from app/layout.tsx */}
 
       {/* HERO / SEARCH */}
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 pb-14 pt-12 sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
-          <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700">
-              <Sparkles className="h-4 w-4" />
+      <section
+        className={`relative flex flex-col overflow-hidden border-b transition-all duration-700 ${
+          hasHeroImages
+            ? "min-h-[620px] border-transparent bg-slate-950 lg:min-h-[calc(100vh-73px)]"
+            : "border-slate-200 bg-white"
+        }`}
+      >
+        <HeroBackground onReady={setHasHeroImages} />
+
+        <div
+          className={`relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 ${
+            hasHeroImages
+              ? "flex flex-1 flex-col justify-end pb-14 pt-10 lg:pb-16"
+              : "pb-14 pt-12 lg:pb-20 lg:pt-16"
+          }`}
+        >
+          {/* HEADLINE */}
+          <div
+            className={
+              hasHeroImages
+                ? "max-w-3xl text-left"
+                : "mx-auto max-w-4xl text-center"
+            }
+          >
+            <div
+              className={`mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors duration-700 ${
+                hasHeroImages
+                  ? "border-white/30 bg-black/60 text-white shadow-lg shadow-black/30 backdrop-blur-md"
+                  : "border-amber-200 bg-amber-50 text-amber-700"
+              }`}
+            >
+              <Sparkles
+                className={`h-4 w-4 ${
+                  hasHeroImages ? "text-amber-400" : ""
+                }`}
+              />
               Everything for your special occasion
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-              Find the right services
-              <span className="block text-amber-500">
-                for your special day
-              </span>
+            <h1
+              className={`${headlineFont.className} font-bold tracking-normal transition-colors duration-700 ${
+                hasHeroImages
+                  ? "text-4xl leading-tight text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.5),0_4px_24px_rgba(0,0,0,0.7)] sm:text-5xl"
+                  : "text-4xl text-slate-950 sm:text-5xl"
+              }`}
+            >
+              Find the right Venue for your
+              <RotatingWord
+                words={heroWords}
+                className={hasHeroImages ? "text-amber-400" : "text-amber-500"}
+              />
             </h1>
-
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-              Discover venues, catering, music, hotels, priests, event
-              planners and other trusted event services near you.
-            </p>
           </div>
 
           {/* SEARCH BOX */}
-          <div className="mx-auto mt-9 max-w-5xl">
+          <div
+            className={
+              hasHeroImages ? "mt-7 max-w-5xl" : "mx-auto mt-9 max-w-5xl"
+            }
+          >
             <form
               onSubmit={handleSearch}
-              className="rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-200/60"
+              className={`rounded-2xl border p-2 ${
+                hasHeroImages
+                  ? "border-white/40 bg-white/95 shadow-2xl shadow-black/30 backdrop-blur"
+                  : "border-slate-200 bg-white shadow-xl shadow-slate-200/60"
+              }`}
             >
-              <div className="grid gap-2 lg:grid-cols-[1fr_1fr_auto]">
+              <div className="grid gap-2 lg:grid-cols-[1fr_auto_1fr_auto] lg:items-center">
                 {/* SEARCH */}
                 <div className="flex min-h-[58px] items-center gap-3 rounded-xl border border-transparent px-4 transition focus-within:border-amber-300 focus-within:bg-amber-50/30">
                   <Search className="h-5 w-5 shrink-0 text-slate-400" />
@@ -331,6 +395,8 @@ export default function HomePage() {
                     />
                   </div>
                 </div>
+
+                <div className="hidden h-9 w-px bg-slate-200 lg:block" />
 
                 {/* LOCATION */}
                 <div className="flex min-h-[58px] items-center gap-3 rounded-xl border border-transparent px-4 transition focus-within:border-amber-300 focus-within:bg-amber-50/30">
@@ -376,50 +442,59 @@ export default function HomePage() {
             </form>
 
             {/* LOCATION STATUS */}
-            <div className="mt-3 flex items-center justify-center gap-2 text-sm">
+            <div
+              className={`mt-3 flex items-center gap-2 text-sm ${
+                hasHeroImages
+                  ? "justify-start [text-shadow:0_1px_8px_rgba(0,0,0,0.7)]"
+                  : "justify-center"
+              }`}
+            >
               {locationLoading ? (
                 <>
-                  <Crosshair className="h-4 w-4 animate-pulse text-amber-500" />
-                  <span className="text-slate-500">
+                  <Crosshair className="h-4 w-4 animate-pulse text-amber-400" />
+                  <span
+                    className={
+                      hasHeroImages ? "text-slate-100" : "text-slate-500"
+                    }
+                  >
                     Detecting your current location...
                   </span>
                 </>
               ) : location ? (
                 <>
-                  <MapPin className="h-4 w-4 text-green-600" />
-                  <span className="text-slate-500">
+                  <MapPin className="h-4 w-4 text-green-400" />
+                  <span
+                    className={
+                      hasHeroImages ? "text-slate-100" : "text-slate-500"
+                    }
+                  >
                     Showing services near{" "}
-                    <strong className="text-slate-800">
+                    <strong
+                      className={
+                        hasHeroImages ? "text-white" : "text-slate-800"
+                      }
+                    >
                       {location.city}
                     </strong>
                   </span>
                 </>
               ) : (
                 <>
-                  <MapPin className="h-4 w-4 text-slate-400" />
-                  <span className="text-slate-500">
+                  <MapPin
+                    className={`h-4 w-4 ${
+                      hasHeroImages ? "text-slate-200" : "text-slate-400"
+                    }`}
+                  />
+                  <span
+                    className={
+                      hasHeroImages ? "text-slate-100" : "text-slate-500"
+                    }
+                  >
                     {locationError || "Choose a location to continue"}
                   </span>
                 </>
               )}
             </div>
-          </div>
-
-          {/* POPULAR SEARCHES */}
-          <div className="mx-auto mt-7 flex max-w-5xl flex-wrap items-center justify-center gap-2">
-            <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Popular:
-            </span>
-
-            {categories.slice(0, 5).map((category) => (
-              <Link
-                key={category.slug}
-                href={`/services?category=${category.slug}`}
-                className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700"
-              >
-                {category.name}
-              </Link>
-            ))}
           </div>
         </div>
       </section>
@@ -434,7 +509,7 @@ export default function HomePage() {
               </p>
 
               <h2 className="mt-1 text-2xl font-bold sm:text-3xl">
-                Explore by Services
+                Explore by category
               </h2>
 
               <p className="mt-2 text-sm text-slate-500">
@@ -726,6 +801,79 @@ function CheckCircle() {
   return (
     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500/15 text-green-400">
       ✓
+    </span>
+  );
+}
+
+function RotatingWord({
+  words,
+  className = "",
+  intervalMs = 2800,
+}: {
+  words: string[];
+  className?: string;
+  intervalMs?: number;
+}) {
+  const [index, setIndex] = useState(0);
+  const [previous, setPrevious] = useState<number | null>(null);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setIndex((current) => {
+        setPrevious(current);
+        return (current + 1) % words.length;
+      });
+    }, intervalMs);
+
+    return () => window.clearInterval(timer);
+  }, [words.length, intervalMs]);
+
+  return (
+    <span
+      className={`relative mt-1 block h-[1.3em] overflow-visible text-[1.1em] ${displayFont.className} ${className}`}
+      aria-live="polite"
+    >
+      <style>{`
+        @keyframes wordIn {
+          0%   { opacity: 0; transform: translateY(70%) scale(0.96); filter: blur(8px); }
+          100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        @keyframes wordOut {
+          0%   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+          100% { opacity: 0; transform: translateY(-70%) scale(0.96); filter: blur(8px); }
+        }
+        @keyframes wordLine {
+          0%   { transform: scaleX(0); }
+          100% { transform: scaleX(1); }
+        }
+        .word-in  { animation: wordIn 800ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .word-out { animation: wordOut 600ms cubic-bezier(0.55, 0, 0.55, 0.2) both; }
+        .word-line { transform-origin: left center; animation: wordLine 900ms ease-out 150ms both; }
+        @media (prefers-reduced-motion: reduce) {
+          .word-in, .word-out { animation-duration: 1ms; }
+          .word-line { animation: none; }
+        }
+      `}</style>
+
+      {previous !== null && previous !== index && (
+        <span
+          key={`out-${previous}-${index}`}
+          aria-hidden="true"
+          className="word-out absolute inset-x-0 top-0 whitespace-nowrap"
+        >
+          {words[previous]}
+        </span>
+      )}
+
+      <span
+        key={`in-${index}`}
+        className="word-in absolute inset-x-0 top-0 whitespace-nowrap"
+      >
+        <span className="relative inline-block">
+          {words[index]}
+          <span className="word-line absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500/0" />
+        </span>
+      </span>
     </span>
   );
 }
