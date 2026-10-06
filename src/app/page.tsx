@@ -434,7 +434,7 @@ export default function HomePage() {
               </p>
 
               <h2 className="mt-1 text-2xl font-bold sm:text-3xl">
-                Explore by category
+                Explore by Services
               </h2>
 
               <p className="mt-2 text-sm text-slate-500">

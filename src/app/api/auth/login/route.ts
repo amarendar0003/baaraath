@@ -69,14 +69,14 @@ export async function POST(request: Request) {
       role: user.role,
     });
 
-    let redirectTo = "/dashboard";
+    let redirectTo = "/";
 
     if (user.role === "ADMIN") {
       redirectTo = "/admin/dashboard";
     } else if (user.role === "PROVIDER") {
       redirectTo = "/vendor/dashboard";
     } else if (user.role === "CUSTOMER") {
-      redirectTo = "/dashboard";
+      redirectTo = "/";
     }
 
     return NextResponse.json({

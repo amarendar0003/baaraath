@@ -64,7 +64,7 @@ export default function LoginPage() {
           ? "/admin/dashboard"
           : data.user?.role === "PROVIDER"
             ? "/vendor/dashboard"
-            : "/dashboard");
+            : "/");
 
       window.location.replace(redirectTo);
     } catch (err) {
