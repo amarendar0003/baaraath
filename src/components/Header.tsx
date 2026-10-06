@@ -471,10 +471,10 @@ export default function Header() {
               onClick={(event) =>
                 handleNavClick(event, link.href)
               }
-              className={`relative py-1 text-sm font-medium tracking-wide transition after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:bg-amber-400 after:transition-all hover:text-amber-400 ${
+              className={`relative py-1 text-sm font-bold tracking-wide transition after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:bg-amber-400 after:transition-all hover:text-amber-400 ${
                 isActive(link.href)
                   ? "text-amber-400 after:w-full"
-                  : "text-slate-300 after:w-0 hover:after:w-full"
+                  : "text-slate-100 after:w-0 hover:after:w-full"
               }`}
             >
               {link.label}
@@ -745,7 +745,7 @@ export default function Header() {
                 onClick={(event) =>
                   handleNavClick(event, link.href)
                 }
-                className={`block rounded-xl px-4 py-3 text-sm font-medium hover:bg-white/5 ${
+                className={`block rounded-xl px-4 py-3 text-sm font-bold hover:bg-white/5 ${
                   isActive(link.href)
                     ? "bg-amber-400/10 text-amber-400"
                     : "text-slate-300"
