@@ -432,7 +432,9 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-amber-500/20 bg-slate-950/95 shadow-lg shadow-slate-950/20 backdrop-blur">
+    <header className="sticky top-0 z-50 bg-slate-950 shadow-xl shadow-black/40">
+      {/* Bold gold line along the bottom of the navbar */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-amber-600 via-amber-300 to-amber-600" />
       <div className="mx-auto flex h-16 w-full max-w-[1920px] items-center px-4 sm:px-6 lg:px-8 2xl:px-12">
 
         {/* LOGO */}
