@@ -34,25 +34,48 @@ export async function GET(request: Request) {
 
         ...(categoryId ? { categoryId } : {}),
 
-        ...(city
-          ? {
-              Vendor: {
+        Vendor: {
+          status: "APPROVED",
+          ...(city
+            ? {
                 city: {
                   contains: city,
                   mode: "insensitive",
                 },
-              },
-            }
-          : {}),
+              }
+            : {}),
+        },
       },
 
       orderBy: {
         createdAt: "desc",
       },
 
-      include: {
-        Vendor: true,
-        Category: true,
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        price: true,
+        durationMinutes: true,
+        active: true,
+        createdAt: true,
+        updatedAt: true,
+        Vendor: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            city: true,
+            address: true,
+          },
+        },
+        Category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
     });
 

@@ -1,6 +1,45 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { Prisma } from "@/generated/prisma/client";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+
+type BookingDetails = Prisma.BookingGetPayload<{
+  include: {
+    User: {
+      select: {
+        id: true;
+        fullName: true;
+        email: true;
+        phone: true;
+        role: true;
+      };
+    };
+    Service: {
+      select: {
+        id: true;
+        title: true;
+        description: true;
+        price: true;
+        durationMinutes: true;
+        active: true;
+        Vendor: {
+          select: {
+            id: true;
+            name: true;
+            city: true;
+            address: true;
+          };
+        };
+        Category: {
+          select: {
+            id: true;
+            name: true;
+          };
+        };
+      };
+    };
+  };
+}>;
 
 async function requireAdmin() {
   const session = await getSession();
@@ -22,7 +61,7 @@ async function requireAdmin() {
   return null;
 }
 
-function serializeBooking(booking: any) {
+function serializeBooking(booking: BookingDetails) {
   return {
     id: booking.id,
     customerId: booking.customerId,

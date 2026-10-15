@@ -64,7 +64,16 @@ export async function GET(request: Request) {
             ],
           }
         : undefined,
-      include: {
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        city: true,
+        address: true,
+        ownerId: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
         User: {
           select: {
             id: true,
@@ -93,6 +102,7 @@ export async function GET(request: Request) {
       city: vendor.city,
       address: vendor.address,
       ownerId: vendor.ownerId,
+      status: vendor.status,
       createdAt: vendor.createdAt.toISOString(),
       updatedAt: vendor.updatedAt.toISOString(),
 

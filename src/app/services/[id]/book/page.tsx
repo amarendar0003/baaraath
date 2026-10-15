@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { appPath } from "@/lib/app-path";
@@ -612,7 +612,7 @@ export default function BookingPage({
             <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
               {/* SERVICE */}
               <div className="bg-gradient-to-br from-amber-100 via-orange-50 to-slate-100 p-8 text-center">
-                <div className="text-6xl">ðŸŽ‰</div>
+                <div className="text-6xl">🎉</div>
 
                 <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-amber-700">
                   {service.category.name}
@@ -678,7 +678,7 @@ export default function BookingPage({
                     </p>
 
                     <p className="mt-1 text-2xl font-bold">
-                      â‚¹
+                      ₹
                       {Number(service.price).toLocaleString(
                         "en-IN",
                       )}

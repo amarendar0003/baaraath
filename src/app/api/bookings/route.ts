@@ -15,11 +15,7 @@ function generateBookingReference() {
 
 export async function POST(request: Request) {
   try {
-    console.log("POST /api/bookings reached");
-
     const body = await request.json();
-
-    console.log("BOOKING BODY:", body);
 
     const serviceId = String(body.serviceId || "").trim();
 
@@ -153,9 +149,22 @@ export async function POST(request: Request) {
       where: {
         id: serviceId,
       },
-      include: {
-        Vendor: true,
-        Category: true,
+      select: {
+        id: true,
+        active: true,
+        Vendor: {
+          select: {
+            id: true,
+            name: true,
+            city: true,
+            status: true,
+          },
+        },
+        Category: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
 
@@ -174,6 +183,16 @@ export async function POST(request: Request) {
         {
           success: false,
           error: "This service is currently unavailable.",
+        },
+        { status: 409 }
+      );
+    }
+
+    if (service.Vendor.status !== "APPROVED") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "This provider is not approved for bookings.",
         },
         { status: 409 }
       );
@@ -297,20 +316,31 @@ export async function POST(request: Request) {
         notes: bookingNotes,
         createdAt: new Date(),
       },
-      include: {
+      select: {
+        id: true,
+        status: true,
+        bookingDate: true,
         Service: {
-          include: {
-            Vendor: true,
-            Category: true,
+          select: {
+            id: true,
+            title: true,
+            price: true,
+            durationMinutes: true,
+            Vendor: {
+              select: {
+                name: true,
+                city: true,
+              },
+            },
+            Category: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
     });
-
-    console.log(
-      "BOOKING CREATED:",
-      booking.id
-    );
 
     return NextResponse.json(
       {

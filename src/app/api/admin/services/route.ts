@@ -1,6 +1,30 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+
+type ServiceWithRelations = Prisma.ServiceGetPayload<{
+  include: {
+    Vendor: {
+      select: {
+        id: true;
+        name: true;
+        city: true;
+      };
+    };
+    Category: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
+    _count: {
+      select: {
+        Booking: true;
+      };
+    };
+  };
+}>;
 
 async function requireAdmin() {
   const session = await getSession();
@@ -26,7 +50,7 @@ function cleanText(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function serializeService(service: any) {
+function serializeService(service: ServiceWithRelations) {
   return {
     id: service.id,
     title: service.title,

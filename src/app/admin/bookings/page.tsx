@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { appPath } from "@/lib/app-path";
@@ -175,7 +175,7 @@ export default function AdminBookingsPage() {
       }
 
       const response = await fetch(
-        `/api/admin/bookings?${params.toString()}`,
+        appPath(`/api/admin/bookings?${params.toString()}`),
         {
           cache: "no-store",
         }
@@ -232,11 +232,13 @@ export default function AdminBookingsPage() {
       });
 
       if (response.status === 401) {
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = appPath("/dashboard");
         return;
       }
@@ -288,7 +290,7 @@ export default function AdminBookingsPage() {
       setNotice("");
 
       const response = await fetch(
-        `/api/admin/bookings/${booking.id}`,
+        appPath(`/api/admin/bookings/${encodeURIComponent(booking.id)}`),
         {
           method: "PATCH",
           headers: {
@@ -301,11 +303,13 @@ export default function AdminBookingsPage() {
       );
 
       if (response.status === 401) {
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = appPath("/dashboard");
         return;
       }

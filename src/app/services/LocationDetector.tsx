@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { Loader2, LocateFixed, MapPin, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { appPath } from "@/lib/app-path";
 
 export default function LocationDetector() {
   const router = useRouter();
@@ -12,23 +13,34 @@ export default function LocationDetector() {
   const [detecting, setDetecting] = useState(false);
   const [detectedCity, setDetectedCity] = useState("");
   const [message, setMessage] = useState("");
+  const city = searchParams.get("city") || detectedCity;
 
   useEffect(() => {
     const existingCity = searchParams.get("city");
 
     if (existingCity) {
-      setDetectedCity(existingCity);
       return;
     }
 
     if (!navigator.geolocation) {
-      setMessage("Location detection is not supported by this browser.");
-      return;
+      const timer = window.setTimeout(
+        () =>
+          setMessage(
+            "Location detection is not supported by this browser.",
+          ),
+        0,
+      );
+
+      return () => window.clearTimeout(timer);
     }
 
     let cancelled = false;
 
-    setDetecting(true);
+    const detectingTimer = window.setTimeout(() => {
+      if (!cancelled) {
+        setDetecting(true);
+      }
+    }, 0);
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -38,9 +50,9 @@ export default function LocationDetector() {
           const { latitude, longitude } = position.coords;
 
           const response = await fetch(
-            `/api/location/reverse?lat=${encodeURIComponent(
+            appPath(`/api/location/reverse?lat=${encodeURIComponent(
               latitude
-            )}&lon=${encodeURIComponent(longitude)}`,
+            )}&lon=${encodeURIComponent(longitude)}`),
             {
               cache: "no-store",
             }
@@ -100,6 +112,7 @@ export default function LocationDetector() {
 
     return () => {
       cancelled = true;
+      window.clearTimeout(detectingTimer);
     };
   }, [pathname, router, searchParams]);
 
@@ -137,10 +150,10 @@ export default function LocationDetector() {
             <p className="mt-1 text-xs text-slate-600">
               Detecting your location...
             </p>
-          ) : detectedCity ? (
+          ) : city ? (
             <div className="mt-1 flex items-center gap-1.5 text-sm font-medium text-blue-700">
               <MapPin className="h-3.5 w-3.5" />
-              {detectedCity}
+              {city}
             </div>
           ) : (
             <p className="mt-1 text-xs leading-5 text-slate-600">
@@ -150,7 +163,7 @@ export default function LocationDetector() {
           )}
         </div>
 
-        {detectedCity && (
+        {city && (
           <button
             type="button"
             onClick={clearLocation}
@@ -162,7 +175,7 @@ export default function LocationDetector() {
         )}
       </div>
 
-      {!detecting && !detectedCity && (
+      {!detecting && !city && (
         <button
           type="button"
           onClick={detectAgain}

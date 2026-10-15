@@ -49,15 +49,8 @@ export default function VendorProfilePage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
   async function loadProfile() {
     try {
-      setLoading(true);
-      setError("");
-
       const response = await fetch(appPath("/api/vendor/profile"), {
         cache: "no-store",
       });
@@ -99,6 +92,14 @@ export default function VendorProfilePage() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void loadProfile();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, []);
 
   function updateField(
     field: keyof typeof form,

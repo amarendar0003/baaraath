@@ -20,8 +20,30 @@ export type VendorModel = runtime.Types.Result.DefaultSelection<Prisma.$VendorPa
 
 export type AggregateVendor = {
   _count: VendorCountAggregateOutputType | null
+  _avg: VendorAvgAggregateOutputType | null
+  _sum: VendorSumAggregateOutputType | null
   _min: VendorMinAggregateOutputType | null
   _max: VendorMaxAggregateOutputType | null
+}
+
+export type VendorAvgAggregateOutputType = {
+  yearEstablished: number | null
+  latitude: number | null
+  longitude: number | null
+  seatingCapacity: number | null
+  diningCapacity: number | null
+  parkingCapacity: number | null
+  numberOfHalls: number | null
+}
+
+export type VendorSumAggregateOutputType = {
+  yearEstablished: number | null
+  latitude: number | null
+  longitude: number | null
+  seatingCapacity: number | null
+  diningCapacity: number | null
+  parkingCapacity: number | null
+  numberOfHalls: number | null
 }
 
 export type VendorMinAggregateOutputType = {
@@ -31,23 +53,32 @@ export type VendorMinAggregateOutputType = {
   city: string | null
   address: string | null
   ownerId: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  status: $Enums.VendorStatus | null
   businessName: string | null
   businessType: string | null
   registrationNo: string | null
   gstNumber: string | null
   panNumber: string | null
+  yearEstablished: number | null
   website: string | null
   contactEmail: string | null
   contactPhone: string | null
   postalCode: string | null
   state: string | null
   country: string | null
-  status: $Enums.VendorStatus | null
   approvalNotes: string | null
   approvedAt: Date | null
   profileComplete: boolean | null
+  mapsUrl: string | null
+  latitude: number | null
+  longitude: number | null
+  seatingCapacity: number | null
+  diningCapacity: number | null
+  parkingCapacity: number | null
+  numberOfHalls: number | null
+  active: boolean | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type VendorMaxAggregateOutputType = {
@@ -57,23 +88,32 @@ export type VendorMaxAggregateOutputType = {
   city: string | null
   address: string | null
   ownerId: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  status: $Enums.VendorStatus | null
   businessName: string | null
   businessType: string | null
   registrationNo: string | null
   gstNumber: string | null
   panNumber: string | null
+  yearEstablished: number | null
   website: string | null
   contactEmail: string | null
   contactPhone: string | null
   postalCode: string | null
   state: string | null
   country: string | null
-  status: $Enums.VendorStatus | null
   approvalNotes: string | null
   approvedAt: Date | null
   profileComplete: boolean | null
+  mapsUrl: string | null
+  latitude: number | null
+  longitude: number | null
+  seatingCapacity: number | null
+  diningCapacity: number | null
+  parkingCapacity: number | null
+  numberOfHalls: number | null
+  active: boolean | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type VendorCountAggregateOutputType = {
@@ -83,26 +123,55 @@ export type VendorCountAggregateOutputType = {
   city: number
   address: number
   ownerId: number
-  createdAt: number
-  updatedAt: number
+  status: number
   businessName: number
   businessType: number
   registrationNo: number
   gstNumber: number
   panNumber: number
+  yearEstablished: number
   website: number
   contactEmail: number
   contactPhone: number
   postalCode: number
   state: number
   country: number
-  status: number
   approvalNotes: number
   approvedAt: number
   profileComplete: number
+  mapsUrl: number
+  latitude: number
+  longitude: number
+  seatingCapacity: number
+  diningCapacity: number
+  parkingCapacity: number
+  numberOfHalls: number
+  active: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
+
+export type VendorAvgAggregateInputType = {
+  yearEstablished?: true
+  latitude?: true
+  longitude?: true
+  seatingCapacity?: true
+  diningCapacity?: true
+  parkingCapacity?: true
+  numberOfHalls?: true
+}
+
+export type VendorSumAggregateInputType = {
+  yearEstablished?: true
+  latitude?: true
+  longitude?: true
+  seatingCapacity?: true
+  diningCapacity?: true
+  parkingCapacity?: true
+  numberOfHalls?: true
+}
 
 export type VendorMinAggregateInputType = {
   id?: true
@@ -111,23 +180,32 @@ export type VendorMinAggregateInputType = {
   city?: true
   address?: true
   ownerId?: true
-  createdAt?: true
-  updatedAt?: true
+  status?: true
   businessName?: true
   businessType?: true
   registrationNo?: true
   gstNumber?: true
   panNumber?: true
+  yearEstablished?: true
   website?: true
   contactEmail?: true
   contactPhone?: true
   postalCode?: true
   state?: true
   country?: true
-  status?: true
   approvalNotes?: true
   approvedAt?: true
   profileComplete?: true
+  mapsUrl?: true
+  latitude?: true
+  longitude?: true
+  seatingCapacity?: true
+  diningCapacity?: true
+  parkingCapacity?: true
+  numberOfHalls?: true
+  active?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type VendorMaxAggregateInputType = {
@@ -137,23 +215,32 @@ export type VendorMaxAggregateInputType = {
   city?: true
   address?: true
   ownerId?: true
-  createdAt?: true
-  updatedAt?: true
+  status?: true
   businessName?: true
   businessType?: true
   registrationNo?: true
   gstNumber?: true
   panNumber?: true
+  yearEstablished?: true
   website?: true
   contactEmail?: true
   contactPhone?: true
   postalCode?: true
   state?: true
   country?: true
-  status?: true
   approvalNotes?: true
   approvedAt?: true
   profileComplete?: true
+  mapsUrl?: true
+  latitude?: true
+  longitude?: true
+  seatingCapacity?: true
+  diningCapacity?: true
+  parkingCapacity?: true
+  numberOfHalls?: true
+  active?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type VendorCountAggregateInputType = {
@@ -163,23 +250,32 @@ export type VendorCountAggregateInputType = {
   city?: true
   address?: true
   ownerId?: true
-  createdAt?: true
-  updatedAt?: true
+  status?: true
   businessName?: true
   businessType?: true
   registrationNo?: true
   gstNumber?: true
   panNumber?: true
+  yearEstablished?: true
   website?: true
   contactEmail?: true
   contactPhone?: true
   postalCode?: true
   state?: true
   country?: true
-  status?: true
   approvalNotes?: true
   approvedAt?: true
   profileComplete?: true
+  mapsUrl?: true
+  latitude?: true
+  longitude?: true
+  seatingCapacity?: true
+  diningCapacity?: true
+  parkingCapacity?: true
+  numberOfHalls?: true
+  active?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -221,6 +317,18 @@ export type VendorAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: VendorAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: VendorSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: VendorMinAggregateInputType
@@ -251,6 +359,8 @@ export type VendorGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: VendorCountAggregateInputType | true
+  _avg?: VendorAvgAggregateInputType
+  _sum?: VendorSumAggregateInputType
   _min?: VendorMinAggregateInputType
   _max?: VendorMaxAggregateInputType
 }
@@ -262,24 +372,35 @@ export type VendorGroupByOutputType = {
   city: string
   address: string | null
   ownerId: string
-  createdAt: Date
-  updatedAt: Date
+  status: $Enums.VendorStatus
   businessName: string | null
   businessType: string | null
   registrationNo: string | null
   gstNumber: string | null
   panNumber: string | null
+  yearEstablished: number | null
   website: string | null
   contactEmail: string | null
   contactPhone: string | null
   postalCode: string | null
   state: string | null
   country: string | null
-  status: $Enums.VendorStatus
   approvalNotes: string | null
   approvedAt: Date | null
   profileComplete: boolean
+  mapsUrl: string | null
+  latitude: number | null
+  longitude: number | null
+  seatingCapacity: number | null
+  diningCapacity: number | null
+  parkingCapacity: number | null
+  numberOfHalls: number | null
+  active: boolean
+  createdAt: Date
+  updatedAt: Date
   _count: VendorCountAggregateOutputType | null
+  _avg: VendorAvgAggregateOutputType | null
+  _sum: VendorSumAggregateOutputType | null
   _min: VendorMinAggregateOutputType | null
   _max: VendorMaxAggregateOutputType | null
 }
@@ -309,29 +430,48 @@ export type VendorWhereInput = {
   city?: Prisma.StringFilter<"Vendor"> | string
   address?: Prisma.StringNullableFilter<"Vendor"> | string | null
   ownerId?: Prisma.StringFilter<"Vendor"> | string
-  createdAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
+  status?: Prisma.EnumVendorStatusFilter<"Vendor"> | $Enums.VendorStatus
   businessName?: Prisma.StringNullableFilter<"Vendor"> | string | null
   businessType?: Prisma.StringNullableFilter<"Vendor"> | string | null
   registrationNo?: Prisma.StringNullableFilter<"Vendor"> | string | null
   gstNumber?: Prisma.StringNullableFilter<"Vendor"> | string | null
   panNumber?: Prisma.StringNullableFilter<"Vendor"> | string | null
+  yearEstablished?: Prisma.IntNullableFilter<"Vendor"> | number | null
   website?: Prisma.StringNullableFilter<"Vendor"> | string | null
   contactEmail?: Prisma.StringNullableFilter<"Vendor"> | string | null
   contactPhone?: Prisma.StringNullableFilter<"Vendor"> | string | null
   postalCode?: Prisma.StringNullableFilter<"Vendor"> | string | null
   state?: Prisma.StringNullableFilter<"Vendor"> | string | null
   country?: Prisma.StringNullableFilter<"Vendor"> | string | null
-  status?: Prisma.EnumVendorStatusFilter<"Vendor"> | $Enums.VendorStatus
   approvalNotes?: Prisma.StringNullableFilter<"Vendor"> | string | null
   approvedAt?: Prisma.DateTimeNullableFilter<"Vendor"> | Date | string | null
   profileComplete?: Prisma.BoolFilter<"Vendor"> | boolean
-  Service?: Prisma.ServiceListRelationFilter
+  mapsUrl?: Prisma.StringNullableFilter<"Vendor"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Vendor"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Vendor"> | number | null
+  seatingCapacity?: Prisma.IntNullableFilter<"Vendor"> | number | null
+  diningCapacity?: Prisma.IntNullableFilter<"Vendor"> | number | null
+  parkingCapacity?: Prisma.IntNullableFilter<"Vendor"> | number | null
+  numberOfHalls?: Prisma.IntNullableFilter<"Vendor"> | number | null
+  active?: Prisma.BoolFilter<"Vendor"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
   User?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  BankAccounts?: Prisma.VendorBankAccountListRelationFilter
+  FunctionHall?: Prisma.FunctionHallListRelationFilter
+  Service?: Prisma.ServiceListRelationFilter
+  Provider?: Prisma.VendorProviderListRelationFilter
+  Manager?: Prisma.VendorManagerListRelationFilter
+  Staff?: Prisma.VendorStaffListRelationFilter
+  VendorMember?: Prisma.VendorMemberListRelationFilter
   Documents?: Prisma.VendorDocumentListRelationFilter
-  Members?: Prisma.VendorMemberListRelationFilter
+  BankAccounts?: Prisma.VendorBankAccountListRelationFilter
+  Gallery?: Prisma.VendorGalleryListRelationFilter
+  Availability?: Prisma.VendorAvailabilityListRelationFilter
   Registration?: Prisma.XOR<Prisma.VendorRegistrationNullableScalarRelationFilter, Prisma.VendorRegistrationWhereInput> | null
+  Booking?: Prisma.BookingListRelationFilter
+  Review?: Prisma.ReviewListRelationFilter
+  Notification?: Prisma.NotificationListRelationFilter
+  AuditLog?: Prisma.AuditLogListRelationFilter
 }
 
 export type VendorOrderByWithRelationInput = {
@@ -341,29 +481,48 @@ export type VendorOrderByWithRelationInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   businessName?: Prisma.SortOrderInput | Prisma.SortOrder
   businessType?: Prisma.SortOrderInput | Prisma.SortOrder
   registrationNo?: Prisma.SortOrderInput | Prisma.SortOrder
   gstNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   panNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  yearEstablished?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   contactEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   contactPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   postalCode?: Prisma.SortOrderInput | Prisma.SortOrder
   state?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
-  status?: Prisma.SortOrder
   approvalNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   profileComplete?: Prisma.SortOrder
-  Service?: Prisma.ServiceOrderByRelationAggregateInput
+  mapsUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  seatingCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
+  diningCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
+  parkingCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
+  numberOfHalls?: Prisma.SortOrderInput | Prisma.SortOrder
+  active?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   User?: Prisma.UserOrderByWithRelationInput
-  BankAccounts?: Prisma.VendorBankAccountOrderByRelationAggregateInput
+  FunctionHall?: Prisma.FunctionHallOrderByRelationAggregateInput
+  Service?: Prisma.ServiceOrderByRelationAggregateInput
+  Provider?: Prisma.VendorProviderOrderByRelationAggregateInput
+  Manager?: Prisma.VendorManagerOrderByRelationAggregateInput
+  Staff?: Prisma.VendorStaffOrderByRelationAggregateInput
+  VendorMember?: Prisma.VendorMemberOrderByRelationAggregateInput
   Documents?: Prisma.VendorDocumentOrderByRelationAggregateInput
-  Members?: Prisma.VendorMemberOrderByRelationAggregateInput
+  BankAccounts?: Prisma.VendorBankAccountOrderByRelationAggregateInput
+  Gallery?: Prisma.VendorGalleryOrderByRelationAggregateInput
+  Availability?: Prisma.VendorAvailabilityOrderByRelationAggregateInput
   Registration?: Prisma.VendorRegistrationOrderByWithRelationInput
+  Booking?: Prisma.BookingOrderByRelationAggregateInput
+  Review?: Prisma.ReviewOrderByRelationAggregateInput
+  Notification?: Prisma.NotificationOrderByRelationAggregateInput
+  AuditLog?: Prisma.AuditLogOrderByRelationAggregateInput
 }
 
 export type VendorWhereUniqueInput = Prisma.AtLeast<{
@@ -376,29 +535,48 @@ export type VendorWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Vendor"> | string | null
   city?: Prisma.StringFilter<"Vendor"> | string
   address?: Prisma.StringNullableFilter<"Vendor"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
+  status?: Prisma.EnumVendorStatusFilter<"Vendor"> | $Enums.VendorStatus
   businessName?: Prisma.StringNullableFilter<"Vendor"> | string | null
   businessType?: Prisma.StringNullableFilter<"Vendor"> | string | null
   registrationNo?: Prisma.StringNullableFilter<"Vendor"> | string | null
   gstNumber?: Prisma.StringNullableFilter<"Vendor"> | string | null
   panNumber?: Prisma.StringNullableFilter<"Vendor"> | string | null
+  yearEstablished?: Prisma.IntNullableFilter<"Vendor"> | number | null
   website?: Prisma.StringNullableFilter<"Vendor"> | string | null
   contactEmail?: Prisma.StringNullableFilter<"Vendor"> | string | null
   contactPhone?: Prisma.StringNullableFilter<"Vendor"> | string | null
   postalCode?: Prisma.StringNullableFilter<"Vendor"> | string | null
   state?: Prisma.StringNullableFilter<"Vendor"> | string | null
   country?: Prisma.StringNullableFilter<"Vendor"> | string | null
-  status?: Prisma.EnumVendorStatusFilter<"Vendor"> | $Enums.VendorStatus
   approvalNotes?: Prisma.StringNullableFilter<"Vendor"> | string | null
   approvedAt?: Prisma.DateTimeNullableFilter<"Vendor"> | Date | string | null
   profileComplete?: Prisma.BoolFilter<"Vendor"> | boolean
-  Service?: Prisma.ServiceListRelationFilter
+  mapsUrl?: Prisma.StringNullableFilter<"Vendor"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Vendor"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Vendor"> | number | null
+  seatingCapacity?: Prisma.IntNullableFilter<"Vendor"> | number | null
+  diningCapacity?: Prisma.IntNullableFilter<"Vendor"> | number | null
+  parkingCapacity?: Prisma.IntNullableFilter<"Vendor"> | number | null
+  numberOfHalls?: Prisma.IntNullableFilter<"Vendor"> | number | null
+  active?: Prisma.BoolFilter<"Vendor"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
   User?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  BankAccounts?: Prisma.VendorBankAccountListRelationFilter
+  FunctionHall?: Prisma.FunctionHallListRelationFilter
+  Service?: Prisma.ServiceListRelationFilter
+  Provider?: Prisma.VendorProviderListRelationFilter
+  Manager?: Prisma.VendorManagerListRelationFilter
+  Staff?: Prisma.VendorStaffListRelationFilter
+  VendorMember?: Prisma.VendorMemberListRelationFilter
   Documents?: Prisma.VendorDocumentListRelationFilter
-  Members?: Prisma.VendorMemberListRelationFilter
+  BankAccounts?: Prisma.VendorBankAccountListRelationFilter
+  Gallery?: Prisma.VendorGalleryListRelationFilter
+  Availability?: Prisma.VendorAvailabilityListRelationFilter
   Registration?: Prisma.XOR<Prisma.VendorRegistrationNullableScalarRelationFilter, Prisma.VendorRegistrationWhereInput> | null
+  Booking?: Prisma.BookingListRelationFilter
+  Review?: Prisma.ReviewListRelationFilter
+  Notification?: Prisma.NotificationListRelationFilter
+  AuditLog?: Prisma.AuditLogListRelationFilter
 }, "id" | "ownerId">
 
 export type VendorOrderByWithAggregationInput = {
@@ -408,26 +586,37 @@ export type VendorOrderByWithAggregationInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   businessName?: Prisma.SortOrderInput | Prisma.SortOrder
   businessType?: Prisma.SortOrderInput | Prisma.SortOrder
   registrationNo?: Prisma.SortOrderInput | Prisma.SortOrder
   gstNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   panNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  yearEstablished?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   contactEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   contactPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   postalCode?: Prisma.SortOrderInput | Prisma.SortOrder
   state?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
-  status?: Prisma.SortOrder
   approvalNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   profileComplete?: Prisma.SortOrder
+  mapsUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  seatingCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
+  diningCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
+  parkingCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
+  numberOfHalls?: Prisma.SortOrderInput | Prisma.SortOrder
+  active?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.VendorCountOrderByAggregateInput
+  _avg?: Prisma.VendorAvgOrderByAggregateInput
   _max?: Prisma.VendorMaxOrderByAggregateInput
   _min?: Prisma.VendorMinOrderByAggregateInput
+  _sum?: Prisma.VendorSumOrderByAggregateInput
 }
 
 export type VendorScalarWhereWithAggregatesInput = {
@@ -440,23 +629,32 @@ export type VendorScalarWhereWithAggregatesInput = {
   city?: Prisma.StringWithAggregatesFilter<"Vendor"> | string
   address?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   ownerId?: Prisma.StringWithAggregatesFilter<"Vendor"> | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Vendor"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Vendor"> | Date | string
+  status?: Prisma.EnumVendorStatusWithAggregatesFilter<"Vendor"> | $Enums.VendorStatus
   businessName?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   businessType?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   registrationNo?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   gstNumber?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   panNumber?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
+  yearEstablished?: Prisma.IntNullableWithAggregatesFilter<"Vendor"> | number | null
   website?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   contactEmail?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   contactPhone?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   postalCode?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   state?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
-  status?: Prisma.EnumVendorStatusWithAggregatesFilter<"Vendor"> | $Enums.VendorStatus
   approvalNotes?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
   approvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Vendor"> | Date | string | null
   profileComplete?: Prisma.BoolWithAggregatesFilter<"Vendor"> | boolean
+  mapsUrl?: Prisma.StringNullableWithAggregatesFilter<"Vendor"> | string | null
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Vendor"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Vendor"> | number | null
+  seatingCapacity?: Prisma.IntNullableWithAggregatesFilter<"Vendor"> | number | null
+  diningCapacity?: Prisma.IntNullableWithAggregatesFilter<"Vendor"> | number | null
+  parkingCapacity?: Prisma.IntNullableWithAggregatesFilter<"Vendor"> | number | null
+  numberOfHalls?: Prisma.IntNullableWithAggregatesFilter<"Vendor"> | number | null
+  active?: Prisma.BoolWithAggregatesFilter<"Vendor"> | boolean
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Vendor"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Vendor"> | Date | string
 }
 
 export type VendorCreateInput = {
@@ -465,29 +663,48 @@ export type VendorCreateInput = {
   description?: string | null
   city: string
   address?: string | null
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
-  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
   User: Prisma.UserCreateNestedOneWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
 }
 
 export type VendorUncheckedCreateInput = {
@@ -497,28 +714,47 @@ export type VendorUncheckedCreateInput = {
   city: string
   address?: string | null
   ownerId: string
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
   Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
 }
 
 export type VendorUpdateInput = {
@@ -527,29 +763,48 @@ export type VendorUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorUncheckedUpdateInput = {
@@ -559,28 +814,47 @@ export type VendorUncheckedUpdateInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
   Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorCreateManyInput = {
@@ -590,23 +864,32 @@ export type VendorCreateManyInput = {
   city: string
   address?: string | null
   ownerId: string
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
 }
 
 export type VendorUpdateManyMutationInput = {
@@ -615,23 +898,32 @@ export type VendorUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VendorUncheckedUpdateManyInput = {
@@ -641,28 +933,32 @@ export type VendorUncheckedUpdateManyInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
-}
-
-export type VendorScalarRelationFilter = {
-  is?: Prisma.VendorWhereInput
-  isNot?: Prisma.VendorWhereInput
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VendorNullableScalarRelationFilter = {
@@ -677,23 +973,42 @@ export type VendorCountOrderByAggregateInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   businessName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   registrationNo?: Prisma.SortOrder
   gstNumber?: Prisma.SortOrder
   panNumber?: Prisma.SortOrder
+  yearEstablished?: Prisma.SortOrder
   website?: Prisma.SortOrder
   contactEmail?: Prisma.SortOrder
   contactPhone?: Prisma.SortOrder
   postalCode?: Prisma.SortOrder
   state?: Prisma.SortOrder
   country?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   approvalNotes?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
   profileComplete?: Prisma.SortOrder
+  mapsUrl?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  seatingCapacity?: Prisma.SortOrder
+  diningCapacity?: Prisma.SortOrder
+  parkingCapacity?: Prisma.SortOrder
+  numberOfHalls?: Prisma.SortOrder
+  active?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type VendorAvgOrderByAggregateInput = {
+  yearEstablished?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  seatingCapacity?: Prisma.SortOrder
+  diningCapacity?: Prisma.SortOrder
+  parkingCapacity?: Prisma.SortOrder
+  numberOfHalls?: Prisma.SortOrder
 }
 
 export type VendorMaxOrderByAggregateInput = {
@@ -703,23 +1018,32 @@ export type VendorMaxOrderByAggregateInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   businessName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   registrationNo?: Prisma.SortOrder
   gstNumber?: Prisma.SortOrder
   panNumber?: Prisma.SortOrder
+  yearEstablished?: Prisma.SortOrder
   website?: Prisma.SortOrder
   contactEmail?: Prisma.SortOrder
   contactPhone?: Prisma.SortOrder
   postalCode?: Prisma.SortOrder
   state?: Prisma.SortOrder
   country?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   approvalNotes?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
   profileComplete?: Prisma.SortOrder
+  mapsUrl?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  seatingCapacity?: Prisma.SortOrder
+  diningCapacity?: Prisma.SortOrder
+  parkingCapacity?: Prisma.SortOrder
+  numberOfHalls?: Prisma.SortOrder
+  active?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type VendorMinOrderByAggregateInput = {
@@ -729,37 +1053,47 @@ export type VendorMinOrderByAggregateInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   businessName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   registrationNo?: Prisma.SortOrder
   gstNumber?: Prisma.SortOrder
   panNumber?: Prisma.SortOrder
+  yearEstablished?: Prisma.SortOrder
   website?: Prisma.SortOrder
   contactEmail?: Prisma.SortOrder
   contactPhone?: Prisma.SortOrder
   postalCode?: Prisma.SortOrder
   state?: Prisma.SortOrder
   country?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   approvalNotes?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
   profileComplete?: Prisma.SortOrder
+  mapsUrl?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  seatingCapacity?: Prisma.SortOrder
+  diningCapacity?: Prisma.SortOrder
+  parkingCapacity?: Prisma.SortOrder
+  numberOfHalls?: Prisma.SortOrder
+  active?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
-export type VendorCreateNestedOneWithoutServiceInput = {
-  create?: Prisma.XOR<Prisma.VendorCreateWithoutServiceInput, Prisma.VendorUncheckedCreateWithoutServiceInput>
-  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutServiceInput
-  connect?: Prisma.VendorWhereUniqueInput
+export type VendorSumOrderByAggregateInput = {
+  yearEstablished?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  seatingCapacity?: Prisma.SortOrder
+  diningCapacity?: Prisma.SortOrder
+  parkingCapacity?: Prisma.SortOrder
+  numberOfHalls?: Prisma.SortOrder
 }
 
-export type VendorUpdateOneRequiredWithoutServiceNestedInput = {
-  create?: Prisma.XOR<Prisma.VendorCreateWithoutServiceInput, Prisma.VendorUncheckedCreateWithoutServiceInput>
-  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutServiceInput
-  upsert?: Prisma.VendorUpsertWithoutServiceInput
-  connect?: Prisma.VendorWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutServiceInput, Prisma.VendorUpdateWithoutServiceInput>, Prisma.VendorUncheckedUpdateWithoutServiceInput>
+export type VendorScalarRelationFilter = {
+  is?: Prisma.VendorWhereInput
+  isNot?: Prisma.VendorWhereInput
 }
 
 export type VendorCreateNestedOneWithoutUserInput = {
@@ -798,8 +1132,28 @@ export type EnumVendorStatusFieldUpdateOperationsInput = {
   set?: $Enums.VendorStatus
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type VendorCreateNestedOneWithoutRegistrationInput = {
@@ -816,18 +1170,88 @@ export type VendorUpdateOneRequiredWithoutRegistrationNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutRegistrationInput, Prisma.VendorUpdateWithoutRegistrationInput>, Prisma.VendorUncheckedUpdateWithoutRegistrationInput>
 }
 
-export type VendorCreateNestedOneWithoutBankAccountsInput = {
-  create?: Prisma.XOR<Prisma.VendorCreateWithoutBankAccountsInput, Prisma.VendorUncheckedCreateWithoutBankAccountsInput>
-  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutBankAccountsInput
+export type VendorCreateNestedOneWithoutFunctionHallInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutFunctionHallInput, Prisma.VendorUncheckedCreateWithoutFunctionHallInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutFunctionHallInput
   connect?: Prisma.VendorWhereUniqueInput
 }
 
-export type VendorUpdateOneRequiredWithoutBankAccountsNestedInput = {
-  create?: Prisma.XOR<Prisma.VendorCreateWithoutBankAccountsInput, Prisma.VendorUncheckedCreateWithoutBankAccountsInput>
-  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutBankAccountsInput
-  upsert?: Prisma.VendorUpsertWithoutBankAccountsInput
+export type VendorUpdateOneRequiredWithoutFunctionHallNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutFunctionHallInput, Prisma.VendorUncheckedCreateWithoutFunctionHallInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutFunctionHallInput
+  upsert?: Prisma.VendorUpsertWithoutFunctionHallInput
   connect?: Prisma.VendorWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutBankAccountsInput, Prisma.VendorUpdateWithoutBankAccountsInput>, Prisma.VendorUncheckedUpdateWithoutBankAccountsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutFunctionHallInput, Prisma.VendorUpdateWithoutFunctionHallInput>, Prisma.VendorUncheckedUpdateWithoutFunctionHallInput>
+}
+
+export type VendorCreateNestedOneWithoutServiceInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutServiceInput, Prisma.VendorUncheckedCreateWithoutServiceInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutServiceInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneRequiredWithoutServiceNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutServiceInput, Prisma.VendorUncheckedCreateWithoutServiceInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutServiceInput
+  upsert?: Prisma.VendorUpsertWithoutServiceInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutServiceInput, Prisma.VendorUpdateWithoutServiceInput>, Prisma.VendorUncheckedUpdateWithoutServiceInput>
+}
+
+export type VendorCreateNestedOneWithoutProviderInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutProviderInput, Prisma.VendorUncheckedCreateWithoutProviderInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutProviderInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneRequiredWithoutProviderNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutProviderInput, Prisma.VendorUncheckedCreateWithoutProviderInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutProviderInput
+  upsert?: Prisma.VendorUpsertWithoutProviderInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutProviderInput, Prisma.VendorUpdateWithoutProviderInput>, Prisma.VendorUncheckedUpdateWithoutProviderInput>
+}
+
+export type VendorCreateNestedOneWithoutManagerInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutManagerInput, Prisma.VendorUncheckedCreateWithoutManagerInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutManagerInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneRequiredWithoutManagerNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutManagerInput, Prisma.VendorUncheckedCreateWithoutManagerInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutManagerInput
+  upsert?: Prisma.VendorUpsertWithoutManagerInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutManagerInput, Prisma.VendorUpdateWithoutManagerInput>, Prisma.VendorUncheckedUpdateWithoutManagerInput>
+}
+
+export type VendorCreateNestedOneWithoutStaffInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutStaffInput, Prisma.VendorUncheckedCreateWithoutStaffInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutStaffInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneRequiredWithoutStaffNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutStaffInput, Prisma.VendorUncheckedCreateWithoutStaffInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutStaffInput
+  upsert?: Prisma.VendorUpsertWithoutStaffInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutStaffInput, Prisma.VendorUpdateWithoutStaffInput>, Prisma.VendorUncheckedUpdateWithoutStaffInput>
+}
+
+export type VendorCreateNestedOneWithoutVendorMemberInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutVendorMemberInput, Prisma.VendorUncheckedCreateWithoutVendorMemberInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutVendorMemberInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneRequiredWithoutVendorMemberNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutVendorMemberInput, Prisma.VendorUncheckedCreateWithoutVendorMemberInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutVendorMemberInput
+  upsert?: Prisma.VendorUpsertWithoutVendorMemberInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutVendorMemberInput, Prisma.VendorUpdateWithoutVendorMemberInput>, Prisma.VendorUncheckedUpdateWithoutVendorMemberInput>
 }
 
 export type VendorCreateNestedOneWithoutDocumentsInput = {
@@ -844,154 +1268,108 @@ export type VendorUpdateOneRequiredWithoutDocumentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutDocumentsInput, Prisma.VendorUpdateWithoutDocumentsInput>, Prisma.VendorUncheckedUpdateWithoutDocumentsInput>
 }
 
-export type VendorCreateNestedOneWithoutMembersInput = {
-  create?: Prisma.XOR<Prisma.VendorCreateWithoutMembersInput, Prisma.VendorUncheckedCreateWithoutMembersInput>
-  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutMembersInput
+export type VendorCreateNestedOneWithoutBankAccountsInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutBankAccountsInput, Prisma.VendorUncheckedCreateWithoutBankAccountsInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutBankAccountsInput
   connect?: Prisma.VendorWhereUniqueInput
 }
 
-export type VendorUpdateOneRequiredWithoutMembersNestedInput = {
-  create?: Prisma.XOR<Prisma.VendorCreateWithoutMembersInput, Prisma.VendorUncheckedCreateWithoutMembersInput>
-  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutMembersInput
-  upsert?: Prisma.VendorUpsertWithoutMembersInput
+export type VendorUpdateOneRequiredWithoutBankAccountsNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutBankAccountsInput, Prisma.VendorUncheckedCreateWithoutBankAccountsInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutBankAccountsInput
+  upsert?: Prisma.VendorUpsertWithoutBankAccountsInput
   connect?: Prisma.VendorWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutMembersInput, Prisma.VendorUpdateWithoutMembersInput>, Prisma.VendorUncheckedUpdateWithoutMembersInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutBankAccountsInput, Prisma.VendorUpdateWithoutBankAccountsInput>, Prisma.VendorUncheckedUpdateWithoutBankAccountsInput>
 }
 
-export type VendorCreateWithoutServiceInput = {
-  id: string
-  name: string
-  description?: string | null
-  city: string
-  address?: string | null
-  createdAt?: Date | string
-  updatedAt: Date | string
-  businessName?: string | null
-  businessType?: string | null
-  registrationNo?: string | null
-  gstNumber?: string | null
-  panNumber?: string | null
-  website?: string | null
-  contactEmail?: string | null
-  contactPhone?: string | null
-  postalCode?: string | null
-  state?: string | null
-  country?: string | null
-  status?: $Enums.VendorStatus
-  approvalNotes?: string | null
-  approvedAt?: Date | string | null
-  profileComplete?: boolean
-  User: Prisma.UserCreateNestedOneWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
-  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
-  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+export type VendorCreateNestedOneWithoutGalleryInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutGalleryInput, Prisma.VendorUncheckedCreateWithoutGalleryInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutGalleryInput
+  connect?: Prisma.VendorWhereUniqueInput
 }
 
-export type VendorUncheckedCreateWithoutServiceInput = {
-  id: string
-  name: string
-  description?: string | null
-  city: string
-  address?: string | null
-  ownerId: string
-  createdAt?: Date | string
-  updatedAt: Date | string
-  businessName?: string | null
-  businessType?: string | null
-  registrationNo?: string | null
-  gstNumber?: string | null
-  panNumber?: string | null
-  website?: string | null
-  contactEmail?: string | null
-  contactPhone?: string | null
-  postalCode?: string | null
-  state?: string | null
-  country?: string | null
-  status?: $Enums.VendorStatus
-  approvalNotes?: string | null
-  approvedAt?: Date | string | null
-  profileComplete?: boolean
-  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
-  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
-  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+export type VendorUpdateOneRequiredWithoutGalleryNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutGalleryInput, Prisma.VendorUncheckedCreateWithoutGalleryInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutGalleryInput
+  upsert?: Prisma.VendorUpsertWithoutGalleryInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutGalleryInput, Prisma.VendorUpdateWithoutGalleryInput>, Prisma.VendorUncheckedUpdateWithoutGalleryInput>
 }
 
-export type VendorCreateOrConnectWithoutServiceInput = {
-  where: Prisma.VendorWhereUniqueInput
-  create: Prisma.XOR<Prisma.VendorCreateWithoutServiceInput, Prisma.VendorUncheckedCreateWithoutServiceInput>
+export type VendorCreateNestedOneWithoutAvailabilityInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutAvailabilityInput, Prisma.VendorUncheckedCreateWithoutAvailabilityInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutAvailabilityInput
+  connect?: Prisma.VendorWhereUniqueInput
 }
 
-export type VendorUpsertWithoutServiceInput = {
-  update: Prisma.XOR<Prisma.VendorUpdateWithoutServiceInput, Prisma.VendorUncheckedUpdateWithoutServiceInput>
-  create: Prisma.XOR<Prisma.VendorCreateWithoutServiceInput, Prisma.VendorUncheckedCreateWithoutServiceInput>
-  where?: Prisma.VendorWhereInput
+export type VendorUpdateOneRequiredWithoutAvailabilityNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutAvailabilityInput, Prisma.VendorUncheckedCreateWithoutAvailabilityInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutAvailabilityInput
+  upsert?: Prisma.VendorUpsertWithoutAvailabilityInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutAvailabilityInput, Prisma.VendorUpdateWithoutAvailabilityInput>, Prisma.VendorUncheckedUpdateWithoutAvailabilityInput>
 }
 
-export type VendorUpdateToOneWithWhereWithoutServiceInput = {
-  where?: Prisma.VendorWhereInput
-  data: Prisma.XOR<Prisma.VendorUpdateWithoutServiceInput, Prisma.VendorUncheckedUpdateWithoutServiceInput>
+export type VendorCreateNestedOneWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutBookingInput, Prisma.VendorUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutBookingInput
+  connect?: Prisma.VendorWhereUniqueInput
 }
 
-export type VendorUpdateWithoutServiceInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  city?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
-  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
-  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
-  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+export type VendorUpdateOneWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutBookingInput, Prisma.VendorUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutBookingInput
+  upsert?: Prisma.VendorUpsertWithoutBookingInput
+  disconnect?: Prisma.VendorWhereInput | boolean
+  delete?: Prisma.VendorWhereInput | boolean
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutBookingInput, Prisma.VendorUpdateWithoutBookingInput>, Prisma.VendorUncheckedUpdateWithoutBookingInput>
 }
 
-export type VendorUncheckedUpdateWithoutServiceInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  city?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
-  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
-  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
-  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+export type VendorCreateNestedOneWithoutReviewInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutReviewInput, Prisma.VendorUncheckedCreateWithoutReviewInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutReviewInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneRequiredWithoutReviewNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutReviewInput, Prisma.VendorUncheckedCreateWithoutReviewInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutReviewInput
+  upsert?: Prisma.VendorUpsertWithoutReviewInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutReviewInput, Prisma.VendorUpdateWithoutReviewInput>, Prisma.VendorUncheckedUpdateWithoutReviewInput>
+}
+
+export type VendorCreateNestedOneWithoutNotificationInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutNotificationInput, Prisma.VendorUncheckedCreateWithoutNotificationInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutNotificationInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneWithoutNotificationNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutNotificationInput, Prisma.VendorUncheckedCreateWithoutNotificationInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutNotificationInput
+  upsert?: Prisma.VendorUpsertWithoutNotificationInput
+  disconnect?: Prisma.VendorWhereInput | boolean
+  delete?: Prisma.VendorWhereInput | boolean
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutNotificationInput, Prisma.VendorUpdateWithoutNotificationInput>, Prisma.VendorUncheckedUpdateWithoutNotificationInput>
+}
+
+export type VendorCreateNestedOneWithoutAuditLogInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutAuditLogInput, Prisma.VendorUncheckedCreateWithoutAuditLogInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutAuditLogInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneWithoutAuditLogNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutAuditLogInput, Prisma.VendorUncheckedCreateWithoutAuditLogInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutAuditLogInput
+  upsert?: Prisma.VendorUpsertWithoutAuditLogInput
+  disconnect?: Prisma.VendorWhereInput | boolean
+  delete?: Prisma.VendorWhereInput | boolean
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutAuditLogInput, Prisma.VendorUpdateWithoutAuditLogInput>, Prisma.VendorUncheckedUpdateWithoutAuditLogInput>
 }
 
 export type VendorCreateWithoutUserInput = {
@@ -1000,28 +1378,47 @@ export type VendorCreateWithoutUserInput = {
   description?: string | null
   city: string
   address?: string | null
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
   Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
 }
 
 export type VendorUncheckedCreateWithoutUserInput = {
@@ -1030,28 +1427,47 @@ export type VendorUncheckedCreateWithoutUserInput = {
   description?: string | null
   city: string
   address?: string | null
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
   Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
 }
 
 export type VendorCreateOrConnectWithoutUserInput = {
@@ -1076,28 +1492,47 @@ export type VendorUpdateWithoutUserInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
   Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorUncheckedUpdateWithoutUserInput = {
@@ -1106,28 +1541,47 @@ export type VendorUncheckedUpdateWithoutUserInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
   Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorCreateWithoutRegistrationInput = {
@@ -1136,28 +1590,47 @@ export type VendorCreateWithoutRegistrationInput = {
   description?: string | null
   city: string
   address?: string | null
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
-  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
   User: Prisma.UserCreateNestedOneWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
 }
 
 export type VendorUncheckedCreateWithoutRegistrationInput = {
@@ -1167,27 +1640,46 @@ export type VendorUncheckedCreateWithoutRegistrationInput = {
   city: string
   address?: string | null
   ownerId: string
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
   Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
 }
 
 export type VendorCreateOrConnectWithoutRegistrationInput = {
@@ -1212,28 +1704,47 @@ export type VendorUpdateWithoutRegistrationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorUncheckedUpdateWithoutRegistrationInput = {
@@ -1243,163 +1754,1318 @@ export type VendorUncheckedUpdateWithoutRegistrationInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
   Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
 }
 
-export type VendorCreateWithoutBankAccountsInput = {
+export type VendorCreateWithoutFunctionHallInput = {
   id: string
   name: string
   description?: string | null
   city: string
   address?: string | null
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
-  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
   User: Prisma.UserCreateNestedOneWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
 }
 
-export type VendorUncheckedCreateWithoutBankAccountsInput = {
+export type VendorUncheckedCreateWithoutFunctionHallInput = {
   id: string
   name: string
   description?: string | null
   city: string
   address?: string | null
   ownerId: string
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
   Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
 }
 
-export type VendorCreateOrConnectWithoutBankAccountsInput = {
+export type VendorCreateOrConnectWithoutFunctionHallInput = {
   where: Prisma.VendorWhereUniqueInput
-  create: Prisma.XOR<Prisma.VendorCreateWithoutBankAccountsInput, Prisma.VendorUncheckedCreateWithoutBankAccountsInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutFunctionHallInput, Prisma.VendorUncheckedCreateWithoutFunctionHallInput>
 }
 
-export type VendorUpsertWithoutBankAccountsInput = {
-  update: Prisma.XOR<Prisma.VendorUpdateWithoutBankAccountsInput, Prisma.VendorUncheckedUpdateWithoutBankAccountsInput>
-  create: Prisma.XOR<Prisma.VendorCreateWithoutBankAccountsInput, Prisma.VendorUncheckedCreateWithoutBankAccountsInput>
+export type VendorUpsertWithoutFunctionHallInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutFunctionHallInput, Prisma.VendorUncheckedUpdateWithoutFunctionHallInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutFunctionHallInput, Prisma.VendorUncheckedCreateWithoutFunctionHallInput>
   where?: Prisma.VendorWhereInput
 }
 
-export type VendorUpdateToOneWithWhereWithoutBankAccountsInput = {
+export type VendorUpdateToOneWithWhereWithoutFunctionHallInput = {
   where?: Prisma.VendorWhereInput
-  data: Prisma.XOR<Prisma.VendorUpdateWithoutBankAccountsInput, Prisma.VendorUncheckedUpdateWithoutBankAccountsInput>
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutFunctionHallInput, Prisma.VendorUncheckedUpdateWithoutFunctionHallInput>
 }
 
-export type VendorUpdateWithoutBankAccountsInput = {
+export type VendorUpdateWithoutFunctionHallInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
 }
 
-export type VendorUncheckedUpdateWithoutBankAccountsInput = {
+export type VendorUncheckedUpdateWithoutFunctionHallInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutServiceInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutServiceInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutServiceInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutServiceInput, Prisma.VendorUncheckedCreateWithoutServiceInput>
+}
+
+export type VendorUpsertWithoutServiceInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutServiceInput, Prisma.VendorUncheckedUpdateWithoutServiceInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutServiceInput, Prisma.VendorUncheckedCreateWithoutServiceInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutServiceInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutServiceInput, Prisma.VendorUncheckedUpdateWithoutServiceInput>
+}
+
+export type VendorUpdateWithoutServiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutServiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutProviderInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutProviderInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutProviderInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutProviderInput, Prisma.VendorUncheckedCreateWithoutProviderInput>
+}
+
+export type VendorUpsertWithoutProviderInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutProviderInput, Prisma.VendorUncheckedUpdateWithoutProviderInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutProviderInput, Prisma.VendorUncheckedCreateWithoutProviderInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutProviderInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutProviderInput, Prisma.VendorUncheckedUpdateWithoutProviderInput>
+}
+
+export type VendorUpdateWithoutProviderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutProviderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutManagerInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutManagerInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutManagerInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutManagerInput, Prisma.VendorUncheckedCreateWithoutManagerInput>
+}
+
+export type VendorUpsertWithoutManagerInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutManagerInput, Prisma.VendorUncheckedUpdateWithoutManagerInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutManagerInput, Prisma.VendorUncheckedCreateWithoutManagerInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutManagerInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutManagerInput, Prisma.VendorUncheckedUpdateWithoutManagerInput>
+}
+
+export type VendorUpdateWithoutManagerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutManagerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutStaffInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutStaffInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutStaffInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutStaffInput, Prisma.VendorUncheckedCreateWithoutStaffInput>
+}
+
+export type VendorUpsertWithoutStaffInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutStaffInput, Prisma.VendorUncheckedUpdateWithoutStaffInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutStaffInput, Prisma.VendorUncheckedCreateWithoutStaffInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutStaffInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutStaffInput, Prisma.VendorUncheckedUpdateWithoutStaffInput>
+}
+
+export type VendorUpdateWithoutStaffInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutStaffInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutVendorMemberInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutVendorMemberInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutVendorMemberInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutVendorMemberInput, Prisma.VendorUncheckedCreateWithoutVendorMemberInput>
+}
+
+export type VendorUpsertWithoutVendorMemberInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutVendorMemberInput, Prisma.VendorUncheckedUpdateWithoutVendorMemberInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutVendorMemberInput, Prisma.VendorUncheckedCreateWithoutVendorMemberInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutVendorMemberInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutVendorMemberInput, Prisma.VendorUncheckedUpdateWithoutVendorMemberInput>
+}
+
+export type VendorUpdateWithoutVendorMemberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutVendorMemberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorCreateWithoutDocumentsInput = {
@@ -1408,28 +3074,47 @@ export type VendorCreateWithoutDocumentsInput = {
   description?: string | null
   city: string
   address?: string | null
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
-  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
   User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
   BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
 }
 
 export type VendorUncheckedCreateWithoutDocumentsInput = {
@@ -1439,27 +3124,46 @@ export type VendorUncheckedCreateWithoutDocumentsInput = {
   city: string
   address?: string | null
   ownerId: string
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
   Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
   BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
-  Members?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
 }
 
 export type VendorCreateOrConnectWithoutDocumentsInput = {
@@ -1484,28 +3188,47 @@ export type VendorUpdateWithoutDocumentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
   BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorUncheckedUpdateWithoutDocumentsInput = {
@@ -1515,163 +3238,1530 @@ export type VendorUncheckedUpdateWithoutDocumentsInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
   Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
   BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
-  Members?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
 }
 
-export type VendorCreateWithoutMembersInput = {
+export type VendorCreateWithoutBankAccountsInput = {
   id: string
   name: string
   description?: string | null
   city: string
   address?: string | null
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
-  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
   User: Prisma.UserCreateNestedOneWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
 }
 
-export type VendorUncheckedCreateWithoutMembersInput = {
+export type VendorUncheckedCreateWithoutBankAccountsInput = {
   id: string
   name: string
   description?: string | null
   city: string
   address?: string | null
   ownerId: string
-  createdAt?: Date | string
-  updatedAt: Date | string
+  status?: $Enums.VendorStatus
   businessName?: string | null
   businessType?: string | null
   registrationNo?: string | null
   gstNumber?: string | null
   panNumber?: string | null
+  yearEstablished?: number | null
   website?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   postalCode?: string | null
   state?: string | null
   country?: string | null
-  status?: $Enums.VendorStatus
   approvalNotes?: string | null
   approvedAt?: Date | string | null
   profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
   Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
-  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
   Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
   Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
 }
 
-export type VendorCreateOrConnectWithoutMembersInput = {
+export type VendorCreateOrConnectWithoutBankAccountsInput = {
   where: Prisma.VendorWhereUniqueInput
-  create: Prisma.XOR<Prisma.VendorCreateWithoutMembersInput, Prisma.VendorUncheckedCreateWithoutMembersInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutBankAccountsInput, Prisma.VendorUncheckedCreateWithoutBankAccountsInput>
 }
 
-export type VendorUpsertWithoutMembersInput = {
-  update: Prisma.XOR<Prisma.VendorUpdateWithoutMembersInput, Prisma.VendorUncheckedUpdateWithoutMembersInput>
-  create: Prisma.XOR<Prisma.VendorCreateWithoutMembersInput, Prisma.VendorUncheckedCreateWithoutMembersInput>
+export type VendorUpsertWithoutBankAccountsInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutBankAccountsInput, Prisma.VendorUncheckedUpdateWithoutBankAccountsInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutBankAccountsInput, Prisma.VendorUncheckedCreateWithoutBankAccountsInput>
   where?: Prisma.VendorWhereInput
 }
 
-export type VendorUpdateToOneWithWhereWithoutMembersInput = {
+export type VendorUpdateToOneWithWhereWithoutBankAccountsInput = {
   where?: Prisma.VendorWhereInput
-  data: Prisma.XOR<Prisma.VendorUpdateWithoutMembersInput, Prisma.VendorUncheckedUpdateWithoutMembersInput>
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutBankAccountsInput, Prisma.VendorUncheckedUpdateWithoutBankAccountsInput>
 }
 
-export type VendorUpdateWithoutMembersInput = {
+export type VendorUpdateWithoutBankAccountsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
 }
 
-export type VendorUncheckedUpdateWithoutMembersInput = {
+export type VendorUncheckedUpdateWithoutBankAccountsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
   approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
   Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
-  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
   Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
   Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutGalleryInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutGalleryInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutGalleryInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutGalleryInput, Prisma.VendorUncheckedCreateWithoutGalleryInput>
+}
+
+export type VendorUpsertWithoutGalleryInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutGalleryInput, Prisma.VendorUncheckedUpdateWithoutGalleryInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutGalleryInput, Prisma.VendorUncheckedCreateWithoutGalleryInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutGalleryInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutGalleryInput, Prisma.VendorUncheckedUpdateWithoutGalleryInput>
+}
+
+export type VendorUpdateWithoutGalleryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutGalleryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutAvailabilityInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutAvailabilityInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutAvailabilityInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutAvailabilityInput, Prisma.VendorUncheckedCreateWithoutAvailabilityInput>
+}
+
+export type VendorUpsertWithoutAvailabilityInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutAvailabilityInput, Prisma.VendorUncheckedUpdateWithoutAvailabilityInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutAvailabilityInput, Prisma.VendorUncheckedCreateWithoutAvailabilityInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutAvailabilityInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutAvailabilityInput, Prisma.VendorUncheckedUpdateWithoutAvailabilityInput>
+}
+
+export type VendorUpdateWithoutAvailabilityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutAvailabilityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutBookingInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutBookingInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutBookingInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutBookingInput, Prisma.VendorUncheckedCreateWithoutBookingInput>
+}
+
+export type VendorUpsertWithoutBookingInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutBookingInput, Prisma.VendorUncheckedUpdateWithoutBookingInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutBookingInput, Prisma.VendorUncheckedCreateWithoutBookingInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutBookingInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutBookingInput, Prisma.VendorUncheckedUpdateWithoutBookingInput>
+}
+
+export type VendorUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutBookingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutReviewInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutReviewInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutReviewInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutReviewInput, Prisma.VendorUncheckedCreateWithoutReviewInput>
+}
+
+export type VendorUpsertWithoutReviewInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutReviewInput, Prisma.VendorUncheckedUpdateWithoutReviewInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutReviewInput, Prisma.VendorUncheckedCreateWithoutReviewInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutReviewInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutReviewInput, Prisma.VendorUncheckedUpdateWithoutReviewInput>
+}
+
+export type VendorUpdateWithoutReviewInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutReviewInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutNotificationInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutNotificationInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutNotificationInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutNotificationInput, Prisma.VendorUncheckedCreateWithoutNotificationInput>
+}
+
+export type VendorUpsertWithoutNotificationInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutNotificationInput, Prisma.VendorUncheckedUpdateWithoutNotificationInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutNotificationInput, Prisma.VendorUncheckedCreateWithoutNotificationInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutNotificationInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutNotificationInput, Prisma.VendorUncheckedUpdateWithoutNotificationInput>
+}
+
+export type VendorUpdateWithoutNotificationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutNotificationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorCreateWithoutAuditLogInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  User: Prisma.UserCreateNestedOneWithoutVendorInput
+  FunctionHall?: Prisma.FunctionHallCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutVendorInput
+}
+
+export type VendorUncheckedCreateWithoutAuditLogInput = {
+  id: string
+  name: string
+  description?: string | null
+  city: string
+  address?: string | null
+  ownerId: string
+  status?: $Enums.VendorStatus
+  businessName?: string | null
+  businessType?: string | null
+  registrationNo?: string | null
+  gstNumber?: string | null
+  panNumber?: string | null
+  yearEstablished?: number | null
+  website?: string | null
+  contactEmail?: string | null
+  contactPhone?: string | null
+  postalCode?: string | null
+  state?: string | null
+  country?: string | null
+  approvalNotes?: string | null
+  approvedAt?: Date | string | null
+  profileComplete?: boolean
+  mapsUrl?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  seatingCapacity?: number | null
+  diningCapacity?: number | null
+  parkingCapacity?: number | null
+  numberOfHalls?: number | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt: Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedCreateNestedManyWithoutVendorInput
+  Service?: Prisma.ServiceUncheckedCreateNestedManyWithoutVendorInput
+  Provider?: Prisma.VendorProviderUncheckedCreateNestedManyWithoutVendorInput
+  Manager?: Prisma.VendorManagerUncheckedCreateNestedManyWithoutVendorInput
+  Staff?: Prisma.VendorStaffUncheckedCreateNestedManyWithoutVendorInput
+  VendorMember?: Prisma.VendorMemberUncheckedCreateNestedManyWithoutVendorInput
+  Documents?: Prisma.VendorDocumentUncheckedCreateNestedManyWithoutVendorInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedCreateNestedManyWithoutVendorInput
+  Gallery?: Prisma.VendorGalleryUncheckedCreateNestedManyWithoutVendorInput
+  Availability?: Prisma.VendorAvailabilityUncheckedCreateNestedManyWithoutVendorInput
+  Registration?: Prisma.VendorRegistrationUncheckedCreateNestedOneWithoutVendorInput
+  Booking?: Prisma.BookingUncheckedCreateNestedManyWithoutVendorInput
+  Review?: Prisma.ReviewUncheckedCreateNestedManyWithoutVendorInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutVendorInput
+}
+
+export type VendorCreateOrConnectWithoutAuditLogInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutAuditLogInput, Prisma.VendorUncheckedCreateWithoutAuditLogInput>
+}
+
+export type VendorUpsertWithoutAuditLogInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutAuditLogInput, Prisma.VendorUncheckedUpdateWithoutAuditLogInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutAuditLogInput, Prisma.VendorUncheckedCreateWithoutAuditLogInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutAuditLogInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutAuditLogInput, Prisma.VendorUncheckedUpdateWithoutAuditLogInput>
+}
+
+export type VendorUpdateWithoutAuditLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  User?: Prisma.UserUpdateOneRequiredWithoutVendorNestedInput
+  FunctionHall?: Prisma.FunctionHallUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutVendorNestedInput
+}
+
+export type VendorUncheckedUpdateWithoutAuditLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumVendorStatusFieldUpdateOperationsInput | $Enums.VendorStatus
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearEstablished?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileComplete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mapsUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  seatingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  diningCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parkingCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfHalls?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  FunctionHall?: Prisma.FunctionHallUncheckedUpdateManyWithoutVendorNestedInput
+  Service?: Prisma.ServiceUncheckedUpdateManyWithoutVendorNestedInput
+  Provider?: Prisma.VendorProviderUncheckedUpdateManyWithoutVendorNestedInput
+  Manager?: Prisma.VendorManagerUncheckedUpdateManyWithoutVendorNestedInput
+  Staff?: Prisma.VendorStaffUncheckedUpdateManyWithoutVendorNestedInput
+  VendorMember?: Prisma.VendorMemberUncheckedUpdateManyWithoutVendorNestedInput
+  Documents?: Prisma.VendorDocumentUncheckedUpdateManyWithoutVendorNestedInput
+  BankAccounts?: Prisma.VendorBankAccountUncheckedUpdateManyWithoutVendorNestedInput
+  Gallery?: Prisma.VendorGalleryUncheckedUpdateManyWithoutVendorNestedInput
+  Availability?: Prisma.VendorAvailabilityUncheckedUpdateManyWithoutVendorNestedInput
+  Registration?: Prisma.VendorRegistrationUncheckedUpdateOneWithoutVendorNestedInput
+  Booking?: Prisma.BookingUncheckedUpdateManyWithoutVendorNestedInput
+  Review?: Prisma.ReviewUncheckedUpdateManyWithoutVendorNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutVendorNestedInput
 }
 
 
@@ -1680,17 +4770,37 @@ export type VendorUncheckedUpdateWithoutMembersInput = {
  */
 
 export type VendorCountOutputType = {
+  FunctionHall: number
   Service: number
-  BankAccounts: number
+  Provider: number
+  Manager: number
+  Staff: number
+  VendorMember: number
   Documents: number
-  Members: number
+  BankAccounts: number
+  Gallery: number
+  Availability: number
+  Booking: number
+  Review: number
+  Notification: number
+  AuditLog: number
 }
 
 export type VendorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  FunctionHall?: boolean | VendorCountOutputTypeCountFunctionHallArgs
   Service?: boolean | VendorCountOutputTypeCountServiceArgs
-  BankAccounts?: boolean | VendorCountOutputTypeCountBankAccountsArgs
+  Provider?: boolean | VendorCountOutputTypeCountProviderArgs
+  Manager?: boolean | VendorCountOutputTypeCountManagerArgs
+  Staff?: boolean | VendorCountOutputTypeCountStaffArgs
+  VendorMember?: boolean | VendorCountOutputTypeCountVendorMemberArgs
   Documents?: boolean | VendorCountOutputTypeCountDocumentsArgs
-  Members?: boolean | VendorCountOutputTypeCountMembersArgs
+  BankAccounts?: boolean | VendorCountOutputTypeCountBankAccountsArgs
+  Gallery?: boolean | VendorCountOutputTypeCountGalleryArgs
+  Availability?: boolean | VendorCountOutputTypeCountAvailabilityArgs
+  Booking?: boolean | VendorCountOutputTypeCountBookingArgs
+  Review?: boolean | VendorCountOutputTypeCountReviewArgs
+  Notification?: boolean | VendorCountOutputTypeCountNotificationArgs
+  AuditLog?: boolean | VendorCountOutputTypeCountAuditLogArgs
 }
 
 /**
@@ -1706,6 +4816,13 @@ export type VendorCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * VendorCountOutputType without action
  */
+export type VendorCountOutputTypeCountFunctionHallArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FunctionHallWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
 export type VendorCountOutputTypeCountServiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ServiceWhereInput
 }
@@ -1713,8 +4830,29 @@ export type VendorCountOutputTypeCountServiceArgs<ExtArgs extends runtime.Types.
 /**
  * VendorCountOutputType without action
  */
-export type VendorCountOutputTypeCountBankAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.VendorBankAccountWhereInput
+export type VendorCountOutputTypeCountProviderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VendorProviderWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountManagerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VendorManagerWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountStaffArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VendorStaffWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountVendorMemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VendorMemberWhereInput
 }
 
 /**
@@ -1727,8 +4865,50 @@ export type VendorCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Type
 /**
  * VendorCountOutputType without action
  */
-export type VendorCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.VendorMemberWhereInput
+export type VendorCountOutputTypeCountBankAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VendorBankAccountWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VendorGalleryWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountAvailabilityArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VendorAvailabilityWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountBookingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountReviewArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountNotificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountAuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
 }
 
 
@@ -1739,29 +4919,48 @@ export type VendorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   city?: boolean
   address?: boolean
   ownerId?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  status?: boolean
   businessName?: boolean
   businessType?: boolean
   registrationNo?: boolean
   gstNumber?: boolean
   panNumber?: boolean
+  yearEstablished?: boolean
   website?: boolean
   contactEmail?: boolean
   contactPhone?: boolean
   postalCode?: boolean
   state?: boolean
   country?: boolean
-  status?: boolean
   approvalNotes?: boolean
   approvedAt?: boolean
   profileComplete?: boolean
-  Service?: boolean | Prisma.Vendor$ServiceArgs<ExtArgs>
+  mapsUrl?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  seatingCapacity?: boolean
+  diningCapacity?: boolean
+  parkingCapacity?: boolean
+  numberOfHalls?: boolean
+  active?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  BankAccounts?: boolean | Prisma.Vendor$BankAccountsArgs<ExtArgs>
+  FunctionHall?: boolean | Prisma.Vendor$FunctionHallArgs<ExtArgs>
+  Service?: boolean | Prisma.Vendor$ServiceArgs<ExtArgs>
+  Provider?: boolean | Prisma.Vendor$ProviderArgs<ExtArgs>
+  Manager?: boolean | Prisma.Vendor$ManagerArgs<ExtArgs>
+  Staff?: boolean | Prisma.Vendor$StaffArgs<ExtArgs>
+  VendorMember?: boolean | Prisma.Vendor$VendorMemberArgs<ExtArgs>
   Documents?: boolean | Prisma.Vendor$DocumentsArgs<ExtArgs>
-  Members?: boolean | Prisma.Vendor$MembersArgs<ExtArgs>
+  BankAccounts?: boolean | Prisma.Vendor$BankAccountsArgs<ExtArgs>
+  Gallery?: boolean | Prisma.Vendor$GalleryArgs<ExtArgs>
+  Availability?: boolean | Prisma.Vendor$AvailabilityArgs<ExtArgs>
   Registration?: boolean | Prisma.Vendor$RegistrationArgs<ExtArgs>
+  Booking?: boolean | Prisma.Vendor$BookingArgs<ExtArgs>
+  Review?: boolean | Prisma.Vendor$ReviewArgs<ExtArgs>
+  Notification?: boolean | Prisma.Vendor$NotificationArgs<ExtArgs>
+  AuditLog?: boolean | Prisma.Vendor$AuditLogArgs<ExtArgs>
   _count?: boolean | Prisma.VendorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vendor"]>
 
@@ -1772,23 +4971,32 @@ export type VendorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   city?: boolean
   address?: boolean
   ownerId?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  status?: boolean
   businessName?: boolean
   businessType?: boolean
   registrationNo?: boolean
   gstNumber?: boolean
   panNumber?: boolean
+  yearEstablished?: boolean
   website?: boolean
   contactEmail?: boolean
   contactPhone?: boolean
   postalCode?: boolean
   state?: boolean
   country?: boolean
-  status?: boolean
   approvalNotes?: boolean
   approvedAt?: boolean
   profileComplete?: boolean
+  mapsUrl?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  seatingCapacity?: boolean
+  diningCapacity?: boolean
+  parkingCapacity?: boolean
+  numberOfHalls?: boolean
+  active?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vendor"]>
 
@@ -1799,23 +5007,32 @@ export type VendorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   city?: boolean
   address?: boolean
   ownerId?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  status?: boolean
   businessName?: boolean
   businessType?: boolean
   registrationNo?: boolean
   gstNumber?: boolean
   panNumber?: boolean
+  yearEstablished?: boolean
   website?: boolean
   contactEmail?: boolean
   contactPhone?: boolean
   postalCode?: boolean
   state?: boolean
   country?: boolean
-  status?: boolean
   approvalNotes?: boolean
   approvedAt?: boolean
   profileComplete?: boolean
+  mapsUrl?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  seatingCapacity?: boolean
+  diningCapacity?: boolean
+  parkingCapacity?: boolean
+  numberOfHalls?: boolean
+  active?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vendor"]>
 
@@ -1826,33 +5043,52 @@ export type VendorSelectScalar = {
   city?: boolean
   address?: boolean
   ownerId?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  status?: boolean
   businessName?: boolean
   businessType?: boolean
   registrationNo?: boolean
   gstNumber?: boolean
   panNumber?: boolean
+  yearEstablished?: boolean
   website?: boolean
   contactEmail?: boolean
   contactPhone?: boolean
   postalCode?: boolean
   state?: boolean
   country?: boolean
-  status?: boolean
   approvalNotes?: boolean
   approvedAt?: boolean
   profileComplete?: boolean
+  mapsUrl?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  seatingCapacity?: boolean
+  diningCapacity?: boolean
+  parkingCapacity?: boolean
+  numberOfHalls?: boolean
+  active?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type VendorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "city" | "address" | "ownerId" | "createdAt" | "updatedAt" | "businessName" | "businessType" | "registrationNo" | "gstNumber" | "panNumber" | "website" | "contactEmail" | "contactPhone" | "postalCode" | "state" | "country" | "status" | "approvalNotes" | "approvedAt" | "profileComplete", ExtArgs["result"]["vendor"]>
+export type VendorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "city" | "address" | "ownerId" | "status" | "businessName" | "businessType" | "registrationNo" | "gstNumber" | "panNumber" | "yearEstablished" | "website" | "contactEmail" | "contactPhone" | "postalCode" | "state" | "country" | "approvalNotes" | "approvedAt" | "profileComplete" | "mapsUrl" | "latitude" | "longitude" | "seatingCapacity" | "diningCapacity" | "parkingCapacity" | "numberOfHalls" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["vendor"]>
 export type VendorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  Service?: boolean | Prisma.Vendor$ServiceArgs<ExtArgs>
   User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  BankAccounts?: boolean | Prisma.Vendor$BankAccountsArgs<ExtArgs>
+  FunctionHall?: boolean | Prisma.Vendor$FunctionHallArgs<ExtArgs>
+  Service?: boolean | Prisma.Vendor$ServiceArgs<ExtArgs>
+  Provider?: boolean | Prisma.Vendor$ProviderArgs<ExtArgs>
+  Manager?: boolean | Prisma.Vendor$ManagerArgs<ExtArgs>
+  Staff?: boolean | Prisma.Vendor$StaffArgs<ExtArgs>
+  VendorMember?: boolean | Prisma.Vendor$VendorMemberArgs<ExtArgs>
   Documents?: boolean | Prisma.Vendor$DocumentsArgs<ExtArgs>
-  Members?: boolean | Prisma.Vendor$MembersArgs<ExtArgs>
+  BankAccounts?: boolean | Prisma.Vendor$BankAccountsArgs<ExtArgs>
+  Gallery?: boolean | Prisma.Vendor$GalleryArgs<ExtArgs>
+  Availability?: boolean | Prisma.Vendor$AvailabilityArgs<ExtArgs>
   Registration?: boolean | Prisma.Vendor$RegistrationArgs<ExtArgs>
+  Booking?: boolean | Prisma.Vendor$BookingArgs<ExtArgs>
+  Review?: boolean | Prisma.Vendor$ReviewArgs<ExtArgs>
+  Notification?: boolean | Prisma.Vendor$NotificationArgs<ExtArgs>
+  AuditLog?: boolean | Prisma.Vendor$AuditLogArgs<ExtArgs>
   _count?: boolean | Prisma.VendorCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type VendorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1865,12 +5101,22 @@ export type VendorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $VendorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Vendor"
   objects: {
-    Service: Prisma.$ServicePayload<ExtArgs>[]
     User: Prisma.$UserPayload<ExtArgs>
-    BankAccounts: Prisma.$VendorBankAccountPayload<ExtArgs>[]
+    FunctionHall: Prisma.$FunctionHallPayload<ExtArgs>[]
+    Service: Prisma.$ServicePayload<ExtArgs>[]
+    Provider: Prisma.$VendorProviderPayload<ExtArgs>[]
+    Manager: Prisma.$VendorManagerPayload<ExtArgs>[]
+    Staff: Prisma.$VendorStaffPayload<ExtArgs>[]
+    VendorMember: Prisma.$VendorMemberPayload<ExtArgs>[]
     Documents: Prisma.$VendorDocumentPayload<ExtArgs>[]
-    Members: Prisma.$VendorMemberPayload<ExtArgs>[]
+    BankAccounts: Prisma.$VendorBankAccountPayload<ExtArgs>[]
+    Gallery: Prisma.$VendorGalleryPayload<ExtArgs>[]
+    Availability: Prisma.$VendorAvailabilityPayload<ExtArgs>[]
     Registration: Prisma.$VendorRegistrationPayload<ExtArgs> | null
+    Booking: Prisma.$BookingPayload<ExtArgs>[]
+    Review: Prisma.$ReviewPayload<ExtArgs>[]
+    Notification: Prisma.$NotificationPayload<ExtArgs>[]
+    AuditLog: Prisma.$AuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1879,23 +5125,32 @@ export type $VendorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     city: string
     address: string | null
     ownerId: string
-    createdAt: Date
-    updatedAt: Date
+    status: $Enums.VendorStatus
     businessName: string | null
     businessType: string | null
     registrationNo: string | null
     gstNumber: string | null
     panNumber: string | null
+    yearEstablished: number | null
     website: string | null
     contactEmail: string | null
     contactPhone: string | null
     postalCode: string | null
     state: string | null
     country: string | null
-    status: $Enums.VendorStatus
     approvalNotes: string | null
     approvedAt: Date | null
     profileComplete: boolean
+    mapsUrl: string | null
+    latitude: number | null
+    longitude: number | null
+    seatingCapacity: number | null
+    diningCapacity: number | null
+    parkingCapacity: number | null
+    numberOfHalls: number | null
+    active: boolean
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["vendor"]>
   composites: {}
 }
@@ -2290,12 +5545,22 @@ readonly fields: VendorFieldRefs;
  */
 export interface Prisma__VendorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  Service<T extends Prisma.Vendor$ServiceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$ServiceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   User<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  BankAccounts<T extends Prisma.Vendor$BankAccountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$BankAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorBankAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  FunctionHall<T extends Prisma.Vendor$FunctionHallArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$FunctionHallArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FunctionHallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Service<T extends Prisma.Vendor$ServiceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$ServiceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Provider<T extends Prisma.Vendor$ProviderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$ProviderArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorProviderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Manager<T extends Prisma.Vendor$ManagerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$ManagerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Staff<T extends Prisma.Vendor$StaffArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$StaffArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorStaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  VendorMember<T extends Prisma.Vendor$VendorMemberArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$VendorMemberArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   Documents<T extends Prisma.Vendor$DocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$DocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  Members<T extends Prisma.Vendor$MembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$MembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  BankAccounts<T extends Prisma.Vendor$BankAccountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$BankAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorBankAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Gallery<T extends Prisma.Vendor$GalleryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$GalleryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorGalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Availability<T extends Prisma.Vendor$AvailabilityArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$AvailabilityArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VendorAvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   Registration<T extends Prisma.Vendor$RegistrationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$RegistrationArgs<ExtArgs>>): Prisma.Prisma__VendorRegistrationClient<runtime.Types.Result.GetResult<Prisma.$VendorRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  Booking<T extends Prisma.Vendor$BookingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$BookingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Review<T extends Prisma.Vendor$ReviewArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$ReviewArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Notification<T extends Prisma.Vendor$NotificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$NotificationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  AuditLog<T extends Prisma.Vendor$AuditLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$AuditLogArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2331,23 +5596,32 @@ export interface VendorFieldRefs {
   readonly city: Prisma.FieldRef<"Vendor", 'String'>
   readonly address: Prisma.FieldRef<"Vendor", 'String'>
   readonly ownerId: Prisma.FieldRef<"Vendor", 'String'>
-  readonly createdAt: Prisma.FieldRef<"Vendor", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Vendor", 'DateTime'>
+  readonly status: Prisma.FieldRef<"Vendor", 'VendorStatus'>
   readonly businessName: Prisma.FieldRef<"Vendor", 'String'>
   readonly businessType: Prisma.FieldRef<"Vendor", 'String'>
   readonly registrationNo: Prisma.FieldRef<"Vendor", 'String'>
   readonly gstNumber: Prisma.FieldRef<"Vendor", 'String'>
   readonly panNumber: Prisma.FieldRef<"Vendor", 'String'>
+  readonly yearEstablished: Prisma.FieldRef<"Vendor", 'Int'>
   readonly website: Prisma.FieldRef<"Vendor", 'String'>
   readonly contactEmail: Prisma.FieldRef<"Vendor", 'String'>
   readonly contactPhone: Prisma.FieldRef<"Vendor", 'String'>
   readonly postalCode: Prisma.FieldRef<"Vendor", 'String'>
   readonly state: Prisma.FieldRef<"Vendor", 'String'>
   readonly country: Prisma.FieldRef<"Vendor", 'String'>
-  readonly status: Prisma.FieldRef<"Vendor", 'VendorStatus'>
   readonly approvalNotes: Prisma.FieldRef<"Vendor", 'String'>
   readonly approvedAt: Prisma.FieldRef<"Vendor", 'DateTime'>
   readonly profileComplete: Prisma.FieldRef<"Vendor", 'Boolean'>
+  readonly mapsUrl: Prisma.FieldRef<"Vendor", 'String'>
+  readonly latitude: Prisma.FieldRef<"Vendor", 'Float'>
+  readonly longitude: Prisma.FieldRef<"Vendor", 'Float'>
+  readonly seatingCapacity: Prisma.FieldRef<"Vendor", 'Int'>
+  readonly diningCapacity: Prisma.FieldRef<"Vendor", 'Int'>
+  readonly parkingCapacity: Prisma.FieldRef<"Vendor", 'Int'>
+  readonly numberOfHalls: Prisma.FieldRef<"Vendor", 'Int'>
+  readonly active: Prisma.FieldRef<"Vendor", 'Boolean'>
+  readonly createdAt: Prisma.FieldRef<"Vendor", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Vendor", 'DateTime'>
 }
     
 
@@ -2749,6 +6023,30 @@ export type VendorDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * Vendor.FunctionHall
+ */
+export type Vendor$FunctionHallArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FunctionHall
+   */
+  select?: Prisma.FunctionHallSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FunctionHall
+   */
+  omit?: Prisma.FunctionHallOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FunctionHallInclude<ExtArgs> | null
+  where?: Prisma.FunctionHallWhereInput
+  orderBy?: Prisma.FunctionHallOrderByWithRelationInput | Prisma.FunctionHallOrderByWithRelationInput[]
+  cursor?: Prisma.FunctionHallWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FunctionHallScalarFieldEnum | Prisma.FunctionHallScalarFieldEnum[]
+}
+
+/**
  * Vendor.Service
  */
 export type Vendor$ServiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2773,27 +6071,99 @@ export type Vendor$ServiceArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * Vendor.BankAccounts
+ * Vendor.Provider
  */
-export type Vendor$BankAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Vendor$ProviderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the VendorBankAccount
+   * Select specific fields to fetch from the VendorProvider
    */
-  select?: Prisma.VendorBankAccountSelect<ExtArgs> | null
+  select?: Prisma.VendorProviderSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the VendorBankAccount
+   * Omit specific fields from the VendorProvider
    */
-  omit?: Prisma.VendorBankAccountOmit<ExtArgs> | null
+  omit?: Prisma.VendorProviderOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.VendorBankAccountInclude<ExtArgs> | null
-  where?: Prisma.VendorBankAccountWhereInput
-  orderBy?: Prisma.VendorBankAccountOrderByWithRelationInput | Prisma.VendorBankAccountOrderByWithRelationInput[]
-  cursor?: Prisma.VendorBankAccountWhereUniqueInput
+  include?: Prisma.VendorProviderInclude<ExtArgs> | null
+  where?: Prisma.VendorProviderWhereInput
+  orderBy?: Prisma.VendorProviderOrderByWithRelationInput | Prisma.VendorProviderOrderByWithRelationInput[]
+  cursor?: Prisma.VendorProviderWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.VendorBankAccountScalarFieldEnum | Prisma.VendorBankAccountScalarFieldEnum[]
+  distinct?: Prisma.VendorProviderScalarFieldEnum | Prisma.VendorProviderScalarFieldEnum[]
+}
+
+/**
+ * Vendor.Manager
+ */
+export type Vendor$ManagerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VendorManager
+   */
+  select?: Prisma.VendorManagerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VendorManager
+   */
+  omit?: Prisma.VendorManagerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorManagerInclude<ExtArgs> | null
+  where?: Prisma.VendorManagerWhereInput
+  orderBy?: Prisma.VendorManagerOrderByWithRelationInput | Prisma.VendorManagerOrderByWithRelationInput[]
+  cursor?: Prisma.VendorManagerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VendorManagerScalarFieldEnum | Prisma.VendorManagerScalarFieldEnum[]
+}
+
+/**
+ * Vendor.Staff
+ */
+export type Vendor$StaffArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VendorStaff
+   */
+  select?: Prisma.VendorStaffSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VendorStaff
+   */
+  omit?: Prisma.VendorStaffOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorStaffInclude<ExtArgs> | null
+  where?: Prisma.VendorStaffWhereInput
+  orderBy?: Prisma.VendorStaffOrderByWithRelationInput | Prisma.VendorStaffOrderByWithRelationInput[]
+  cursor?: Prisma.VendorStaffWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VendorStaffScalarFieldEnum | Prisma.VendorStaffScalarFieldEnum[]
+}
+
+/**
+ * Vendor.VendorMember
+ */
+export type Vendor$VendorMemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VendorMember
+   */
+  select?: Prisma.VendorMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VendorMember
+   */
+  omit?: Prisma.VendorMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorMemberInclude<ExtArgs> | null
+  where?: Prisma.VendorMemberWhereInput
+  orderBy?: Prisma.VendorMemberOrderByWithRelationInput | Prisma.VendorMemberOrderByWithRelationInput[]
+  cursor?: Prisma.VendorMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VendorMemberScalarFieldEnum | Prisma.VendorMemberScalarFieldEnum[]
 }
 
 /**
@@ -2821,27 +6191,75 @@ export type Vendor$DocumentsArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Vendor.Members
+ * Vendor.BankAccounts
  */
-export type Vendor$MembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Vendor$BankAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the VendorMember
+   * Select specific fields to fetch from the VendorBankAccount
    */
-  select?: Prisma.VendorMemberSelect<ExtArgs> | null
+  select?: Prisma.VendorBankAccountSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the VendorMember
+   * Omit specific fields from the VendorBankAccount
    */
-  omit?: Prisma.VendorMemberOmit<ExtArgs> | null
+  omit?: Prisma.VendorBankAccountOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.VendorMemberInclude<ExtArgs> | null
-  where?: Prisma.VendorMemberWhereInput
-  orderBy?: Prisma.VendorMemberOrderByWithRelationInput | Prisma.VendorMemberOrderByWithRelationInput[]
-  cursor?: Prisma.VendorMemberWhereUniqueInput
+  include?: Prisma.VendorBankAccountInclude<ExtArgs> | null
+  where?: Prisma.VendorBankAccountWhereInput
+  orderBy?: Prisma.VendorBankAccountOrderByWithRelationInput | Prisma.VendorBankAccountOrderByWithRelationInput[]
+  cursor?: Prisma.VendorBankAccountWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.VendorMemberScalarFieldEnum | Prisma.VendorMemberScalarFieldEnum[]
+  distinct?: Prisma.VendorBankAccountScalarFieldEnum | Prisma.VendorBankAccountScalarFieldEnum[]
+}
+
+/**
+ * Vendor.Gallery
+ */
+export type Vendor$GalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VendorGallery
+   */
+  select?: Prisma.VendorGallerySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VendorGallery
+   */
+  omit?: Prisma.VendorGalleryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorGalleryInclude<ExtArgs> | null
+  where?: Prisma.VendorGalleryWhereInput
+  orderBy?: Prisma.VendorGalleryOrderByWithRelationInput | Prisma.VendorGalleryOrderByWithRelationInput[]
+  cursor?: Prisma.VendorGalleryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VendorGalleryScalarFieldEnum | Prisma.VendorGalleryScalarFieldEnum[]
+}
+
+/**
+ * Vendor.Availability
+ */
+export type Vendor$AvailabilityArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VendorAvailability
+   */
+  select?: Prisma.VendorAvailabilitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VendorAvailability
+   */
+  omit?: Prisma.VendorAvailabilityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorAvailabilityInclude<ExtArgs> | null
+  where?: Prisma.VendorAvailabilityWhereInput
+  orderBy?: Prisma.VendorAvailabilityOrderByWithRelationInput | Prisma.VendorAvailabilityOrderByWithRelationInput[]
+  cursor?: Prisma.VendorAvailabilityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VendorAvailabilityScalarFieldEnum | Prisma.VendorAvailabilityScalarFieldEnum[]
 }
 
 /**
@@ -2861,6 +6279,102 @@ export type Vendor$RegistrationArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.VendorRegistrationInclude<ExtArgs> | null
   where?: Prisma.VendorRegistrationWhereInput
+}
+
+/**
+ * Vendor.Booking
+ */
+export type Vendor$BookingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
+}
+
+/**
+ * Vendor.Review
+ */
+export type Vendor$ReviewArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * Vendor.Notification
+ */
+export type Vendor$NotificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * Vendor.AuditLog
+ */
+export type Vendor$AuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditLog
+   */
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditLog
+   */
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
 }
 
 /**

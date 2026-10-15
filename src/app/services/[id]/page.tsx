@@ -64,17 +64,39 @@ export default async function ServiceDetailsPage({
 }) {
   const { id } = await params;
 
-  const service = await prisma.service.findUnique({
+  const service = await prisma.service.findFirst({
     where: {
       id,
+      active: true,
+      Vendor: {
+        status: "APPROVED",
+      },
     },
-    include: {
-      Vendor: true,
-      Category: true,
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      price: true,
+      durationMinutes: true,
+      Vendor: {
+        select: {
+          id: true,
+          name: true,
+          city: true,
+          address: true,
+        },
+      },
+      Category: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
     },
   });
 
-  if (!service || !service.active) {
+  if (!service) {
     return (
       <main className="min-h-screen bg-[#f8fafc] px-4 py-20">
         <div className="mx-auto max-w-xl rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm">

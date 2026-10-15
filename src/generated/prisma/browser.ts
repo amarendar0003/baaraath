@@ -18,21 +18,6 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
- * Model Booking
- * 
- */
-export type Booking = Prisma.BookingModel
-/**
- * Model Category
- * 
- */
-export type Category = Prisma.CategoryModel
-/**
- * Model Service
- * 
- */
-export type Service = Prisma.ServiceModel
-/**
  * Model User
  * 
  */
@@ -48,17 +33,97 @@ export type Vendor = Prisma.VendorModel
  */
 export type VendorRegistration = Prisma.VendorRegistrationModel
 /**
- * Model VendorBankAccount
+ * Model FunctionHall
  * 
  */
-export type VendorBankAccount = Prisma.VendorBankAccountModel
+export type FunctionHall = Prisma.FunctionHallModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model Service
+ * 
+ */
+export type Service = Prisma.ServiceModel
+/**
+ * Model VendorProvider
+ * 
+ */
+export type VendorProvider = Prisma.VendorProviderModel
+/**
+ * Model ProviderService
+ * 
+ */
+export type ProviderService = Prisma.ProviderServiceModel
+/**
+ * Model ProviderAvailability
+ * 
+ */
+export type ProviderAvailability = Prisma.ProviderAvailabilityModel
+/**
+ * Model VendorManager
+ * 
+ */
+export type VendorManager = Prisma.VendorManagerModel
+/**
+ * Model VendorManagerPermission
+ * 
+ */
+export type VendorManagerPermission = Prisma.VendorManagerPermissionModel
+/**
+ * Model VendorStaff
+ * 
+ */
+export type VendorStaff = Prisma.VendorStaffModel
+/**
+ * Model VendorMember
+ * 
+ */
+export type VendorMember = Prisma.VendorMemberModel
 /**
  * Model VendorDocument
  * 
  */
 export type VendorDocument = Prisma.VendorDocumentModel
 /**
- * Model VendorMember
+ * Model VendorBankAccount
  * 
  */
-export type VendorMember = Prisma.VendorMemberModel
+export type VendorBankAccount = Prisma.VendorBankAccountModel
+/**
+ * Model VendorGallery
+ * 
+ */
+export type VendorGallery = Prisma.VendorGalleryModel
+/**
+ * Model VendorAvailability
+ * 
+ */
+export type VendorAvailability = Prisma.VendorAvailabilityModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
+ * Model BookingItem
+ * 
+ */
+export type BookingItem = Prisma.BookingItemModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel

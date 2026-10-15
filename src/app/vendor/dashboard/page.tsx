@@ -23,6 +23,13 @@ type Vendor = {
   description: string | null;
   city: string;
   address: string | null;
+  status:
+    | "PENDING"
+    | "UNDER_REVIEW"
+    | "APPROVED"
+    | "REJECTED"
+    | "SUSPENDED"
+    | "INACTIVE";
   createdAt: string;
   owner: {
     id: string;
@@ -188,6 +195,26 @@ export default function VendorDashboardPage() {
             </div>
           </div>
         </section>
+
+        {data.vendor.status !== "APPROVED" && (
+          <section
+            role="status"
+            className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+          >
+            <p className="font-semibold">
+              Provider status: {data.vendor.status.replaceAll("_", " ")}
+            </p>
+            <p className="mt-1">
+              {data.vendor.status === "PENDING"
+                ? "Your profile is waiting for admin review. Your services will become visible to customers after approval."
+                : data.vendor.status === "UNDER_REVIEW"
+                  ? "Your profile is under admin review. Your services will become visible to customers after approval."
+                  : data.vendor.status === "REJECTED"
+                    ? "Your profile was not approved. Please contact support if you need help with the review."
+                    : "Your profile is not currently approved for public listings. Contact support if you think this is incorrect."}
+            </p>
+          </section>
+        )}
 
         <section className="mt-8 overflow-hidden rounded-2xl bg-slate-950 text-white">
           <div className="flex flex-col justify-between gap-6 p-6 sm:p-8 md:flex-row md:items-center">

@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
       "COMPLETED",
     ];
 
-    const where: any = {
+    const where: Record<string, unknown> = {
       Service: {
         vendorId: vendor.id,
       },

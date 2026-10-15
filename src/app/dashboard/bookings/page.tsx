@@ -169,7 +169,11 @@ export default function CustomerBookingsPage() {
   }
 
   useEffect(() => {
-    loadBookings();
+    const timer = window.setTimeout(() => {
+      void loadBookings();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   async function cancelBooking(booking: Booking) {
@@ -186,9 +190,9 @@ export default function CustomerBookingsPage() {
       setError("");
 
       const response = await fetch(
-        `/api/customer/bookings/${encodeURIComponent(
+        appPath(`/api/customer/bookings/${encodeURIComponent(
           booking.id
-        )}`,
+        )}`),
         {
           method: "PATCH",
           headers: {

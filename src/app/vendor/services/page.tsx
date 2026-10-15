@@ -1,349 +1,200 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { appPath } from "@/lib/app-path";
-import { FormEvent, useEffect, useState } from "react";
 import {
-  ArrowLeft,
-  Building2,
-  CheckCircle2,
   Clock3,
   IndianRupee,
-  Save,
+  Loader2,
+  Plus,
+  Store,
 } from "lucide-react";
 
-type Category = {
+type Service = {
   id: string;
-  name: string;
-  slug: string;
+  title: string;
+  description: string | null;
+  price: string;
+  durationMinutes: number;
+  active: boolean;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
 };
 
-export default function NewVendorServicePage() {
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [price, setPrice] = useState("");
-  const [durationMinutes, setDurationMinutes] = useState("60");
-
-  const [loadingCategories, setLoadingCategories] =
-    useState(true);
-  const [saving, setSaving] = useState(false);
+export default function VendorServicesPage() {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    async function loadCategories() {
+    let cancelled = false;
+
+    async function loadServices() {
       try {
-        const response = await fetch(appPath("/api/categories"), {
+        const response = await fetch(appPath("/api/vendor/services"), {
           cache: "no-store",
         });
+        const result = await response.json();
 
-        const data = await response.json();
+        if (response.status === 401) {
+          window.location.href = appPath("/login");
+          return;
+        }
+
+        if (response.status === 403) {
+          window.location.href = appPath("/dashboard");
+          return;
+        }
 
         if (!response.ok) {
-          throw new Error(
-            data.message || "Unable to load categories."
+          throw new Error(result.message || "Unable to load services.");
+        }
+
+        if (!cancelled) {
+          setServices(result.services ?? []);
+        }
+      } catch (loadError) {
+        if (!cancelled) {
+          setError(
+            loadError instanceof Error
+              ? loadError.message
+              : "Unable to load services.",
           );
         }
-
-        setCategories(data.categories);
-
-        if (data.categories.length > 0) {
-          setCategoryId(data.categories[0].id);
-        }
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load categories."
-        );
       } finally {
-        setLoadingCategories(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
-    loadCategories();
+    void loadServices();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    setError("");
-    setSuccess("");
-
-    if (!categoryId) {
-      setError("Please select a category.");
-      return;
-    }
-
-    if (!price || Number(price) < 0) {
-      setError("Please enter a valid price.");
-      return;
-    }
-
-    setSaving(true);
-
-    try {
-      const response = await fetch(appPath("/api/vendor/services"), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          description,
-          categoryId,
-          price,
-          durationMinutes: Number(durationMinutes),
-        }),
-      });
-
-      if (response.status === 401) {
-        window.location.href = appPath("/login");
-        return;
-      }
-
-      if (response.status === 403) {
-        window.location.href = appPath("/dashboard");
-        return;
-      }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Unable to create service.");
-        return;
-      }
-
-      setSuccess("Service created successfully.");
-
-      setTimeout(() => {
-        window.location.href = appPath("/vendor/services");
-      }, 700);
-    } catch {
-      setError("Unable to connect to the server.");
-    } finally {
-      setSaving(false);
-    }
-  }
 
   return (
     <main className="min-h-screen bg-slate-50">
-      
+      <div className="mx-auto max-w-5xl px-5 py-8 sm:px-8">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-sm font-medium text-slate-500">
+              Provider services
+            </p>
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+              Manage services
+            </h1>
+            <p className="mt-2 text-sm text-slate-500">
+              Review your listings and update their details or availability.
+            </p>
+          </div>
 
-      <div className="mx-auto max-w-3xl px-5 py-8 sm:px-8">
-        <div className="mb-8">
-          <p className="text-sm font-medium text-slate-500">
-            Provider services
-          </p>
-
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+          <Link
+            href="/vendor/services/new"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white hover:bg-slate-800"
+          >
+            <Plus className="h-4 w-4" />
             Add Service
-          </h1>
-
-          <p className="mt-2 text-sm text-slate-500">
-            Add a service that customers can discover and book.
-          </p>
+          </Link>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {error}
-            </div>
-          )}
+        {error && (
+          <div
+            role="alert"
+            className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+          >
+            {error}
+          </div>
+        )}
 
-          {success && (
-            <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-              <CheckCircle2 className="h-4 w-4" />
-              {success}
-            </div>
-          )}
-
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
-                <Building2 className="h-5 w-5 text-slate-600" />
-              </div>
-
-              <div>
-                <h2 className="font-semibold text-slate-950">
-                  Service information
-                </h2>
-
-                <p className="mt-1 text-sm text-slate-500">
-                  Describe what customers are booking.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 space-y-5">
-              <div>
-                <label
-                  htmlFor="title"
-                  className="mb-2 block text-sm font-medium text-slate-700"
-                >
-                  Service title
-                </label>
-
-                <input
-                  id="title"
-                  value={title}
-                  onChange={(event) =>
-                    setTitle(event.target.value)
-                  }
-                  required
-                  placeholder="Example: Wedding Catering"
-                  className="h-12 w-full rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="category"
-                  className="mb-2 block text-sm font-medium text-slate-700"
-                >
-                  Category
-                </label>
-
-                <select
-                  id="category"
-                  value={categoryId}
-                  onChange={(event) =>
-                    setCategoryId(event.target.value)
-                  }
-                  disabled={loadingCategories}
-                  required
-                  className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-slate-500"
-                >
-                  {loadingCategories ? (
-                    <option>Loading categories...</option>
-                  ) : categories.length === 0 ? (
-                    <option>No categories available</option>
-                  ) : (
-                    categories.map((category) => (
-                      <option
-                        key={category.id}
-                        value={category.id}
-                      >
-                        {category.name}
-                      </option>
-                    ))
-                  )}
-                </select>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="description"
-                  className="mb-2 block text-sm font-medium text-slate-700"
-                >
-                  Description
-                </label>
-
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={(event) =>
-                    setDescription(event.target.value)
-                  }
-                  rows={5}
-                  placeholder="Describe the service, inclusions and important details..."
-                  className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                />
-              </div>
-            </div>
-          </section>
-
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
-                <IndianRupee className="h-5 w-5 text-slate-600" />
-              </div>
-
-              <div>
-                <h2 className="font-semibold text-slate-950">
-                  Pricing & duration
-                </h2>
-
-                <p className="mt-1 text-sm text-slate-500">
-                  Set the current service price and duration.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="price"
-                  className="mb-2 block text-sm font-medium text-slate-700"
-                >
-                  Price (â‚¹)
-                </label>
-
-                <input
-                  id="price"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={price}
-                  onChange={(event) =>
-                    setPrice(event.target.value)
-                  }
-                  required
-                  placeholder="0.00"
-                  className="h-12 w-full rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="duration"
-                  className="mb-2 block text-sm font-medium text-slate-700"
-                >
-                  Duration (minutes)
-                </label>
-
-                <div className="relative">
-                  <Clock3 className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-
-                  <input
-                    id="duration"
-                    type="number"
-                    min="1"
-                    step="1"
-                    value={durationMinutes}
-                    onChange={(event) =>
-                      setDurationMinutes(event.target.value)
-                    }
-                    required
-                    className="h-12 w-full rounded-xl border border-slate-200 pl-11 pr-4 text-sm outline-none focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-            <Link
-              href="/vendor/services"
-              className="inline-flex h-12 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-            >
-              Cancel
-            </Link>
-
+        {loading ? (
+          <div className="mt-8 flex items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white py-20 text-sm text-slate-600">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Loading services...
+          </div>
+        ) : error ? (
+          <div className="mt-4">
             <button
-              type="submit"
-              disabled={saving || loadingCategories}
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+              type="button"
+              onClick={() => window.location.reload()}
+              className="rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
             >
-              <Save className="h-4 w-4" />
-              {saving ? "Creating..." : "Create Service"}
+              Retry
             </button>
           </div>
-        </form>
+        ) : services.length === 0 ? (
+          <section className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center">
+            <Store className="mx-auto h-10 w-10 text-slate-400" />
+            <h2 className="mt-4 text-lg font-semibold text-slate-950">
+              No services yet
+            </h2>
+            <p className="mt-2 text-sm text-slate-500">
+              Add your first service to make it available for customers.
+            </p>
+            <Link
+              href="/vendor/services/new"
+              className="mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white hover:bg-slate-800"
+            >
+              <Plus className="h-4 w-4" />
+              Add your first service
+            </Link>
+          </section>
+        ) : (
+          <div className="mt-8 space-y-4">
+            {services.map((service) => (
+              <article
+                key={service.id}
+                className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
+              >
+                <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="text-lg font-semibold text-slate-950">
+                        {service.title}
+                      </h2>
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                          service.active
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-slate-100 text-slate-600"
+                        }`}
+                      >
+                        {service.active ? "Active" : "Inactive"}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-sm text-slate-500">
+                      {service.category.name}
+                      {service.description ? ` · ${service.description}` : ""}
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
+                      <span className="inline-flex items-center gap-1">
+                        <IndianRupee className="h-4 w-4" />
+                        {Number(service.price).toLocaleString("en-IN")}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <Clock3 className="h-4 w-4" />
+                        {service.durationMinutes} minutes
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/vendor/services/${encodeURIComponent(service.id)}/edit`}
+                    className="inline-flex h-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    Edit service
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

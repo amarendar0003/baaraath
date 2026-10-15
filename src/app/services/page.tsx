@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import AutoLocation from "@/components/AutoLocation";
 import ServicesFilterBar from "./ServicesFilterBar";
@@ -101,6 +101,10 @@ export default async function ServicesPage({
 
   const baseWhere = {
     active: true,
+    Vendor: {
+      status: "APPROVED" as const,
+      ...(vendorFilter || {}),
+    },
 
     ...(q
       ? {
@@ -129,8 +133,6 @@ export default async function ServicesPage({
         }
       : {}),
 
-    ...(vendorFilter ? { Vendor: vendorFilter } : {}),
-
     ...(minPrice > 0
       ? {
           price: {
@@ -156,6 +158,7 @@ export default async function ServicesPage({
 
       prisma.vendor.findMany({
         where: {
+          status: "APPROVED",
           city: {
             not: "",
           },
@@ -182,9 +185,27 @@ export default async function ServicesPage({
             : {}),
         },
 
-        include: {
-          Vendor: true,
-          Category: true,
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          price: true,
+          durationMinutes: true,
+          Vendor: {
+            select: {
+              id: true,
+              name: true,
+              city: true,
+              address: true,
+            },
+          },
+          Category: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
+          },
         },
 
         orderBy:

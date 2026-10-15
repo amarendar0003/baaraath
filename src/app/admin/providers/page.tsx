@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { appPath } from "@/lib/app-path";
@@ -21,6 +21,13 @@ type Provider = {
   description: string | null;
   city: string;
   address: string | null;
+  status:
+    | "PENDING"
+    | "UNDER_REVIEW"
+    | "APPROVED"
+    | "REJECTED"
+    | "SUSPENDED"
+    | "INACTIVE";
   createdAt: string;
   updatedAt: string;
   owner: {
@@ -39,14 +46,9 @@ export default function AdminProvidersPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      loadProviders();
-    }, 250);
-
-    return () => clearTimeout(timer);
-  }, [search]);
+  const [updatingProviderId, setUpdatingProviderId] = useState<string | null>(
+    null,
+  );
 
   async function loadProviders() {
     try {
@@ -67,11 +69,13 @@ export default function AdminProvidersPage() {
       );
 
       if (response.status === 401) {
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = appPath("/login");
         return;
       }
 
       if (response.status === 403) {
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = appPath("/dashboard");
         return;
       }
@@ -95,6 +99,56 @@ export default function AdminProvidersPage() {
       setLoading(false);
     }
   }
+
+  async function updateProviderStatus(
+    providerId: string,
+    status: Provider["status"],
+  ) {
+    try {
+      setUpdatingProviderId(providerId);
+      setError("");
+
+      const response = await fetch(
+        appPath(`/api/admin/providers/${encodeURIComponent(providerId)}`),
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status }),
+        },
+      );
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Unable to update provider status.");
+      }
+
+      setProviders((current) =>
+        current.map((provider) =>
+          provider.id === providerId
+            ? { ...provider, status: result.provider.status }
+            : provider,
+        ),
+      );
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to update provider status.",
+      );
+    } finally {
+      setUpdatingProviderId(null);
+    }
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      loadProviders();
+    }, 250);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
 
   return (
     <main className="min-h-screen bg-slate-50">
@@ -188,6 +242,8 @@ export default function AdminProvidersPage() {
                 <ProviderCard
                   key={provider.id}
                   provider={provider}
+                  isUpdating={updatingProviderId === provider.id}
+                  onStatusChange={updateProviderStatus}
                 />
               ))}
             </div>
@@ -200,9 +256,79 @@ export default function AdminProvidersPage() {
 
 function ProviderCard({
   provider,
+  isUpdating,
+  onStatusChange,
 }: {
   provider: Provider;
+  isUpdating: boolean;
+  onStatusChange: (
+    providerId: string,
+    status: Provider["status"],
+  ) => void;
 }) {
+  const statusActions: {
+    label: string;
+    status: Provider["status"];
+    className: string;
+  }[] =
+    provider.status === "PENDING"
+      ? [
+          {
+            label: "Start review",
+            status: "UNDER_REVIEW",
+            className: "border-slate-300 text-slate-700 hover:bg-slate-100",
+          },
+          {
+            label: "Approve",
+            status: "APPROVED",
+            className: "border-emerald-200 text-emerald-700 hover:bg-emerald-50",
+          },
+          {
+            label: "Reject",
+            status: "REJECTED",
+            className: "border-red-200 text-red-700 hover:bg-red-50",
+          },
+        ]
+      : provider.status === "UNDER_REVIEW"
+        ? [
+            {
+              label: "Approve",
+              status: "APPROVED",
+              className:
+                "border-emerald-200 text-emerald-700 hover:bg-emerald-50",
+            },
+            {
+              label: "Reject",
+              status: "REJECTED",
+              className: "border-red-200 text-red-700 hover:bg-red-50",
+            },
+          ]
+        : provider.status === "APPROVED"
+          ? [
+              {
+                label: "Suspend",
+                status: "SUSPENDED",
+                className: "border-red-200 text-red-700 hover:bg-red-50",
+              },
+            ]
+          : provider.status === "REJECTED"
+            ? [
+                {
+                  label: "Reopen review",
+                  status: "PENDING",
+                  className:
+                    "border-slate-300 text-slate-700 hover:bg-slate-100",
+                },
+              ]
+            : [
+                {
+                  label: "Reactivate",
+                  status: "APPROVED",
+                  className:
+                    "border-emerald-200 text-emerald-700 hover:bg-emerald-50",
+                },
+              ];
+
   return (
     <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
       <div className="border-b border-slate-100 bg-slate-950 p-5 text-white">
@@ -224,8 +350,18 @@ function ProviderCard({
             </div>
           </div>
 
-          <span className="shrink-0 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-300">
-            Provider
+          <span
+            className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
+              provider.status === "APPROVED"
+                ? "bg-emerald-500/15 text-emerald-300"
+                : provider.status === "REJECTED" ||
+                    provider.status === "SUSPENDED" ||
+                    provider.status === "INACTIVE"
+                  ? "bg-red-500/15 text-red-300"
+                  : "bg-amber-500/15 text-amber-200"
+            }`}
+          >
+            {provider.status.replaceAll("_", " ")}
           </span>
         </div>
       </div>
@@ -240,6 +376,20 @@ function ProviderCard({
             No business description provided.
           </p>
         )}
+
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          {statusActions.map((action) => (
+            <button
+              key={action.status}
+              type="button"
+              disabled={isUpdating}
+              onClick={() => onStatusChange(provider.id, action.status)}
+              className={`rounded-lg border px-3 py-2 text-sm font-semibold disabled:cursor-wait disabled:opacity-50 ${action.className}`}
+            >
+              {isUpdating ? "Updating..." : action.label}
+            </button>
+          ))}
+        </div>
 
         <div className="mt-5 grid grid-cols-2 gap-3">
           <InfoBox
@@ -305,7 +455,7 @@ function ProviderCard({
   </Link>
 
   <Link
-    href={`/admin/services?vendor=${provider.id}`}
+    href={`/admin/services?vendorId=${encodeURIComponent(provider.id)}`}
     className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
   >
     View Services
@@ -353,4 +503,3 @@ function formatDate(value: string) {
     year: "numeric",
   }).format(date);
 }
-

@@ -19,10 +19,23 @@ export const BookingStatus = {
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
 
 
+export const ProviderBookingStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type ProviderBookingStatus = (typeof ProviderBookingStatus)[keyof typeof ProviderBookingStatus]
+
+
 export const UserRole = {
   CUSTOMER: 'CUSTOMER',
   PROVIDER: 'PROVIDER',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  VENDOR_OWNER: 'VENDOR_OWNER',
+  VENDOR_MANAGER: 'VENDOR_MANAGER'
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
@@ -55,6 +68,7 @@ export const VendorDocumentType = {
   PAN: 'PAN',
   GST: 'GST',
   BUSINESS_REGISTRATION: 'BUSINESS_REGISTRATION',
+  OWNER_KYC: 'OWNER_KYC',
   ID_PROOF: 'ID_PROOF',
   ADDRESS_PROOF: 'ADDRESS_PROOF',
   BANK_PROOF: 'BANK_PROOF',
@@ -72,6 +86,25 @@ export const VendorDocumentStatus = {
 } as const
 
 export type VendorDocumentStatus = (typeof VendorDocumentStatus)[keyof typeof VendorDocumentStatus]
+
+
+export const GalleryMediaType = {
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO'
+} as const
+
+export type GalleryMediaType = (typeof GalleryMediaType)[keyof typeof GalleryMediaType]
+
+
+export const AvailabilityStatus = {
+  AVAILABLE: 'AVAILABLE',
+  PENDING: 'PENDING',
+  BOOKED: 'BOOKED',
+  BLOCKED: 'BLOCKED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type AvailabilityStatus = (typeof AvailabilityStatus)[keyof typeof AvailabilityStatus]
 
 
 export const VendorMemberRole = {

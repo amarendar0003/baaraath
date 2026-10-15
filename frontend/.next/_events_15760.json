@@ -1,0 +1,1 @@
+[{"eventName":"NEXT_CLI_SESSION_STOPPED","payload":{"nextVersion":"16.3.7","nodeVersion":"v22.22.0","cliCommand":"dev","durationMilliseconds":1584,"turboFlag":true,"pagesDir":false,"appDir":true,"isRspack":false}}]

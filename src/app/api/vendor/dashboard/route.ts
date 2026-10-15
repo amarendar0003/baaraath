@@ -16,21 +16,20 @@ export async function GET() {
       );
     }
 
-    if (session.role !== "PROVIDER") {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Provider access required.",
-        },
-        { status: 403 }
-      );
-    }
-
     const vendor = await prisma.vendor.findUnique({
       where: {
         ownerId: session.userId,
       },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        city: true,
+        address: true,
+        status: true,
+        ownerId: true,
+        createdAt: true,
+        updatedAt: true,
         User: {
           select: {
             id: true,
@@ -51,6 +50,9 @@ export async function GET() {
         { status: 404 }
       );
     }
+
+    // Resolve provider access against the database. A session can carry an
+    // older role value after an account was migrated or updated.
 
     const [
       totalServices,
@@ -125,7 +127,15 @@ export async function GET() {
             vendorId: vendor.id,
           },
         },
-        include: {
+        // The local database may predate Booking.vendorId. Select only the
+        // columns present in the deployed schema instead of Prisma's default
+        // all-scalar selection.
+        select: {
+          id: true,
+          bookingDate: true,
+          status: true,
+          notes: true,
+          createdAt: true,
           User: {
             select: {
               fullName: true,
@@ -134,8 +144,15 @@ export async function GET() {
             },
           },
           Service: {
-            include: {
-              Category: true,
+            select: {
+              id: true,
+              title: true,
+              price: true,
+              Category: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
         },
@@ -155,6 +172,7 @@ export async function GET() {
         description: vendor.description,
         city: vendor.city,
         address: vendor.address,
+        status: vendor.status,
         owner: vendor.User,
         createdAt: vendor.createdAt,
       },

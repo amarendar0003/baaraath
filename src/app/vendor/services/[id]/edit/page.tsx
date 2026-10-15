@@ -158,7 +158,7 @@ export default function EditVendorServicePage() {
       setSaving(true);
 
       const response = await fetch(
-        `/api/vendor/services/${serviceId}`,
+        appPath(`/api/vendor/services/${encodeURIComponent(serviceId)}`),
         {
           method: "PATCH",
           headers: {

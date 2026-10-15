@@ -139,24 +139,29 @@ export default function LocationsPage() {
   }, [selectedState, district]);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("baaraath_location");
+    const timer = window.setTimeout(() => {
+      const saved = window.localStorage.getItem("baaraath_location");
 
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
 
-        if (parsed?.city) {
-          setCity(parsed.city);
-          setState(parsed.state || "");
-          setDistrict(parsed.district || "");
-          setLocationName(parsed.city);
-          setLocationStatus("success");
-          setLocationMessage("Previously selected location");
+          if (parsed?.city) {
+            setCity(parsed.city);
+            setState(parsed.state || "");
+            setDistrict(parsed.district || "");
+            setLocationName(parsed.city);
+            setLocationStatus("success");
+            setLocationMessage("Previously selected location");
+          }
+        } catch {
+          // Ignore invalid saved location.
         }
-      } catch {
-        // Ignore invalid saved location.
       }
-    }
+
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   function saveLocation(

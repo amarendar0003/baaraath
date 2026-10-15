@@ -62,11 +62,29 @@ export async function GET() {
         where: {
           customerId: session.userId,
         },
-        include: {
+        select: {
+          id: true,
+          bookingDate: true,
+          status: true,
+          notes: true,
+          createdAt: true,
           Service: {
-            include: {
-              Vendor: true,
-              Category: true,
+            select: {
+              id: true,
+              title: true,
+              price: true,
+              durationMinutes: true,
+              Vendor: {
+                select: {
+                  name: true,
+                  city: true,
+                },
+              },
+              Category: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
         },

@@ -131,7 +131,9 @@ export default function AutoLocation() {
     // Do not trust an old saved city as the current location.
     localStorage.removeItem(STORAGE_KEY);
 
-    detectLocation();
+    const timer = window.setTimeout(detectLocation, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (status === "success" && location) {

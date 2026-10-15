@@ -1,8 +1,27 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { Prisma } from "@/generated/prisma/client";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 const validRoles = ["CUSTOMER", "PROVIDER", "ADMIN"] as const;
+
+type UserWithRelations = Prisma.UserGetPayload<{
+  include: {
+    Vendor: {
+      select: {
+        id: true;
+        name: true;
+        city: true;
+        address: true;
+      };
+    };
+    _count: {
+      select: {
+        Booking: true;
+      };
+    };
+  };
+}>;
 
 async function requireAdmin() {
   const session = await getSession();
@@ -24,15 +43,15 @@ async function requireAdmin() {
   return null;
 }
 
-function serializeUser(user: any) {
+function serializeUser(user: UserWithRelations) {
   return {
     id: user.id,
     fullName: user.fullName,
     email: user.email,
     phone: user.phone,
     role: user.role,
-    createdAt: user.createdAt?.toISOString?.() ?? user.createdAt,
-    updatedAt: user.updatedAt?.toISOString?.() ?? user.updatedAt,
+    createdAt: user.createdAt.toISOString(),
+    updatedAt: user.updatedAt.toISOString(),
     provider: user.Vendor
       ? {
           id: user.Vendor.id,
@@ -116,7 +135,6 @@ export async function PATCH(
       return authError;
     }
 
-    const session = await getSession();
     const { id } = await params;
     const body = await request.json();
 

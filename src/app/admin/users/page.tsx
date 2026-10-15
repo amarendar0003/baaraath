@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
@@ -125,7 +126,7 @@ export default function AdminUsersPage() {
       }
 
       const response = await fetch(
-        `/api/admin/users?${params.toString()}`,
+        appPath(`/api/admin/users?${params.toString()}`),
         {
           cache: "no-store",
         }
@@ -184,7 +185,7 @@ export default function AdminUsersPage() {
       setLoadingDetails(true);
 
       const response = await fetch(
-        `/api/admin/users/${user.id}`,
+        appPath(`/api/admin/users/${encodeURIComponent(user.id)}`),
         {
           cache: "no-store",
         }
@@ -233,7 +234,7 @@ export default function AdminUsersPage() {
       setSuccess("");
 
       const response = await fetch(
-        `/api/admin/users/${editUser.id}`,
+        appPath(`/api/admin/users/${encodeURIComponent(editUser.id)}`),
         {
           method: "PATCH",
           headers: {
@@ -280,7 +281,7 @@ export default function AdminUsersPage() {
       setSuccess("");
 
       const response = await fetch(
-        `/api/admin/users/${deleteUser.id}`,
+        appPath(`/api/admin/users/${encodeURIComponent(deleteUser.id)}`),
         {
           method: "DELETE",
         }

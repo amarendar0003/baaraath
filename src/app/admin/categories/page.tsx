@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { appPath } from "@/lib/app-path";
 import {
   AlertCircle,
   CheckCircle2,
@@ -91,7 +92,7 @@ export default function AdminCategoriesPage() {
       }
 
       const response = await fetch(
-        `/api/admin/categories?${params.toString()}`,
+        appPath(`/api/admin/categories?${params.toString()}`),
         {
           cache: "no-store",
         }
@@ -200,10 +201,10 @@ export default function AdminCategoriesPage() {
 
       const url =
         modalMode === "ADD"
-          ? "/api/admin/categories"
-          : `/api/admin/categories/${encodeURIComponent(
+          ? appPath("/api/admin/categories")
+          : appPath(`/api/admin/categories/${encodeURIComponent(
               editingId || ""
-            )}`;
+            )}`);
 
       const response = await fetch(url, {
         method: modalMode === "ADD" ? "POST" : "PATCH",
@@ -264,9 +265,9 @@ export default function AdminCategoriesPage() {
       setError("");
 
       const response = await fetch(
-        `/api/admin/categories/${encodeURIComponent(
+        appPath(`/api/admin/categories/${encodeURIComponent(
           category.id
-        )}`,
+        )}`),
         {
           method: "DELETE",
         }

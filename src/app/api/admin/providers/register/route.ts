@@ -187,6 +187,15 @@ export async function POST(request: Request) {
           createdAt: now,
           updatedAt: now,
         },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          city: true,
+          address: true,
+          createdAt: true,
+          status: true,
+        },
       });
 
       return {

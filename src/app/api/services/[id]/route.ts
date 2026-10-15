@@ -8,12 +8,23 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const service = await prisma.service.findUnique({
+    const service = await prisma.service.findFirst({
       where: {
         id,
+        active: true,
+        Vendor: {
+          status: "APPROVED",
+        },
       },
-
-      include: {
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        price: true,
+        durationMinutes: true,
+        active: true,
+        createdAt: true,
+        updatedAt: true,
         Vendor: {
           select: {
             id: true,
@@ -21,7 +32,6 @@ export async function GET(
             description: true,
             city: true,
             address: true,
-            ownerId: true,
           },
         },
 

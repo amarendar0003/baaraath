@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { appPath } from "@/lib/app-path";
 import {
   CalendarDays,
   CheckCircle2,
@@ -26,18 +27,18 @@ type Booking = {
   status: BookingStatus;
   notes: string | null;
   createdAt: string;
-  customer: {
+  User: {
     id: string;
     fullName: string;
     email: string;
     phone: string | null;
   };
-  service: {
+  Service: {
     id: string;
     title: string;
     price: string;
     durationMinutes: number;
-    category: {
+    Category: {
       id: string;
       name: string;
       slug: string;
@@ -128,7 +129,7 @@ export default function VendorBookingsPage() {
       }
 
       const response = await fetch(
-        `/api/vendor/bookings?${params.toString()}`,
+        appPath(`/api/vendor/bookings?${params.toString()}`),
         {
           cache: "no-store",
         }
@@ -187,7 +188,7 @@ export default function VendorBookingsPage() {
 
     try {
       const response = await fetch(
-        `/api/vendor/bookings/${bookingId}`,
+        appPath(`/api/vendor/bookings/${encodeURIComponent(bookingId)}`),
         {
           method: "PATCH",
           headers: {
@@ -252,9 +253,7 @@ export default function VendorBookingsPage() {
         <Link
           href="/vendor/dashboard"
           className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
-        >
-          ← Dashboard
-        </Link>
+        >{"\u2190"} Dashboard</Link>
       </div>
 
       {error && (
@@ -339,7 +338,7 @@ export default function VendorBookingsPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <h3 className="font-semibold text-slate-900">
-                      {booking.service.title}
+                      {booking.Service.title}
                     </h3>
 
                     <StatusBadge status={booking.status} />
@@ -360,16 +359,16 @@ export default function VendorBookingsPage() {
 
                       <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-slate-900">
                         <UserRound size={14} />
-                        {booking.customer.fullName}
+                        {booking.User.fullName}
                       </p>
 
                       <p className="mt-1 break-all text-xs text-slate-500">
-                        {booking.customer.email}
+                        {booking.User.email}
                       </p>
 
-                      {booking.customer.phone && (
+                      {booking.User.phone && (
                         <p className="mt-1 text-xs text-slate-500">
-                          {booking.customer.phone}
+                          {booking.User.phone}
                         </p>
                       )}
                     </div>
@@ -396,11 +395,11 @@ export default function VendorBookingsPage() {
                       </p>
 
                       <p className="mt-1 text-sm font-medium text-slate-900">
-                        {booking.service.category.name}
+                        {booking.Service.Category.name}
                       </p>
 
                       <p className="mt-1 text-xs text-slate-500">
-                        {booking.service.durationMinutes} minutes
+                        {booking.Service.durationMinutes} minutes
                       </p>
                     </div>
 
@@ -409,9 +408,7 @@ export default function VendorBookingsPage() {
                         Price
                       </p>
 
-                      <p className="mt-1 text-lg font-bold text-slate-900">
-                        ₹{booking.service.price}
-                      </p>
+                      <p className="mt-1 text-lg font-bold text-slate-900">â‚¹{booking.Service.price}</p>
                     </div>
                   </div>
 
