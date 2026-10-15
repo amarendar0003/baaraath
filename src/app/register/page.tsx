@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -64,7 +65,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(appPath("/api/auth/register"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

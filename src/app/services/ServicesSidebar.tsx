@@ -69,8 +69,12 @@ export default function ServicesSidebar({
 
   // Keep the price inputs in sync when the URL changes (e.g. Clear).
   useEffect(() => {
-    setMinPrice(searchParams.get("minPrice") || "");
-    setMaxPrice(searchParams.get("maxPrice") || "");
+    const timer = window.setTimeout(() => {
+      setMinPrice(searchParams.get("minPrice") || "");
+      setMaxPrice(searchParams.get("maxPrice") || "");
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [searchParams]);
 
   const category = searchParams.get("category") || "";

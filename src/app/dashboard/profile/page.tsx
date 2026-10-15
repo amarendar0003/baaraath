@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { FormEvent, useEffect, useState } from "react";
 import {
   ArrowLeft,
@@ -51,12 +52,12 @@ export default function ProfilePage() {
   useEffect(() => {
     async function loadProfile() {
       try {
-        const response = await fetch("/api/dashboard/profile", {
+        const response = await fetch(appPath("/api/dashboard/profile"), {
           cache: "no-store",
         });
 
         if (response.status === 401) {
-          window.location.href = "/login";
+          window.location.href = appPath("/login");
           return;
         }
 
@@ -93,7 +94,7 @@ export default function ProfilePage() {
     setSavingProfile(true);
 
     try {
-      const response = await fetch("/api/dashboard/profile", {
+      const response = await fetch(appPath("/api/dashboard/profile"), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -105,7 +106,7 @@ export default function ProfilePage() {
       });
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 
@@ -150,7 +151,7 @@ export default function ProfilePage() {
     setChangingPassword(true);
 
     try {
-      const response = await fetch("/api/dashboard/profile", {
+      const response = await fetch(appPath("/api/dashboard/profile"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -193,11 +194,11 @@ export default function ProfilePage() {
 
   async function handleLogout() {
     try {
-      await fetch("/api/auth/logout", {
+      await fetch(appPath("/api/auth/logout"), {
         method: "POST",
       });
     } finally {
-      window.location.href = "/";
+      window.location.href = appPath("/");
     }
   }
 
@@ -593,4 +594,3 @@ function formatDate(value: string) {
     year: "numeric",
   }).format(new Date(value));
 }
-

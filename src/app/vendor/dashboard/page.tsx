@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import {
@@ -22,6 +23,13 @@ type Vendor = {
   description: string | null;
   city: string;
   address: string | null;
+  status:
+    | "PENDING"
+    | "UNDER_REVIEW"
+    | "APPROVED"
+    | "REJECTED"
+    | "SUSPENDED"
+    | "INACTIVE";
   createdAt: string;
   owner: {
     id: string;
@@ -77,17 +85,17 @@ export default function VendorDashboardPage() {
         setLoading(true);
         setError("");
 
-        const response = await fetch("/api/vendor/dashboard", {
+        const response = await fetch(appPath("/api/vendor/dashboard"), {
           cache: "no-store",
         });
 
         if (response.status === 401) {
-          window.location.href = "/login";
+          window.location.href = appPath("/login");
           return;
         }
 
         if (response.status === 403) {
-          window.location.href = "/dashboard";
+          window.location.href = appPath("/dashboard");
           return;
         }
 
@@ -187,6 +195,26 @@ export default function VendorDashboardPage() {
             </div>
           </div>
         </section>
+
+        {data.vendor.status !== "APPROVED" && (
+          <section
+            role="status"
+            className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+          >
+            <p className="font-semibold">
+              Provider status: {data.vendor.status.replaceAll("_", " ")}
+            </p>
+            <p className="mt-1">
+              {data.vendor.status === "PENDING"
+                ? "Your profile is waiting for admin review. Your services will become visible to customers after approval."
+                : data.vendor.status === "UNDER_REVIEW"
+                  ? "Your profile is under admin review. Your services will become visible to customers after approval."
+                  : data.vendor.status === "REJECTED"
+                    ? "Your profile was not approved. Please contact support if you need help with the review."
+                    : "Your profile is not currently approved for public listings. Contact support if you think this is incorrect."}
+            </p>
+          </section>
+        )}
 
         <section className="mt-8 overflow-hidden rounded-2xl bg-slate-950 text-white">
           <div className="flex flex-col justify-between gap-6 p-6 sm:p-8 md:flex-row md:items-center">

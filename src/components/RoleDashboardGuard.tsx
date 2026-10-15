@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { appPath } from "@/lib/app-path";
 
 type SessionUser = {
   id: string;
@@ -34,7 +35,7 @@ export default function RoleDashboardGuard({
 
     async function checkRole() {
       try {
-        const response = await fetch("/api/auth/me", {
+        const response = await fetch(appPath("/api/auth/me"), {
           method: "GET",
           cache: "no-store",
           credentials: "include",

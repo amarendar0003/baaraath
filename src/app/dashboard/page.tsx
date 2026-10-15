@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import RoleDashboardGuard from "@/components/RoleDashboardGuard";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -62,16 +63,16 @@ function DashboardPage() {
     async function loadDashboard() {
       try {
         const [meResponse, dashboardResponse] = await Promise.all([
-          fetch("/api/auth/me", {
+          fetch(appPath("/api/auth/me"), {
             cache: "no-store",
           }),
-          fetch("/api/dashboard", {
+          fetch(appPath("/api/dashboard"), {
             cache: "no-store",
           }),
         ]);
 
         if (meResponse.status === 401 || dashboardResponse.status === 401) {
-          window.location.href = "/login";
+          window.location.href = appPath("/login");
           return;
         }
 
@@ -476,4 +477,3 @@ export default function CustomerDashboardWithRoleGuard() {
     </RoleDashboardGuard>
   );
 }
-

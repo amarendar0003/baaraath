@@ -38,11 +38,32 @@ export async function GET(request: Request) {
 
     const bookings = await prisma.booking.findMany({
       where,
-      include: {
+      select: {
+        id: true,
+        bookingDate: true,
+        status: true,
+        notes: true,
+        createdAt: true,
         Service: {
-          include: {
-            Vendor: true,
-            Category: true,
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            price: true,
+            durationMinutes: true,
+            Vendor: {
+              select: {
+                id: true,
+                name: true,
+                city: true,
+                address: true,
+              },
+            },
+            Category: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },

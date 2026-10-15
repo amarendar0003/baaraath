@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 
@@ -121,7 +121,7 @@ export async function PATCH(
       );
     }
 
-    const data: any = {
+    const data: Record<string, unknown> = {
       updatedAt: new Date(),
     };
 

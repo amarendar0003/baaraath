@@ -51,15 +51,28 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Booking: 'Booking',
-  Category: 'Category',
-  Service: 'Service',
   User: 'User',
   Vendor: 'Vendor',
   VendorRegistration: 'VendorRegistration',
-  VendorBankAccount: 'VendorBankAccount',
+  FunctionHall: 'FunctionHall',
+  Category: 'Category',
+  Service: 'Service',
+  VendorProvider: 'VendorProvider',
+  ProviderService: 'ProviderService',
+  ProviderAvailability: 'ProviderAvailability',
+  VendorManager: 'VendorManager',
+  VendorManagerPermission: 'VendorManagerPermission',
+  VendorStaff: 'VendorStaff',
+  VendorMember: 'VendorMember',
   VendorDocument: 'VendorDocument',
-  VendorMember: 'VendorMember'
+  VendorBankAccount: 'VendorBankAccount',
+  VendorGallery: 'VendorGallery',
+  VendorAvailability: 'VendorAvailability',
+  Booking: 'Booking',
+  BookingItem: 'BookingItem',
+  Review: 'Review',
+  Notification: 'Notification',
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -76,45 +89,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
-
-
-export const BookingScalarFieldEnum = {
-  id: 'id',
-  customerId: 'customerId',
-  serviceId: 'serviceId',
-  bookingDate: 'bookingDate',
-  status: 'status',
-  notes: 'notes',
-  createdAt: 'createdAt'
-} as const
-
-export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
-
-
-export const CategoryScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  createdAt: 'createdAt'
-} as const
-
-export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
-
-
-export const ServiceScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  description: 'description',
-  price: 'price',
-  durationMinutes: 'durationMinutes',
-  active: 'active',
-  vendorId: 'vendorId',
-  categoryId: 'categoryId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -138,23 +112,32 @@ export const VendorScalarFieldEnum = {
   city: 'city',
   address: 'address',
   ownerId: 'ownerId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  status: 'status',
   businessName: 'businessName',
   businessType: 'businessType',
   registrationNo: 'registrationNo',
   gstNumber: 'gstNumber',
   panNumber: 'panNumber',
+  yearEstablished: 'yearEstablished',
   website: 'website',
   contactEmail: 'contactEmail',
   contactPhone: 'contactPhone',
   postalCode: 'postalCode',
   state: 'state',
   country: 'country',
-  status: 'status',
   approvalNotes: 'approvalNotes',
   approvedAt: 'approvedAt',
-  profileComplete: 'profileComplete'
+  profileComplete: 'profileComplete',
+  mapsUrl: 'mapsUrl',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  seatingCapacity: 'seatingCapacity',
+  diningCapacity: 'diningCapacity',
+  parkingCapacity: 'parkingCapacity',
+  numberOfHalls: 'numberOfHalls',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type VendorScalarFieldEnum = (typeof VendorScalarFieldEnum)[keyof typeof VendorScalarFieldEnum]
@@ -185,40 +168,159 @@ export const VendorRegistrationScalarFieldEnum = {
 export type VendorRegistrationScalarFieldEnum = (typeof VendorRegistrationScalarFieldEnum)[keyof typeof VendorRegistrationScalarFieldEnum]
 
 
-export const VendorBankAccountScalarFieldEnum = {
+export const FunctionHallScalarFieldEnum = {
   id: 'id',
   vendorId: 'vendorId',
-  accountHolderName: 'accountHolderName',
-  bankName: 'bankName',
-  accountNumber: 'accountNumber',
-  ifscCode: 'ifscCode',
-  branchName: 'branchName',
-  accountType: 'accountType',
-  isPrimary: 'isPrimary',
-  verified: 'verified',
+  name: 'name',
+  description: 'description',
+  hallType: 'hallType',
+  indoorOutdoor: 'indoorOutdoor',
+  capacity: 'capacity',
+  minimumGuests: 'minimumGuests',
+  maximumGuests: 'maximumGuests',
+  diningCapacity: 'diningCapacity',
+  parkingCapacity: 'parkingCapacity',
+  acAvailable: 'acAvailable',
+  kitchenAvailable: 'kitchenAvailable',
+  stageAvailable: 'stageAvailable',
+  generatorAvailable: 'generatorAvailable',
+  liftAvailable: 'liftAvailable',
+  wheelchairAccess: 'wheelchairAccess',
+  bridalRoom: 'bridalRoom',
+  outsideCatering: 'outsideCatering',
+  outsideVendors: 'outsideVendors',
+  address: 'address',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type VendorBankAccountScalarFieldEnum = (typeof VendorBankAccountScalarFieldEnum)[keyof typeof VendorBankAccountScalarFieldEnum]
+export type FunctionHallScalarFieldEnum = (typeof FunctionHallScalarFieldEnum)[keyof typeof FunctionHallScalarFieldEnum]
 
 
-export const VendorDocumentScalarFieldEnum = {
+export const CategoryScalarFieldEnum = {
   id: 'id',
-  vendorId: 'vendorId',
-  documentType: 'documentType',
-  documentName: 'documentName',
-  fileName: 'fileName',
-  storagePath: 'storagePath',
-  mimeType: 'mimeType',
-  fileSize: 'fileSize',
-  status: 'status',
-  rejectionNote: 'rejectionNote',
-  uploadedAt: 'uploadedAt',
-  reviewedAt: 'reviewedAt'
+  name: 'name',
+  slug: 'slug',
+  createdAt: 'createdAt'
 } as const
 
-export type VendorDocumentScalarFieldEnum = (typeof VendorDocumentScalarFieldEnum)[keyof typeof VendorDocumentScalarFieldEnum]
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const ServiceScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  price: 'price',
+  durationMinutes: 'durationMinutes',
+  active: 'active',
+  vendorId: 'vendorId',
+  categoryId: 'categoryId',
+  hallId: 'hallId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
+
+
+export const VendorProviderScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  userId: 'userId',
+  name: 'name',
+  businessName: 'businessName',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  serviceType: 'serviceType',
+  description: 'description',
+  price: 'price',
+  loginEnabled: 'loginEnabled',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorProviderScalarFieldEnum = (typeof VendorProviderScalarFieldEnum)[keyof typeof VendorProviderScalarFieldEnum]
+
+
+export const ProviderServiceScalarFieldEnum = {
+  id: 'id',
+  providerId: 'providerId',
+  serviceId: 'serviceId',
+  priceOverride: 'priceOverride',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProviderServiceScalarFieldEnum = (typeof ProviderServiceScalarFieldEnum)[keyof typeof ProviderServiceScalarFieldEnum]
+
+
+export const ProviderAvailabilityScalarFieldEnum = {
+  id: 'id',
+  providerId: 'providerId',
+  date: 'date',
+  available: 'available',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProviderAvailabilityScalarFieldEnum = (typeof ProviderAvailabilityScalarFieldEnum)[keyof typeof ProviderAvailabilityScalarFieldEnum]
+
+
+export const VendorManagerScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  userId: 'userId',
+  designation: 'designation',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorManagerScalarFieldEnum = (typeof VendorManagerScalarFieldEnum)[keyof typeof VendorManagerScalarFieldEnum]
+
+
+export const VendorManagerPermissionScalarFieldEnum = {
+  id: 'id',
+  managerId: 'managerId',
+  permissionKey: 'permissionKey',
+  allowed: 'allowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorManagerPermissionScalarFieldEnum = (typeof VendorManagerPermissionScalarFieldEnum)[keyof typeof VendorManagerPermissionScalarFieldEnum]
+
+
+export const VendorStaffScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  userId: 'userId',
+  employeeId: 'employeeId',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  designation: 'designation',
+  department: 'department',
+  joiningDate: 'joiningDate',
+  emergencyContact: 'emergencyContact',
+  photoUrl: 'photoUrl',
+  loginEnabled: 'loginEnabled',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorStaffScalarFieldEnum = (typeof VendorStaffScalarFieldEnum)[keyof typeof VendorStaffScalarFieldEnum]
 
 
 export const VendorMemberScalarFieldEnum = {
@@ -241,12 +343,181 @@ export const VendorMemberScalarFieldEnum = {
 export type VendorMemberScalarFieldEnum = (typeof VendorMemberScalarFieldEnum)[keyof typeof VendorMemberScalarFieldEnum]
 
 
+export const VendorDocumentScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  documentNumber: 'documentNumber',
+  fileName: 'fileName',
+  storagePath: 'storagePath',
+  mimeType: 'mimeType',
+  fileSize: 'fileSize',
+  fileUrl: 'fileUrl',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
+  rejectionNote: 'rejectionNote',
+  expiryDate: 'expiryDate',
+  uploadedAt: 'uploadedAt',
+  reviewedAt: 'reviewedAt',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorDocumentScalarFieldEnum = (typeof VendorDocumentScalarFieldEnum)[keyof typeof VendorDocumentScalarFieldEnum]
+
+
+export const VendorBankAccountScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  accountHolderName: 'accountHolderName',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
+  accountNumberEncrypted: 'accountNumberEncrypted',
+  accountNumberLast4: 'accountNumberLast4',
+  ifscCode: 'ifscCode',
+  ifsc: 'ifsc',
+  branch: 'branch',
+  branchName: 'branchName',
+  accountType: 'accountType',
+  isPrimary: 'isPrimary',
+  proofFileUrl: 'proofFileUrl',
+  verified: 'verified',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorBankAccountScalarFieldEnum = (typeof VendorBankAccountScalarFieldEnum)[keyof typeof VendorBankAccountScalarFieldEnum]
+
+
+export const VendorGalleryScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  hallId: 'hallId',
+  serviceId: 'serviceId',
+  title: 'title',
+  imageUrl: 'imageUrl',
+  mediaType: 'mediaType',
+  sortOrder: 'sortOrder',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorGalleryScalarFieldEnum = (typeof VendorGalleryScalarFieldEnum)[keyof typeof VendorGalleryScalarFieldEnum]
+
+
+export const VendorAvailabilityScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  hallId: 'hallId',
+  date: 'date',
+  status: 'status',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VendorAvailabilityScalarFieldEnum = (typeof VendorAvailabilityScalarFieldEnum)[keyof typeof VendorAvailabilityScalarFieldEnum]
+
+
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  serviceId: 'serviceId',
+  vendorId: 'vendorId',
+  hallId: 'hallId',
+  bookingDate: 'bookingDate',
+  status: 'status',
+  notes: 'notes',
+  contactReleasedAt: 'contactReleasedAt',
+  confirmedAt: 'confirmedAt',
+  completedAt: 'completedAt',
+  cancelledAt: 'cancelledAt',
+  createdAt: 'createdAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const BookingItemScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  serviceId: 'serviceId',
+  providerId: 'providerId',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice',
+  providerStatus: 'providerStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingItemScalarFieldEnum = (typeof BookingItemScalarFieldEnum)[keyof typeof BookingItemScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  vendorId: 'vendorId',
+  customerId: 'customerId',
+  rating: 'rating',
+  comment: 'comment',
+  vendorReply: 'vendorReply',
+  vendorReplyAt: 'vendorReplyAt',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  vendorId: 'vendorId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  actorUserId: 'actorUserId',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  oldData: 'oldData',
+  newData: 'newData',
+  ipAddress: 'ipAddress',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -263,4 +534,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

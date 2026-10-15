@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import {
@@ -57,9 +57,13 @@ export default function ServicesFilters({
     searchParams.get("sort") || "latest";
 
   useEffect(() => {
-    setSearch(searchParams.get("q") || "");
-    setMinPrice(searchParams.get("minPrice") || "");
-    setMaxPrice(searchParams.get("maxPrice") || "");
+    const timer = window.setTimeout(() => {
+      setSearch(searchParams.get("q") || "");
+      setMinPrice(searchParams.get("minPrice") || "");
+      setMaxPrice(searchParams.get("maxPrice") || "");
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [searchParams]);
 
   function updateFilter(

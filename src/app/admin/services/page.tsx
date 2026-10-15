@@ -1,6 +1,8 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { appPath } from "@/lib/app-path";
 import {
   CheckCircle2,
   Clock3,
@@ -59,7 +61,8 @@ const emptyForm: FormState = {
   active: true,
 };
 
-export default function AdminServicesPage() {
+function AdminServicesContent() {
+  const searchParams = useSearchParams();
   const [services, setServices] = useState<Service[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [providers, setProviders] = useState<Provider[]>([]);
@@ -69,7 +72,9 @@ export default function AdminServicesPage() {
 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [providerFilter, setProviderFilter] = useState("");
+  const [providerFilter, setProviderFilter] = useState(
+    () => searchParams.get("vendorId") || searchParams.get("vendor") || "",
+  );
   const [statusFilter, setStatusFilter] = useState("ALL");
 
   const [modal, setModal] = useState<"add" | "edit" | "view" | null>(null);
@@ -103,7 +108,7 @@ export default function AdminServicesPage() {
       }
 
       const response = await fetch(
-        `/api/admin/services?${params.toString()}`,
+        appPath(`/api/admin/services?${params.toString()}`),
         {
           cache: "no-store",
         }
@@ -219,8 +224,8 @@ export default function AdminServicesPage() {
 
       const url =
         modal === "edit" && selectedService
-          ? `/api/admin/services/${selectedService.id}`
-          : "/api/admin/services";
+          ? appPath(`/api/admin/services/${encodeURIComponent(selectedService.id)}`)
+          : appPath("/api/admin/services");
 
       const method = modal === "edit" ? "PATCH" : "POST";
 
@@ -283,7 +288,7 @@ export default function AdminServicesPage() {
       setSuccess("");
 
       const response = await fetch(
-        `/api/admin/services/${service.id}`,
+        appPath(`/api/admin/services/${encodeURIComponent(service.id)}`),
         {
           method: "PATCH",
           headers: {
@@ -344,7 +349,7 @@ export default function AdminServicesPage() {
       setSuccess("");
 
       const response = await fetch(
-        `/api/admin/services/${service.id}`,
+        appPath(`/api/admin/services/${encodeURIComponent(service.id)}`),
         {
           method: "DELETE",
         }
@@ -1104,5 +1109,13 @@ function DetailRow({
         {value}
       </p>
     </div>
+  );
+}
+
+export default function AdminServicesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
+      <AdminServicesContent />
+    </Suspense>
   );
 }

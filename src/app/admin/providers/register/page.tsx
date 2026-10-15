@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { FormEvent, useState } from "react";
 import {
   ArrowLeft,
@@ -91,7 +92,7 @@ export default function RegisterProviderPage() {
       setLoading(true);
 
       const response = await fetch(
-        "/api/admin/providers/register",
+        appPath("/api/admin/providers/register"),
         {
           method: "POST",
           headers: {
@@ -210,7 +211,7 @@ export default function RegisterProviderPage() {
               </h3>
 
               <p className="mt-1 text-sm text-slate-500">
-                Enter the provider's business details.
+                Enter the provider&apos;s business details.
               </p>
             </div>
           </div>

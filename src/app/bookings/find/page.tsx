@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { appPath } from "@/lib/app-path";
 import {
   ArrowLeft,
   CalendarDays,
@@ -78,7 +79,7 @@ export default function FindBookingPage() {
       });
 
       const response = await fetch(
-        `/api/bookings/find?${params.toString()}`,
+        appPath(`/api/bookings/find?${params.toString()}`),
       );
 
       const data = await response.json();
@@ -525,4 +526,3 @@ function formatStatus(value: string) {
       return "Pending";
   }
 }
-

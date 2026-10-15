@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import {
   ArrowLeft,
@@ -163,7 +164,7 @@ export default function AdminBookingDetailPage({
       setSuccess("");
 
       const response = await fetch(
-        `/api/admin/bookings/${encodeURIComponent(id)}`,
+        appPath(`/api/admin/bookings/${encodeURIComponent(id)}`),
         {
           method: "GET",
           cache: "no-store",
@@ -242,9 +243,9 @@ export default function AdminBookingDetailPage({
       setSuccess("");
 
       const response = await fetch(
-        `/api/admin/bookings/${encodeURIComponent(
+        appPath(`/api/admin/bookings/${encodeURIComponent(
           booking.id
-        )}`,
+        )}`),
         {
           method: "PATCH",
           headers: {

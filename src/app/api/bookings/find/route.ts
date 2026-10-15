@@ -30,12 +30,36 @@ export async function GET(request: Request) {
           email,
         },
       },
-      include: {
-        User: true,
+      select: {
+        id: true,
+        status: true,
+        bookingDate: true,
+        notes: true,
+        createdAt: true,
+        User: {
+          select: {
+            fullName: true,
+            email: true,
+            phone: true,
+          },
+        },
         Service: {
-          include: {
-            Vendor: true,
-            Category: true,
+          select: {
+            id: true,
+            title: true,
+            price: true,
+            Vendor: {
+              select: {
+                name: true,
+                city: true,
+                address: true,
+              },
+            },
+            Category: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },

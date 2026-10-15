@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { appPath } from "@/lib/app-path";
 import {
   ArrowLeft,
   Building2,
@@ -123,7 +124,7 @@ export default function AdminProviderDetailPage() {
       setError("");
 
       const response = await fetch(
-        `/api/admin/providers/${providerId}`,
+        appPath(`/api/admin/providers/${encodeURIComponent(providerId)}`),
         {
           cache: "no-store",
         }
@@ -150,7 +151,9 @@ export default function AdminProviderDetailPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadProvider();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
 
   function openEdit() {
@@ -215,7 +218,7 @@ export default function AdminProviderDetailPage() {
       setSaving(true);
 
       const response = await fetch(
-        `/api/admin/providers/${providerId}`,
+        appPath(`/api/admin/providers/${encodeURIComponent(providerId)}`),
         {
           method: "PATCH",
           headers: {
@@ -266,7 +269,7 @@ export default function AdminProviderDetailPage() {
       setDeleting(true);
 
       const response = await fetch(
-        `/api/admin/providers/${providerId}`,
+        appPath(`/api/admin/providers/${encodeURIComponent(providerId)}`),
         {
           method: "DELETE",
         }
@@ -553,7 +556,7 @@ export default function AdminProviderDetailPage() {
             </div>
 
             <Link
-              href={`/admin/services?vendor=${provider.id}`}
+              href={`/admin/services?vendorId=${encodeURIComponent(provider.id)}`}
               className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
             >
               View in Service Management →
@@ -854,7 +857,5 @@ export default function AdminProviderDetailPage() {
     </>
   );
 }
-
-
 
 

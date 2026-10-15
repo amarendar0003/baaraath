@@ -26,6 +26,36 @@ function cleanText(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+const vendorStatuses = [
+  "PENDING",
+  "UNDER_REVIEW",
+  "APPROVED",
+  "REJECTED",
+  "SUSPENDED",
+  "INACTIVE",
+] as const;
+
+type VendorStatus = (typeof vendorStatuses)[number];
+
+function isVendorStatus(value: unknown): value is VendorStatus {
+  return (
+    typeof value === "string" &&
+    vendorStatuses.some((status) => status === value)
+  );
+}
+
+const allowedVendorStatusTransitions: Record<
+  VendorStatus,
+  readonly VendorStatus[]
+> = {
+  PENDING: ["UNDER_REVIEW", "APPROVED", "REJECTED"],
+  UNDER_REVIEW: ["PENDING", "APPROVED", "REJECTED"],
+  APPROVED: ["SUSPENDED", "INACTIVE"],
+  REJECTED: ["PENDING"],
+  SUSPENDED: ["APPROVED", "INACTIVE"],
+  INACTIVE: ["APPROVED", "SUSPENDED"],
+};
+
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -43,7 +73,15 @@ export async function GET(
       where: {
         id,
       },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        city: true,
+        address: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
         User: {
           select: {
             id: true,
@@ -59,7 +97,15 @@ export async function GET(
           orderBy: {
             createdAt: "desc",
           },
-          include: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            price: true,
+            durationMinutes: true,
+            active: true,
+            createdAt: true,
+            updatedAt: true,
             Category: {
               select: {
                 id: true,
@@ -109,6 +155,7 @@ export async function GET(
         description: provider.description,
         city: provider.city,
         address: provider.address,
+        status: provider.status,
         owner: provider.User,
         createdAt: provider.createdAt,
         updatedAt: provider.updatedAt,
@@ -153,6 +200,7 @@ export async function PATCH(
       select: {
         id: true,
         ownerId: true,
+        status: true,
       },
     });
 
@@ -161,6 +209,47 @@ export async function PATCH(
         { message: "Provider not found." },
         { status: 404 }
       );
+    }
+
+    if (body.status !== undefined) {
+      if (!isVendorStatus(body.status)) {
+        return NextResponse.json(
+          { message: "Invalid provider status." },
+          { status: 400 }
+        );
+      }
+
+      if (
+        body.status !== existing.status &&
+        !allowedVendorStatusTransitions[existing.status].includes(
+          body.status
+        )
+      ) {
+        return NextResponse.json(
+          {
+            message: `A provider cannot move from ${existing.status} to ${body.status}.`,
+          },
+          { status: 409 }
+        );
+      }
+
+      const provider = await prisma.vendor.update({
+        where: { id },
+        data: {
+          status: body.status,
+          updatedAt: new Date(),
+        },
+        select: {
+          id: true,
+          status: true,
+          updatedAt: true,
+        },
+      });
+
+      return NextResponse.json({
+        message: "Provider status updated successfully.",
+        provider,
+      });
     }
 
     const name = cleanText(body.name);
@@ -329,6 +418,14 @@ export async function PATCH(
           address: address || null,
           updatedAt: new Date(),
         },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          city: true,
+          address: true,
+          updatedAt: true,
+        },
       });
 
       return {
@@ -383,7 +480,8 @@ export async function DELETE(
       where: {
         id,
       },
-      include: {
+      select: {
+        id: true,
         Service: {
           select: {
             id: true,
@@ -425,6 +523,9 @@ export async function DELETE(
       where: {
         id,
       },
+      select: {
+        id: true,
+      },
     });
 
     return NextResponse.json({
@@ -448,4 +549,3 @@ export async function DELETE(
     );
   }
 }
-

@@ -24,8 +24,22 @@ export async function GET() {
       where: {
         ownerId: session.userId,
       },
-      include: {
-        User: true,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        city: true,
+        address: true,
+        createdAt: true,
+        updatedAt: true,
+        User: {
+          select: {
+            id: true,
+            fullName: true,
+            email: true,
+            phone: true,
+          },
+        },
       },
     });
 
@@ -130,6 +144,9 @@ export async function PATCH(request: Request) {
       where: {
         ownerId: session.userId,
       },
+      select: {
+        id: true,
+      },
     });
 
     if (!vendor) {
@@ -181,6 +198,15 @@ export async function PATCH(request: Request) {
           city,
           address: address || null,
           updatedAt: new Date(),
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          city: true,
+          address: true,
+          createdAt: true,
+          updatedAt: true,
         },
       });
 

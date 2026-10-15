@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import {
   CalendarDays,
@@ -130,12 +131,12 @@ export default function CustomerBookingsPage() {
       setLoading(true);
       setError("");
 
-      const response = await fetch("/api/customer/bookings", {
+      const response = await fetch(appPath("/api/customer/bookings"), {
         cache: "no-store",
       });
 
       if (response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = appPath("/login");
         return;
       }
 
@@ -168,7 +169,11 @@ export default function CustomerBookingsPage() {
   }
 
   useEffect(() => {
-    loadBookings();
+    const timer = window.setTimeout(() => {
+      void loadBookings();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   async function cancelBooking(booking: Booking) {
@@ -185,9 +190,9 @@ export default function CustomerBookingsPage() {
       setError("");
 
       const response = await fetch(
-        `/api/customer/bookings/${encodeURIComponent(
+        appPath(`/api/customer/bookings/${encodeURIComponent(
           booking.id
-        )}`,
+        )}`),
         {
           method: "PATCH",
           headers: {

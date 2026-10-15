@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import {
   ArrowLeft,
   Save,
@@ -63,10 +64,10 @@ export default function EditVendorServicePage() {
         setError("");
 
         const [serviceResponse, categoriesResponse] = await Promise.all([
-          fetch(`/api/vendor/services/${serviceId}`, {
+          fetch(appPath(`/api/vendor/services/${serviceId}`), {
             cache: "no-store",
           }),
-          fetch("/api/categories", {
+          fetch(appPath("/api/categories"), {
             cache: "no-store",
           }),
         ]);
@@ -157,7 +158,7 @@ export default function EditVendorServicePage() {
       setSaving(true);
 
       const response = await fetch(
-        `/api/vendor/services/${serviceId}`,
+        appPath(`/api/vendor/services/${encodeURIComponent(serviceId)}`),
         {
           method: "PATCH",
           headers: {

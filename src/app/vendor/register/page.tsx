@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -73,7 +74,7 @@ export default function VendorRegisterPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/vendor/register", {
+      const response = await fetch(appPath("/api/vendor/register"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

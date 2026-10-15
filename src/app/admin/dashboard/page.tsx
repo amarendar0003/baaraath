@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
+import { appPath } from "@/lib/app-path";
 import { useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -194,7 +195,7 @@ export default function AdminDashboardPage() {
 
       setError("");
 
-      const response = await fetch("/api/admin/dashboard", {
+      const response = await fetch(appPath("/api/admin/dashboard"), {
         cache: "no-store",
       });
 
@@ -241,7 +242,9 @@ export default function AdminDashboardPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadDashboard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

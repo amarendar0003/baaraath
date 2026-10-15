@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { appPath } from "@/lib/app-path";
 import {
   ChevronDown,
   LocateFixed,
@@ -86,7 +87,7 @@ export default function Header() {
 
     async function loadCurrentUser() {
       try {
-        const response = await fetch("/api/auth/me", {
+        const response = await fetch(appPath("/api/auth/me"), {
           method: "GET",
           cache: "no-store",
         });
@@ -124,25 +125,29 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlCity = params.get("city");
+    const timer = window.setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      const urlCity = params.get("city");
 
-    if (urlCity) {
-      setLocation(urlCity);
-      localStorage.setItem("baaraath_location", urlCity);
-      return;
-    }
+      if (urlCity) {
+        setLocation(urlCity);
+        localStorage.setItem("baaraath_location", urlCity);
+        return;
+      }
 
-    const savedCity = readSavedCity(
-      localStorage.getItem("baaraath_location"),
-    );
+      const savedCity = readSavedCity(
+        localStorage.getItem("baaraath_location"),
+      );
 
-    if (savedCity) {
-      setLocation(savedCity);
-      return;
-    }
+      if (savedCity) {
+        setLocation(savedCity);
+        return;
+      }
 
-    detectLocation();
+      detectLocation();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -314,13 +319,13 @@ export default function Header() {
 
   async function handleLogout() {
     try {
-      await fetch("/api/auth/logout", {
+      await fetch(appPath("/api/auth/logout"), {
         method: "POST",
       });
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
-      window.location.href = "/login";
+      window.location.href = appPath("/login");
     }
   }
 
